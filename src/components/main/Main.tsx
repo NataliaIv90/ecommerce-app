@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react';
 
-export const Main = () => {
+export const Main = (): JSX.Element => {
   return <main>Main</main>;
 };
