@@ -1,12 +1,32 @@
-# Getting Started with Create React App
+# Flower Shop
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+
+This is the codebase for the Flower shop e-commerce website, where customers can browse and purchase beautiful flower arrangements online.
+
+## Purpose
+
+The primary purpose of Flower Shop is to create a user-friendly online marketplace where customers can easily browse, select, customize, and purchase flowers from the comfort of their homes. By leveraging technology, we aim to streamline the process of buying flowers while ensuring the highest quality products and customer satisfaction.
+
+## Technology stack
+
+HTML5
+CSS3
+JavaScript (ES6+)
+React.js
+CommerceTools
 
 ## Available Scripts
 
 In the project directory, you can run:
 
 ### `npm run lint`
+
+Runs eslint and checks all the eslintrc.json file configured rules.
+
+### `npm run lint:fixed`
+
+Runs eslint --fix to fix eslint errors.
 
 ### `npm start`
 
@@ -31,6 +51,10 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `npm run format`
+
+Runs prettier which formats code based on rules written in .prettierrc file.
+
 ### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
@@ -41,8 +65,24 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## instructions for setting up and running the project locally
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### `git clone https://github.com/NataliaIv90/ecommerce-app.git`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Downloads project repository.
+
+### `cd ecommerce-app`
+
+Move to the project directory.
+
+### `npm install`
+
+Installs all dependancies.
+
+### `npm run start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
