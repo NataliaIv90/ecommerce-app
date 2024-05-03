@@ -1,13 +1,21 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-// import '@testing-library/jest-dom/extend-expect';
+import { render, screen, RenderResult } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Header } from '../../components/header/Header';
 
-describe('App component tests', () => {
-  it('Renders correctly initial document', async () => {
-    render(<Header />);
-    const testText = screen.getByText('Header');
-    expect(testText).toBeInTheDocument();
+describe('Header component tests', () => {
+  let headerComponent: RenderResult;
+
+  beforeEach(() => {
+    headerComponent = render(<Header />);
+  });
+
+  afterEach(() => {
+    headerComponent.unmount();
+  });
+
+  it('Header renders correctly', () => {
+    const headerText = screen.getByText('Header');
+    expect(headerText).toBeInTheDocument();
   });
 });
