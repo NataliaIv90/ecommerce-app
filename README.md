@@ -13,8 +13,12 @@ The primary purpose of Flower Shop is to create a user-friendly online marketpla
 HTML5
 CSS3
 JavaScript (ES6+)
+Typescript
 React.js
 CommerceTools
+
+Tools for code improvement: Eslint, Prettier, Husky
+Testing: Jest
 
 ## Available Scripts
 
