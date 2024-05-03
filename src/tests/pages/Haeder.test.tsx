@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { Header } from '../../src/components/header/Header';
+import { Header } from '../../components/header/Header';
 
 describe('App component tests', () => {
   it('Renders correctly initial document', async () => {

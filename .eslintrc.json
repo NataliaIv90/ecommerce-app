@@ -23,5 +23,6 @@
     "jsx-a11y/label-has-associated-control": "error", // Ensure all form controls have associated labels
     "@typescript-eslint/explicit-module-boundary-types": "error" // Require explicit return types on functions and methods
   },
-  "plugins": ["prettier", "jsx-a11y", "@typescript-eslint"]
+  "plugins": ["prettier", "jsx-a11y", "@typescript-eslint"],
+  "ignorePatterns": ["jest.config.js"]
 }
