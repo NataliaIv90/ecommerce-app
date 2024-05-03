@@ -61,6 +61,10 @@ Runs prettier which formats code based on rules written in .prettierrc file.
 
 ### `npm run eject`
 
+### `npm pre-commit`
+
+Runs prettier, eslint and tests before commit.
+
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
 If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
