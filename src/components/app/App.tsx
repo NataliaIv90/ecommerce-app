@@ -8,9 +8,9 @@ export const App = (): JSX.Element => {
   return (
     <div className='App'>
       <Header />
-      <main>
+      <>
         <Outlet />
-      </main>
+      </>
       <Footer />
     </div>
   );
