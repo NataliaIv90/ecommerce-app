@@ -1,10 +1,10 @@
 import React from 'react';
 import { MainWrapper } from '../mainWrapper/MainWrapper';
 
-export const Main = (): JSX.Element => (
+export const Registration = (): JSX.Element => (
   <MainWrapper>
     <>
-      <p>Main</p>
+      <p>Registration</p>
     </>
   </MainWrapper>
 );
