@@ -1,22 +1,22 @@
-.OutlinedButton{
-    font-size: 12px;
-    padding: 6px 12px;
-    font-weight: 400;
-    text-transform: uppercase;
-    border: 1px solid #9EA0A2;
-    background-color: transparent;
+.OutlinedButton {
+  font-size: 12px;
+  padding: 6px 12px;
+  font-weight: 400;
+  text-transform: uppercase;
+  border: 1px solid #9ea0a2;
+  background-color: transparent;
 }
 
 @media screen and (min-width: 700px) {
-    .OutlinedButton{
-        padding: 12px 24px;
-        font-size: 18px;
-    }
+  .OutlinedButton {
+    padding: 12px 24px;
+    font-size: 18px;
+  }
 }
 
 @media screen and (min-width: 900px) {
-    .OutlinedButton{
-        padding: 18px 64px;
-        font-size: 24px;
-    }
+  .OutlinedButton {
+    padding: 18px 64px;
+    font-size: 24px;
+  }
 }

@@ -1,9 +1,9 @@
 import React from 'react';
-import './RoutingError.css';
+import './RoutingError404.css';
 import { OutlinedButton } from '../../shared/button/outlinedButton/OutlinedButton';
 import { useNavigate } from 'react-router-dom';
 
-export const RoutingError = (): JSX.Element => {
+export const RoutingError404 = (): JSX.Element => {
   const navigate = useNavigate();
 
   return (

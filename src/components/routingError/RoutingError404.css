@@ -1,0 +1,79 @@
+.RoutingError {
+  height: 100vh;
+  background-image: url('../../assets/images/flowers-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 50px;
+  color: #593825;
+  font-size: 12px;
+}
+
+.RoutingError__title {
+  font-size: 36px;
+  color: rgb(112, 57, 137);
+}
+
+.RoutingError__subtitle {
+  font-size: 18px;
+}
+
+.RoutingError__btnContainer {
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+@media screen and (min-width: 700px) {
+  .RoutingError {
+    padding-left: 80px;
+    font-size: 16px;
+  }
+
+  .RoutingError_contentContainer {
+    width: 80%;
+  }
+
+  .RoutingError__title {
+    font-size: 48px;
+    margin-bottom: 3rem;
+  }
+
+  .RoutingError__subtitle {
+    font-size: 24px;
+  }
+
+  .RoutingError__btnContainer {
+    display: inline-block;
+    margin-top: 2rem;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .RoutingError {
+    padding-left: 100px;
+    text-align: center;
+  }
+
+  .RoutingError_contentContainer {
+    width: 60%;
+  }
+
+  .RoutingError__title {
+    font-size: 64px;
+  }
+
+  .RoutingError__subtitle {
+    font-size: 36px;
+  }
+
+  .RoutingError__btnContainer {
+    margin-top: 3rem;
+  }
+}
+
+.App {
+  width: 100%;
+}
