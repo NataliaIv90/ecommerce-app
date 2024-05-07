@@ -1,0 +1,11 @@
+.formInput {
+  border-radius: 5px;
+  border: 2px solid var(--color-primary);
+  height: 50px;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.error {
+  color: red;
+}

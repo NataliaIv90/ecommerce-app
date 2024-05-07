@@ -1,5 +1,9 @@
-import React from 'react';
+import { Login } from './Login';
 
 export const Main = (): JSX.Element => {
-  return <main>Main</main>;
+  return (
+    <main>
+      <Login />
+    </main>
+  );
 };
