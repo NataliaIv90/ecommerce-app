@@ -4,19 +4,24 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import Input from '../../shared/ui/Input/Input';
 
+export interface ILoginData {
+  email: string;
+  password: string;
+}
+
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .email()
-    .trim()
+    .trim('Email address must not contain leading or trailing whitespace.')
+    .email('Email must be valid email.')
     .required('This is required field, enter your email.')
     .min(3, 'This field shold be at least 3 symbols')
     .max(50, 'This text is too long')
     .matches(
       /^(((?=.{3,50}$)[A-Za-z0-9\-_+=!]*)|(?=.{5,50}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+))$/,
-      'Enter a valid email!'
+      'Enter a valid email!For example: user@example.com'
     ),
   password: Yup.string()
-    .required('Password is required field!')
+    .required('Password is required field, enter your password.')
     .min(8, 'This password is too short')
     .max(50, 'This password is too long')
     .matches(
@@ -24,11 +29,6 @@ const validationSchema = Yup.object().shape({
       'Use uppercase and lowercase letters, numbers, spec symbols (!,%,*,?,&), min 8 characters'
     ),
 });
-
-export interface ILoginData {
-  email: string;
-  password: string;
-}
 
 export const Login = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
@@ -61,7 +61,7 @@ export const Login = (): JSX.Element => {
               id='email'
               label='email'
               placeholder='user@example.com'
-              // error={fieldState.error?.message}
+              error={fieldState.error?.message}
               value={field.value}
               onChange={field.onChange}
             />
@@ -77,7 +77,7 @@ export const Login = (): JSX.Element => {
               id='password'
               label='password'
               placeholder='Enter the password ...'
-              // error={fieldState.error?.message}
+              error={fieldState.error?.message}
               value={field.value}
               onChange={field.onChange}
             />
