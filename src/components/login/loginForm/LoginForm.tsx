@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import Input from '../../shared/ui/Input/Input';
+import Input from '../../../shared/ui/Input/Input';
 
 export interface ILoginData {
   email: string;
@@ -41,7 +41,7 @@ const validationSchema = Yup.object().shape({
     .matches(/[!%*?&]/, 'Use spec symbols (!,%,*,?,&)'),
 });
 
-export const Login = (): JSX.Element => {
+export const LoginForm = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit: SubmitHandler<ILoginData> = (data) => {

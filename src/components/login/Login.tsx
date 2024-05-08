@@ -1,10 +1,9 @@
 import React from 'react';
 import { MainWrapper } from '../mainWrapper/MainWrapper';
+import { LoginForm } from './loginForm/LoginForm';
 
-export const Main = (): JSX.Element => (
+export const Login = (): JSX.Element => (
   <MainWrapper>
-    <>
-      <p>Main</p>
-    </>
+    <LoginForm />
   </MainWrapper>
 );
