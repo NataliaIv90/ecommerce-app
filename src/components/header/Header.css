@@ -1,0 +1,47 @@
+.header {
+  padding: 16px 24px;
+  background-color: #9ea0a2;
+}
+
+.header,
+.header__nav {
+  width: 100%;
+}
+
+.header__link-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header__login-register {
+  display: flex;
+}
+
+.header__link a, span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.5s;
+  margin: 0 16px;
+}
+
+.header__icon {
+    width: 20px;
+    height: 20px;
+    transition: all 0.5s;
+    fill: white;
+}
+
+.header__link a:hover, .header__link span:hover {
+  color: black;
+}
+
+.header__link a:hover .header__icon {
+  fill: black;
+}
+
+
