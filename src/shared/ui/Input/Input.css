@@ -1,0 +1,18 @@
+.formInput {
+  border-top: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-left: 1px solid transparent;
+  border-bottom: 1px solid #593825;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.errorInput {
+  outline: 2px solid red;
+  border-bottom: 1px solid transparent;
+}
+
+.error {
+  color: red;
+  font-weight: 500;
+}

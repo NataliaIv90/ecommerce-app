@@ -1,4 +1,5 @@
 import React from 'react';
+import './Input.css';
 interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   type: string;
   id: string;
