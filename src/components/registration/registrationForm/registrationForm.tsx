@@ -3,6 +3,8 @@ import * as Yup from 'yup';
 import { ECountrieOptions, IRegisterData } from '../../../types/types';
 import { useForm, Controller, SubmitHandler, Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAppDispatch } from '../../../hooks/reduxHooks';
+import { createNewCustomer } from '../../../store/slices/customerSlice';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -58,19 +60,23 @@ const validationSchema = Yup.object().shape({
 });
 
 export const RegistrationForm = (): JSX.Element => {
+  // const customer = useAppSelector((state) => state.customers);
+  const dispatch = useAppDispatch();
+
   const onSubmit: SubmitHandler<IRegisterData> = (data: IRegisterData) => {
     console.log(data);
+    dispatch(createNewCustomer(data));
   };
 
   const { control, handleSubmit } = useForm<IRegisterData>({
     defaultValues: {
       email: '',
-      password: '',
-      repeatPassword: '',
       firstName: '',
       lastName: '',
-      dateOfBirth: new Date('1900-01-01'),
       street: '',
+      password: '',
+      repeatPassword: '',
+      dateOfBirth: new Date('1900-01-01'),
       country: ECountrieOptions.ge,
       city: '',
       postalCode: '',
