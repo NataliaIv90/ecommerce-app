@@ -238,7 +238,7 @@ export const RegistrationForm = (): JSX.Element => {
             <Input
               type='text'
               id='postalCode'
-              placeholder='Enter your postalCode'
+              placeholder='Enter your postal code'
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
