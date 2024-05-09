@@ -42,13 +42,6 @@ const customerSlice = createSlice({
     setApi: (state, action: PayloadAction<API>) => {
       state.apiInstance = action.payload;
     },
-    signOut: (state) => {
-      const anonClient = new API(getApiRoot('anonimous'));
-      state.apiInstance = anonClient;
-      localStorage.removeItem('tokendata');
-      state.authorized = false;
-      state.customer = {} as Customer;
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
