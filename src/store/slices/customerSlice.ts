@@ -8,7 +8,7 @@ import { type Customer } from '@commercetools/platform-sdk';
 export interface Credentials {
   email: string;
   password: string;
-  setOpen: (val: boolean) => void;
+  // setOpen: (val: boolean) => void;
 }
 
 export interface createCustomer extends Credentials {
@@ -50,8 +50,8 @@ const customerSlice = createSlice({
   },
 });
 
-export const selectCustomer = (state: RootState) => state.customers;
-
+// export const selectCustomer = (state: RootState) => state.customers;
+// eslint-disable-next-line
 export const { createCustomer } = customerSlice.actions;
 
 export default customerSlice.reducer;

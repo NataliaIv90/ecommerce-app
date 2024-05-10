@@ -3,7 +3,7 @@ import { getApiRoot } from '../api/lib/Client';
 import { API } from '../api/API';
 import { useAppDispatch } from '../hooks/reduxHooks';
 
-export const useAuth = () => {
+export const useAuth: () => void = () => {
   const [token, setToken] = useState('');
   const [auth, setAuth] = useState(false);
   const [apiClient, setApiClient] = useState(getApiRoot('anonimous'));

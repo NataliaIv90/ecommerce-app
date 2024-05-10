@@ -64,8 +64,14 @@ export const RegistrationForm = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<IRegisterData> = (data: IRegisterData) => {
-    console.log(data);
-    dispatch(createNewCustomer(data));
+    const requestData = {
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      password: data.password,
+    };
+    console.log(requestData);
+    dispatch(createNewCustomer(requestData));
   };
 
   const { control, handleSubmit } = useForm<IRegisterData>({
