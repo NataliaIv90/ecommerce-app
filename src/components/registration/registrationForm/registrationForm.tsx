@@ -60,7 +60,6 @@ const validationSchema = Yup.object().shape({
 });
 
 export const RegistrationForm = (): JSX.Element => {
-  // const customer = useAppSelector((state) => state.customers);
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<IRegisterData> = (data: IRegisterData) => {
