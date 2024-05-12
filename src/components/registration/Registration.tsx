@@ -5,7 +5,7 @@ import { RegistrationForm } from './registrationForm/registrationForm';
 export const Registration = (): JSX.Element => (
   <MainWrapper>
     <>
-      <h1>Creating your personal account</h1>
+      <h1 className='registration-title'>Creating your personal account</h1>
       <RegistrationForm />
     </>
   </MainWrapper>

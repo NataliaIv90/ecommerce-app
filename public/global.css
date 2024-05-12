@@ -1,6 +1,14 @@
 @import './normalize.css';
+:root {
+  --primary-color: #593825;
+  --primary-bg: #f5f1f1;
+}
 
 body {
   margin: 0;
   padding: 0;
+}
+
+::placeholder {
+  color: var(--primary-color);
 }

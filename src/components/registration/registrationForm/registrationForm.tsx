@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch } from '../../../hooks/reduxHooks';
 import { createNewCustomer } from '../../../store/slices/customerSlice';
 import { useState } from 'react';
+import '../RegistrationForm.css';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -129,7 +130,10 @@ export const RegistrationForm = (): JSX.Element => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className='registration-form'
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <Controller
           control={control}
           name='email'
@@ -299,7 +303,12 @@ export const RegistrationForm = (): JSX.Element => {
           )}
         />
 
-        <button type='submit'>Submit</button>
+        <button
+          className='registration-form__btn'
+          type='submit'
+        >
+          Submit
+        </button>
       </form>
     </div>
   );
