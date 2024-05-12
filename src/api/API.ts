@@ -4,7 +4,6 @@ import {
   CustomerSignInResult,
   CustomerDraft,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
-import { Credentials } from '../store/slices/customerSlice';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 export class API {
@@ -18,9 +17,7 @@ export class API {
     try {
       const { body } = await this.client.get().execute();
       result = body;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     return result;
   }
 
@@ -29,9 +26,7 @@ export class API {
     try {
       const { body } = await this.client.customers().withId({ ID }).get().execute();
       result = body;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     return result;
   }
 
@@ -40,9 +35,11 @@ export class API {
     try {
       const { body } = await this.client.customers().post({ body: customer }).execute();
       result = body;
-      console.log(result);
+      if (result) {
+        alert('Congratulations! Your registration was successful. Welcome.');
+      }
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
     return result;
   }

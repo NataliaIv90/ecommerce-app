@@ -63,17 +63,34 @@ export const RegistrationForm = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<IRegisterData> = (data: IRegisterData) => {
-    const requestData = {
-      email: data.email,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      password: data.password,
-    };
-    console.log(requestData);
-    dispatch(createNewCustomer(requestData));
+    if (data.email && data.password && data.firstName && data.dateOfBirth && data.country) {
+      const year = data.dateOfBirth.getFullYear();
+      const month = String(data.dateOfBirth.getMonth() + 1).padStart(2, '0');
+      const day = String(data.dateOfBirth.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`;
+      const requestData = {
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        password: data.password,
+        dateOfBirth: formattedDate,
+        addresses: [
+          {
+            firstName: data.firstName.trim(),
+            lastName: data.lastName.trim(),
+            streetName: data.street.trim(),
+            postalCode: data.postalCode,
+            city: data.city,
+            country: data.country.slice(0, 2).toUpperCase(),
+          },
+        ],
+      };
+      void dispatch(createNewCustomer(requestData));
+      reset();
+    }
   };
 
-  const { control, handleSubmit } = useForm<IRegisterData>({
+  const { control, handleSubmit, reset } = useForm<IRegisterData>({
     defaultValues: {
       email: '',
       firstName: '',

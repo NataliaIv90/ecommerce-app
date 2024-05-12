@@ -7,7 +7,9 @@ export const useAuth: () => void = () => {
   const [token, setToken] = useState('');
   const [auth, setAuth] = useState(false);
   const [apiClient, setApiClient] = useState(getApiRoot('anonimous'));
+  // eslint-disable-next-line
   const [apiInstance, setApiInstance] = useState(new API(apiClient));
+  // eslint-disable-next-line
   const dispatch = useAppDispatch();
 
   const changeAuth = (flag: boolean): void => {
