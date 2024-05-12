@@ -5,6 +5,7 @@ import { useForm, Controller, SubmitHandler, Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch } from '../../../hooks/reduxHooks';
 import { createNewCustomer } from '../../../store/slices/customerSlice';
+import { useState } from 'react';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -62,6 +63,8 @@ const validationSchema = Yup.object().shape({
 export const RegistrationForm = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
+  const [requestError, setRequestError] = useState(false);
+
   const onSubmit: SubmitHandler<IRegisterData> = (data: IRegisterData) => {
     if (data.email && data.password && data.firstName && data.dateOfBirth && data.country) {
       const year = data.dateOfBirth.getFullYear();
@@ -85,7 +88,24 @@ export const RegistrationForm = (): JSX.Element => {
           },
         ],
       };
-      void dispatch(createNewCustomer(requestData));
+      void dispatch(createNewCustomer(requestData))
+        .then((response) => {
+          if (createNewCustomer.fulfilled.match(response)) {
+            if (response.payload.error === 'There is already an existing customer with the provided email.') {
+              setRequestError(true);
+            }
+          } else {
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          if (error.response && error.response.status === 400) {
+            const { message } = error.response.data;
+            return { data: undefined, error: message };
+          }
+          return { data: undefined, error: 'An unexpected error occurred. Please try again later.' };
+        });
+
       reset();
     }
   };
@@ -121,7 +141,11 @@ export const RegistrationForm = (): JSX.Element => {
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
-              error={fieldState.error?.message}
+              error={
+                requestError
+                  ? 'An account with the provided email address already exists. Please log in using your existing account or use a different email address to create a new account.'
+                  : fieldState.error?.message
+              }
             />
           )}
         />

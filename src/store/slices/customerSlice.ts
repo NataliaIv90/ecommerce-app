@@ -45,7 +45,7 @@ const customerSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
-      state.customer = action.payload.customer;
+      state.customer = action.payload.data?.customer || state.customer;
     });
   },
 });
