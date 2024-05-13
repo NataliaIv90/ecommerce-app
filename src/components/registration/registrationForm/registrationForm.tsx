@@ -7,6 +7,8 @@ import { useAppDispatch } from '../../../hooks/reduxHooks';
 import { createNewCustomer } from '../../../store/slices/customerSlice';
 import { useState } from 'react';
 import '../RegistrationForm.css';
+import { FormFooter } from '../formFooter/FormFooter';
+import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -305,12 +307,12 @@ export const RegistrationForm = (): JSX.Element => {
           )}
         />
 
-        <button
-          className='registration-form__btn'
+        <OutlinedButton
+          wideBtn={true}
           type='submit'
-        >
-          Submit
-        </button>
+          text='Submit'
+        />
+        <FormFooter />
       </form>
     </div>
   );
