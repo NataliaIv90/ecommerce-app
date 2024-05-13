@@ -8,7 +8,7 @@ import './Registration.css';
 export const Registration = (): JSX.Element => (
   <MainWrapper>
     <>
-      <h1>Creating your personal account</h1>
+      <h1 className='registration-title'>Creating your personal account</h1>
       <RegistrationForm />
       <div>
         <p className='registrationFooter'>Already have an account?</p>
