@@ -8,7 +8,7 @@ import { type Customer } from '@commercetools/platform-sdk';
 export interface Credentials {
   email: string;
   password: string;
-  // setOpen: (val: boolean) => void;
+  setOpen: (val: boolean) => void;
 }
 
 export interface createCustomer extends Credentials {
@@ -25,6 +25,20 @@ const initialState = {
 export const createNewCustomer = createAsyncThunk('customer/createNew', async (data: createCustomer, thunkAPI) => {
   const state: RootState = thunkAPI.getState() as RootState;
   const response = await state.customers.apiInstance.createCustomer(data);
+  return response;
+});
+
+export const SignIn = createAsyncThunk('customers/token', async (credentials: Credentials) => {
+  const { email, password } = credentials;
+  const passClient = new API(getApiRoot('password', { email, password }));
+  const response = await passClient.signIn(credentials);
+  if (!response.customer) credentials.setOpen(true);
+  return response;
+});
+
+export const SignInByToken = createAsyncThunk('customer/signInByToken', async (token: string) => {
+  const tokenAPI = new API(getApiRoot('token', { token }));
+  const response = await tokenAPI.signInByToken();
   return response;
 });
 
@@ -47,11 +61,17 @@ const customerSlice = createSlice({
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
       state.customer = action.payload.data?.customer || state.customer;
     });
+    builder.addCase(SignIn.fulfilled, (state, action) => {
+      state.customer = action.payload.customer;
+    });
+    builder.addCase(SignInByToken.fulfilled, (state, action) => {
+      state.customer = action.payload;
+    });
   },
 });
-
-// export const selectCustomer = (state: RootState) => state.customers;
 // eslint-disable-next-line
-export const { createCustomer } = customerSlice.actions;
+export const selectCustomer = (state: RootState) => state.customers;
+// eslint-disable-next-line
+export const { createCustomer, setAuthorization, setApi } = customerSlice.actions;
 
 export default customerSlice.reducer;
