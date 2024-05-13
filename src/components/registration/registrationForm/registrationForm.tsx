@@ -17,13 +17,18 @@ const validationSchema = Yup.object().shape({
     .min(5, 'Email should be min 5 symbols')
     .max(50, 'This email is too long'),
   password: Yup.string()
-    .min(8, 'This password is too short, min 8 symbols')
-    .max(50, 'This password is too long')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/,
-      'Use uppercase and lowercase letters, numbers, min 8 characters'
+    .test(
+      'no-whitespace',
+      'Whitespace is not allowed',
+      (value: string | undefined) => !/^\s+|\s+$/g.test(value as string)
     )
-    .required('Password is required field'),
+    .required('Password is required field, enter your password.')
+    .min(8, 'This password is too short, must be at least 8 characters long')
+    .max(50, 'This password is too long')
+    .matches(/[A-Z]/, 'The password must contain capital letter')
+    .matches(/[a-z]/, 'The password must contain a lowercase letter')
+    .matches(/\d/, 'The password must contain a digit')
+    .matches(/[!%*?&]/, 'Use spec symbols (!,%,*,?,&)'),
   repeatPassword: Yup.string()
     .oneOf([Yup.ref('password'), ''], 'Wrong input of confirmation password')
     .required('This field is required'),
