@@ -3,6 +3,10 @@ import * as Yup from 'yup';
 import { ECountrieOptions, IRegisterData } from '../../../types/types';
 import { useForm, Controller, SubmitHandler, Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAppDispatch } from '../../../hooks/reduxHooks';
+import { createNewCustomer } from '../../../store/slices/customerSlice';
+import { useState } from 'react';
+import '../RegistrationForm.css';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -58,19 +62,66 @@ const validationSchema = Yup.object().shape({
 });
 
 export const RegistrationForm = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+
+  const [requestError, setRequestError] = useState(false);
+
   const onSubmit: SubmitHandler<IRegisterData> = (data: IRegisterData) => {
-    console.log(data);
+    if (data.email && data.password && data.firstName && data.dateOfBirth && data.country) {
+      const year = data.dateOfBirth.getFullYear();
+      const month = String(data.dateOfBirth.getMonth() + 1).padStart(2, '0');
+      const day = String(data.dateOfBirth.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`;
+      const requestData = {
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        password: data.password,
+        dateOfBirth: formattedDate,
+        addresses: [
+          {
+            firstName: data.firstName.trim(),
+            lastName: data.lastName.trim(),
+            streetName: data.street.trim(),
+            postalCode: data.postalCode,
+            city: data.city,
+            country: data.country.slice(0, 2).toUpperCase(),
+          },
+        ],
+      };
+      void dispatch(createNewCustomer(requestData))
+        .then((response) => {
+          if (createNewCustomer.fulfilled.match(response)) {
+            const customerData = response.payload.data;
+            if (customerData) {
+              alert('Account created successfully! Welcome.');
+            }
+            if (response.payload.error === 'There is already an existing customer with the provided email.') {
+              setRequestError(true);
+            }
+          } else {
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          if (error.response && error.response.status === 400) {
+            const { message } = error.response.data;
+            return { data: undefined, error: message };
+          }
+          return { data: undefined, error: 'An unexpected error occurred. Please try again later.' };
+        });
+    }
   };
 
   const { control, handleSubmit } = useForm<IRegisterData>({
     defaultValues: {
       email: '',
-      password: '',
-      repeatPassword: '',
       firstName: '',
       lastName: '',
-      dateOfBirth: new Date('1900-01-01'),
       street: '',
+      password: '',
+      repeatPassword: '',
+      dateOfBirth: new Date('1900-01-01'),
       country: ECountrieOptions.ge,
       city: '',
       postalCode: '',
@@ -81,7 +132,10 @@ export const RegistrationForm = (): JSX.Element => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className='registration-form'
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <Controller
           control={control}
           name='email'
@@ -93,7 +147,11 @@ export const RegistrationForm = (): JSX.Element => {
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
-              error={fieldState.error?.message}
+              error={
+                requestError
+                  ? 'An account with the provided email address already exists. Please log in using your existing account or use a different email address to create a new account.'
+                  : fieldState.error?.message
+              }
             />
           )}
         />
@@ -247,7 +305,12 @@ export const RegistrationForm = (): JSX.Element => {
           )}
         />
 
-        <button type='submit'>Submit</button>
+        <button
+          className='registration-form__btn'
+          type='submit'
+        >
+          Submit
+        </button>
       </form>
     </div>
   );
