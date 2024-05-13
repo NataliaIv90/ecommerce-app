@@ -2,19 +2,13 @@ import { useEffect, useState } from 'react';
 import { getApiRoot } from '../api/lib/Client';
 import { API } from '../api/API';
 import { useAppDispatch } from '../hooks/reduxHooks';
+import { setAuthorization, setApi, SignInByToken } from '../store/slices/customerSlice';
 
 export const useAuth: () => void = () => {
   const [token, setToken] = useState('');
-  const [auth, setAuth] = useState(false);
   const [apiClient, setApiClient] = useState(getApiRoot('anonimous'));
-  // eslint-disable-next-line
   const [apiInstance, setApiInstance] = useState(new API(apiClient));
-  // eslint-disable-next-line
   const dispatch = useAppDispatch();
-
-  const changeAuth = (flag: boolean): void => {
-    setAuth(flag);
-  };
 
   useEffect(() => {
     if (localStorage.getItem('tokendata')) {
@@ -22,7 +16,9 @@ export const useAuth: () => void = () => {
       setToken(tokenLS || ('' as string));
       setApiClient(getApiRoot('token', { token: token }));
       setApiInstance(new API(apiClient));
+      void dispatch(setAuthorization(true));
+      void dispatch(setApi(apiInstance));
+      void dispatch(SignInByToken(tokenLS));
     }
-  }, [auth]);
-  return [changeAuth];
+  }, []);
 };
