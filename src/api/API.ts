@@ -31,15 +31,14 @@ export class API {
   }
 
   async createCustomer(customer: CustomerDraft): Promise<{ data: CustomerSignInResult | undefined; error: string }> {
-    const errorMsg = '';
+    let errorMsg = '';
     try {
       const result = await this.client.customers().post({ body: customer }).execute();
       return { data: result.body, error: 'error' };
     } catch (error) {
       if (error instanceof Error) {
-        alert(
-          'Oops! We encountered some server-side issues during the registration process. We apologize for the inconvenience. Please try again later. If the problem persists, please contact our support team for assistance. Thank you for your understanding.'
-        );
+        errorMsg = error.message;
+        alert(errorMsg);
       }
       return { data: undefined, error: errorMsg };
     }

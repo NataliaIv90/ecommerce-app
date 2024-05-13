@@ -92,6 +92,10 @@ export const RegistrationForm = (): JSX.Element => {
       void dispatch(createNewCustomer(requestData))
         .then((response) => {
           if (createNewCustomer.fulfilled.match(response)) {
+            const customerData = response.payload.data;
+            if (customerData) {
+              alert('Account created successfully! Welcome.');
+            }
             if (response.payload.error === 'There is already an existing customer with the provided email.') {
               setRequestError(true);
             }
@@ -106,12 +110,10 @@ export const RegistrationForm = (): JSX.Element => {
           }
           return { data: undefined, error: 'An unexpected error occurred. Please try again later.' };
         });
-
-      reset();
     }
   };
 
-  const { control, handleSubmit, reset } = useForm<IRegisterData>({
+  const { control, handleSubmit } = useForm<IRegisterData>({
     defaultValues: {
       email: '',
       firstName: '',
