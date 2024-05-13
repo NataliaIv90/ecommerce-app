@@ -19,7 +19,8 @@
   display: flex;
 }
 
-.header__link a, span {
+.header__link a,
+span {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -30,18 +31,17 @@
 }
 
 .header__icon {
-    width: 20px;
-    height: 20px;
-    transition: all 0.5s;
-    fill: white;
+  width: 20px;
+  height: 20px;
+  transition: all 0.5s;
+  fill: white;
 }
 
-.header__link a:hover, .header__link span:hover {
+.header__link a:hover,
+.header__link span:hover {
   color: black;
 }
 
 .header__link a:hover .header__icon {
   fill: black;
 }
-
-

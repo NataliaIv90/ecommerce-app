@@ -3,6 +3,8 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import Input from '../../../shared/ui/Input/Input';
+import { FormFooter } from '../formFooter/FormFooter';
+import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 
 export interface ILoginData {
   email: string;
@@ -104,7 +106,12 @@ export const LoginForm = (): JSX.Element => {
           />
           Show Password
         </label>
-        <input type='submit' />
+        <OutlinedButton
+          type='submit'
+          text='Submit'
+          wideBtn={true}
+        />
+        <FormFooter />
       </form>
     </>
   );
