@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import Input from '../../../shared/ui/Input/Input';
 import { FormFooter } from '../formFooter/FormFooter';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
+import { SignIn } from '../../../store/slices/customerSlice';
+import { useAppDispatch } from '../../../hooks/reduxHooks';
+import { useState } from 'react';
 
 export interface ILoginData {
   email: string;
@@ -20,7 +22,7 @@ const validationSchema = Yup.object().shape({
 
       return /[a-z]/.test(value);
     })
-    // .email('Email must be valid email.')
+    .email('Email must be valid email.')
     .required('This is required field, enter your email.')
     .min(3, 'This field shold be at least 3 symbols')
     .max(50, 'This text is too long')
@@ -46,8 +48,16 @@ const validationSchema = Yup.object().shape({
 export const LoginForm = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
 
+  // const customer = useAppSelector((state) => state.customers.customer);
+  const dispatch = useAppDispatch();
+  const [open, setOpen] = useState(false);
+
   const onSubmit: SubmitHandler<ILoginData> = (data) => {
-    console.log(data);
+    const email = data.email;
+    const password = data.password;
+    console.log(email, password);
+
+    dispatch(SignIn({ email, password, setOpen }));
   };
 
   const { control, handleSubmit } = useForm<ILoginData>({
