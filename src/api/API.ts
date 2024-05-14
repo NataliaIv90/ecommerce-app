@@ -56,9 +56,8 @@ export class API {
       const result = await this.client.me().login().post({ body: credentials }).execute();
       console.log('login success:', result);
       return result.body;
-    } catch (error) {
-      console.log(error);
-    }
+      // eslint-disable-next-line
+    } catch (error) {}
     return result;
   }
 
@@ -69,9 +68,8 @@ export class API {
       const result = await this.client.me().get().execute();
       console.log('login success:', result);
       return result.body;
-    } catch (error) {
-      console.log(error);
-    }
+      // eslint-disable-next-line
+    } catch (error) {}
     return result;
   }
 }

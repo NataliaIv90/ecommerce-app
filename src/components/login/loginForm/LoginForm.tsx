@@ -7,6 +7,8 @@ import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedBu
 import { SignIn } from '../../../store/slices/customerSlice';
 import { useAppDispatch } from '../../../hooks/reduxHooks';
 import { useState } from 'react';
+import { Snackbar, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 export interface ILoginData {
   email: string;
@@ -51,13 +53,22 @@ export const LoginForm = (): JSX.Element => {
   // const customer = useAppSelector((state) => state.customers.customer);
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const onSubmit: SubmitHandler<ILoginData> = (data) => {
     const email = data.email;
     const password = data.password;
-    console.log(email, password);
-
-    dispatch(SignIn({ email, password, setOpen }));
+    dispatch(SignIn({ email, password, setOpen })).then((response) => {
+      if (SignIn.fulfilled.match(response)) {
+        const customerData = response.payload.customer;
+        if (customerData) {
+          alert(`Welcome ${customerData.firstName}`);
+        } else {
+          setEmailError(true);
+        }
+      }
+    });
   };
 
   const { control, handleSubmit } = useForm<ILoginData>({
@@ -69,60 +80,97 @@ export const LoginForm = (): JSX.Element => {
     resolver: yupResolver(validationSchema),
   });
 
+  const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const action = (
+    <>
+      <IconButton
+        size='small'
+        aria-label='close'
+        color='inherit'
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize='small' />
+      </IconButton>
+    </>
+  );
+
   return (
     <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      >
-        <Controller
-          control={control}
-          name='email'
-          render={({ field, fieldState }) => (
-            <Input
-              autoComplete='off'
-              type='email'
-              id='email'
-              label='email'
-              placeholder='user@example.com'
-              error={fieldState.error?.message}
-              value={field.value}
-              onChange={field.onChange}
-            />
-          )}
-        />
-        <br />
-        <Controller
-          control={control}
-          name='password'
-          render={({ field, fieldState }) => (
-            <Input
-              type={showPassword ? 'text' : 'password'}
-              id='password'
-              label='password'
-              placeholder='Enter the password ...'
-              error={fieldState.error?.message}
-              value={field.value}
-              onChange={field.onChange}
-            />
-          )}
-        />
-        <br />
-        <label>
-          <input
-            type='checkbox'
-            checked={showPassword}
-            onChange={() => setShowPassword(!showPassword)}
+      <div className='login'>
+        <form
+          className='login-form'
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
+          <Controller
+            control={control}
+            name='email'
+            render={({ field, fieldState }) => (
+              <Input
+                autoComplete='email'
+                type='email'
+                id='email'
+                placeholder='Enter the email ...'
+                error={
+                  emailError ? 'Customer account with the given credentials not found.' : fieldState.error?.message
+                }
+                value={field.value}
+                onChange={field.onChange}
+                onFocus={() => setEmailError(false)}
+              />
+            )}
           />
-          Show Password
-        </label>
-        <OutlinedButton
-          type='submit'
-          text='Submit'
-          wideBtn={true}
-        />
-        <FormFooter />
-      </form>
+          <br />
+          <Controller
+            control={control}
+            name='password'
+            render={({ field, fieldState }) => (
+              <Input
+                autoComplete='current-password'
+                type={showPassword ? 'text' : 'password'}
+                id='password'
+                placeholder='Enter the password ...'
+                error={
+                  passwordError ? 'Customer account with the given credentials not found.' : fieldState.error?.message
+                }
+                value={field.value}
+                onChange={field.onChange}
+                onFocus={() => setPasswordError(false)}
+              />
+            )}
+          />
+          <br />
+          <label>
+            <input
+              type='checkbox'
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            Show Password
+          </label>
+          <OutlinedButton
+            type='submit'
+            text='Sign in'
+            wideBtn={true}
+          />
+          <FormFooter />
+          <Snackbar
+            key={`top,center`}
+            open={open}
+            action={action}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            message='Customer account with the given credentials not found.'
+          />
+        </form>
+      </div>
     </>
   );
 };

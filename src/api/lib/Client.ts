@@ -73,12 +73,15 @@ export const getApiRoot = (
           clientId: CLIENT_ID,
           clientSecret: CLIENT_SECRET,
           user: {
+            // eslint-disable-next-line
             username: params.email!,
+            // eslint-disable-next-line
             password: params.password!,
           },
         },
         tokenCache: {
           get: () => {
+            // eslint-disable-next-line
             return JSON.parse(localStorage.getItem('tokendata')!) as TokenStore;
           },
           set: (value: { token: string; expirationTime: number }) => {
@@ -105,9 +108,11 @@ export const getApiRoot = (
           clientId: CLIENT_ID,
           clientSecret: CLIENT_SECRET,
         },
+        // eslint-disable-next-line
         refreshToken: params.token!,
         tokenCache: {
           get: () => {
+            // eslint-disable-next-line
             return JSON.parse(localStorage.getItem('tokendata')!) as TokenStore;
           },
           set: (value: { token: string; expirationTime: number }) => {

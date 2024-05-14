@@ -5,6 +5,7 @@
   border-bottom: 1px solid #593825;
   width: 100%;
   padding: 0.5rem;
+  background-color: transparent;
 }
 
 .errorInput {
@@ -15,4 +16,9 @@
 .error {
   color: red;
   font-weight: 500;
+}
+
+.errorOccur {
+  outline: 2px solid red;
+  border-bottom: 1px solid transparent;
 }
