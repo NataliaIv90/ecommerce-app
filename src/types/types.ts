@@ -12,10 +12,6 @@ export interface IRegisterData {
   firstName: string;
   lastName: string;
   dateOfBirth: Date;
-  // street: string;
-  // country: ECountrieOptions;
-  // city: string;
-  // postalCode: string;
   defaultShippingAddress: boolean;
   defaultBillingAddress: boolean;
   shippingAddress: TAddress;
