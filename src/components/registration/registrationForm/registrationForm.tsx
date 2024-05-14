@@ -16,6 +16,30 @@ const countriesCodes = {
   Ukraine: 'UA',
 };
 
+const addressSchema = Yup.object().shape({
+  street: Yup.string().required('Street is a required field').min(1, 'Street should be min 1 character'),
+  city: Yup.string()
+    .required('City is required field')
+    .min(1, 'City should be min 1 characters')
+    .matches(/^([A-Z][a-z]*)$/g, 'City can only contain latin letters, start from capital letter'),
+  country: Yup.string()
+    .required('Country is a required field')
+    .oneOf([ECountrieOptions.ge, ECountrieOptions.ua, ECountrieOptions.uz]),
+  postalCode: Yup.string()
+    .required('Postal code is required')
+    .when(['country'], (country: ECountrieOptions[], schema) => {
+      if (country[0] === ECountrieOptions.ua) {
+        return schema.matches(/^\d{5}$/, 'Invalid postal code format for Ukraine');
+      } else if (country[0] === ECountrieOptions.uz) {
+        return schema.matches(/^\d{6}$/, 'Invalid postal code format for Uzbekistan');
+      } else if (country[0] === ECountrieOptions.ge) {
+        return schema.matches(/^\d{4}$/, 'Invalid postal code format for Georgia');
+      } else {
+        return schema;
+      }
+    }),
+});
+
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .required('Email is required field')
@@ -51,28 +75,32 @@ const validationSchema = Yup.object().shape({
   dateOfBirth: Yup.date()
     .min(new Date('1900-01-01'), 'Date must be after 1900')
     .max(new Date(new Date().getFullYear() - 13, 11, 31), 'User should be at least 13 years'),
-  street: Yup.string().required('Street is a required field').min(1, 'Street should be min 1 character'),
-  city: Yup.string()
-    .required('City is required field')
-    .min(1, 'City should be min 1 characters')
-    .matches(/^([A-Z][a-z]*)$/g, 'City can only contain latin letters, start from capital letter'),
-  country: Yup.string()
-    .required('Country is a required field')
-    .oneOf([ECountrieOptions.ge, ECountrieOptions.ua, ECountrieOptions.uz]),
-  postalCode: Yup.string()
-    .required('Postal code is required')
-    .when(['country'], (country: ECountrieOptions[], schema) => {
-      if (country[0] === ECountrieOptions.ua) {
-        return schema.matches(/^\d{5}$/, 'Invalid postal code format for Ukraine');
-      } else if (country[0] === ECountrieOptions.uz) {
-        return schema.matches(/^\d{6}$/, 'Invalid postal code format for Uzbekistan');
-      } else if (country[0] === ECountrieOptions.ge) {
-        return schema.matches(/^\d{4}$/, 'Invalid postal code format for Georgia');
-      } else {
-        return schema;
-      }
-    }),
+  // street: Yup.string().required('Street is a required field').min(1, 'Street should be min 1 character'),
+  // city: Yup.string()
+  //   .required('City is required field')
+  //   .min(1, 'City should be min 1 characters')
+  //   .matches(/^([A-Z][a-z]*)$/g, 'City can only contain latin letters, start from capital letter'),
+  // country: Yup.string()
+  //   .required('Country is a required field')
+  //   .oneOf([ECountrieOptions.ge, ECountrieOptions.ua, ECountrieOptions.uz]),
+  // postalCode: Yup.string()
+  //   .required('Postal code is required')
+  //   .when(['country'], (country: ECountrieOptions[], schema) => {
+  //     if (country[0] === ECountrieOptions.ua) {
+  //       return schema.matches(/^\d{5}$/, 'Invalid postal code format for Ukraine');
+  //     } else if (country[0] === ECountrieOptions.uz) {
+  //       return schema.matches(/^\d{6}$/, 'Invalid postal code format for Uzbekistan');
+  //     } else if (country[0] === ECountrieOptions.ge) {
+  //       return schema.matches(/^\d{4}$/, 'Invalid postal code format for Georgia');
+  //     } else {
+  //       return schema;
+  //     }
+  //   }),
+  shippingAddress: addressSchema,
+  billingAddress: addressSchema,
   defaultShippingAddress: Yup.boolean(),
+  defaultBillingAddress: Yup.boolean(),
+  billingAddressSameAsShipping: Yup.boolean(),
 });
 
 export const RegistrationForm = (): JSX.Element => {
@@ -83,7 +111,7 @@ export const RegistrationForm = (): JSX.Element => {
   const [requestError, setRequestError] = useState(false);
 
   const onSubmit: SubmitHandler<IRegisterData> = (data: IRegisterData) => {
-    if (data.email && data.password && data.firstName && data.dateOfBirth && data.country) {
+    if (data.email && data.password && data.firstName && data.dateOfBirth && data.shippingAddress.country) {
       const year = data.dateOfBirth.getFullYear();
       const month = String(data.dateOfBirth.getMonth() + 1).padStart(2, '0');
       const day = String(data.dateOfBirth.getDate()).padStart(2, '0');
@@ -98,10 +126,10 @@ export const RegistrationForm = (): JSX.Element => {
           {
             firstName: data.firstName.trim(),
             lastName: data.lastName.trim(),
-            streetName: data.street.trim(),
-            postalCode: data.postalCode,
-            city: data.city,
-            country: countriesCodes[data.country],
+            streetName: data.shippingAddress.street.trim(),
+            postalCode: data.shippingAddress.postalCode,
+            city: data.shippingAddress.city,
+            country: countriesCodes[data.shippingAddress.country],
           },
         ],
         defaultShippingAddress: data.defaultShippingAddress ? 0 : undefined,
@@ -126,14 +154,28 @@ export const RegistrationForm = (): JSX.Element => {
       email: '',
       firstName: '',
       lastName: '',
-      street: '',
+      // street: '',
       password: '',
       repeatPassword: '',
       dateOfBirth: new Date('1900-01-01'),
-      country: ECountrieOptions.ge,
-      city: '',
-      postalCode: '',
+      // country: ECountrieOptions.ge,
+      // city: '',
+      // postalCode: '',
       defaultShippingAddress: false,
+      defaultBillingAddress: false,
+      billingAddressSameAsShipping: false,
+      shippingAddress: {
+        city: '',
+        country: ECountrieOptions.ge,
+        postalCode: '',
+        street: '',
+      },
+      billingAddress: {
+        city: '',
+        country: ECountrieOptions.ge,
+        postalCode: '',
+        street: '',
+      },
     },
     resolver: yupResolver(validationSchema) as Resolver<IRegisterData>,
     mode: 'all',
@@ -246,11 +288,11 @@ export const RegistrationForm = (): JSX.Element => {
         />
 
         <div className='divider'></div>
+        <h3>Shipping address information</h3>
 
-        <p>Shipping / billing address information</p>
         <Controller
           control={control}
-          name='country'
+          name='shippingAddress.country'
           render={({ field, fieldState }) => (
             <>
               <select
@@ -274,7 +316,7 @@ export const RegistrationForm = (): JSX.Element => {
 
         <Controller
           control={control}
-          name='street'
+          name='shippingAddress.street'
           render={({ field, fieldState }) => (
             <Input
               type='text'
@@ -290,7 +332,7 @@ export const RegistrationForm = (): JSX.Element => {
 
         <Controller
           control={control}
-          name='city'
+          name='shippingAddress.city'
           render={({ field, fieldState }) => (
             <Input
               type='text'
@@ -306,7 +348,7 @@ export const RegistrationForm = (): JSX.Element => {
 
         <Controller
           control={control}
-          name='postalCode'
+          name='shippingAddress.postalCode'
           render={({ field, fieldState }) => (
             <Input
               type='text'
@@ -334,7 +376,124 @@ export const RegistrationForm = (): JSX.Element => {
                   className={fieldState.error ? 'errorInput' : ''}
                 />
 
-                <label htmlFor='defaultShippingAddress'>Set as default address</label>
+                <label htmlFor='defaultShippingAddress'>Set as default shipping address</label>
+              </div>
+              {fieldState.error && <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>}
+            </>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name='billingAddressSameAsShipping'
+          render={({ field, fieldState }) => (
+            <>
+              <div className='registration__checkbox-wrapper'>
+                <input
+                  type='checkbox'
+                  id='billingAddressSameAsShipping'
+                  checked={field.value}
+                  onChange={field.onChange}
+                  className={fieldState.error ? 'errorInput' : ''}
+                />
+
+                <label htmlFor='defaultShippingAddress'>Use the same address for both billing and shipping</label>
+              </div>
+              {fieldState.error && <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>}
+            </>
+          )}
+        />
+
+        <div className='divider'></div>
+        <h3>Billing address information</h3>
+
+        <Controller
+          control={control}
+          name='billingAddress.country'
+          render={({ field, fieldState }) => (
+            <>
+              <select
+                {...field}
+                className='registration__select-input'
+              >
+                {Object.entries(ECountrieOptions).map(([key, value]) => (
+                  <option
+                    key={key}
+                    value={value}
+                  >
+                    {value}
+                  </option>
+                ))}
+              </select>
+
+              {fieldState.error && <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>}
+            </>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name='billingAddress.street'
+          render={({ field, fieldState }) => (
+            <Input
+              type='text'
+              id='street'
+              placeholder='Enter your street'
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              error={fieldState.error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name='billingAddress.city'
+          render={({ field, fieldState }) => (
+            <Input
+              type='text'
+              id='city'
+              placeholder='Enter your city'
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              error={fieldState.error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name='billingAddress.postalCode'
+          render={({ field, fieldState }) => (
+            <Input
+              type='text'
+              id='postalCode'
+              placeholder='Enter your postal code'
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              error={fieldState.error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name='defaultBillingAddress'
+          render={({ field, fieldState }) => (
+            <>
+              <div className='registration__checkbox-wrapper'>
+                <input
+                  type='checkbox'
+                  id='defaultBillingAddress'
+                  checked={field.value}
+                  onChange={field.onChange}
+                  className={fieldState.error ? 'errorInput' : ''}
+                />
+
+                <label htmlFor='defaultShippingAddress'>Set as default billing address</label>
               </div>
               {fieldState.error && <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>}
             </>
