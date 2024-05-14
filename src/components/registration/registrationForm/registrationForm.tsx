@@ -70,6 +70,7 @@ const validationSchema = Yup.object().shape({
 
 export const RegistrationForm = (): JSX.Element => {
   const dispatch = useAppDispatch();
+  const [open, setOpen] = useState(false);
 
   const [requestError, setRequestError] = useState(false);
 
@@ -96,7 +97,7 @@ export const RegistrationForm = (): JSX.Element => {
           },
         ],
       };
-      void dispatch(createNewCustomer(requestData))
+      void dispatch(createNewCustomer({ ...requestData, setOpen }))
         .then((response) => {
           if (createNewCustomer.fulfilled.match(response)) {
             const customerData = response.payload.data;

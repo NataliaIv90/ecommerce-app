@@ -5,6 +5,7 @@ import {
   CustomerDraft,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
+import { Credentials } from '../store/slices/customerSlice';
 
 export class API {
   private client: ByProjectKeyRequestBuilder;
@@ -17,7 +18,9 @@ export class API {
     try {
       const { body } = await this.client.get().execute();
       result = body;
-    } catch (error) {}
+    } catch (error) {
+      alert(error);
+    }
     return result;
   }
 
@@ -26,7 +29,9 @@ export class API {
     try {
       const { body } = await this.client.customers().withId({ ID }).get().execute();
       result = body;
-    } catch (error) {}
+    } catch (error) {
+      alert(error);
+    }
     return result;
   }
 
@@ -42,5 +47,31 @@ export class API {
       }
       return { data: undefined, error: errorMsg };
     }
+  }
+
+  async signIn(credentials: Credentials): Promise<CustomerSignInResult> {
+    const result: CustomerSignInResult = {} as CustomerSignInResult;
+    console.log('signin cred', credentials);
+    try {
+      const result = await this.client.me().login().post({ body: credentials }).execute();
+      console.log('login success:', result);
+      return result.body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+
+  async signInByToken(): Promise<Customer> {
+    const result: Customer = {} as Customer;
+    console.log('signIn token');
+    try {
+      const result = await this.client.me().get().execute();
+      console.log('login success:', result);
+      return result.body;
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
   }
 }
