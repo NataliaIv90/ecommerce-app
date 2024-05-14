@@ -1,11 +1,11 @@
 import Input from '../../../shared/ui/Input/Input';
 import * as Yup from 'yup';
-import { ECountrieOptions, IRegisterData } from '../../../types/types';
+import { ECountrieOptions, IRegisterData, IRegistrationRequestData } from '../../../types/types';
 import { useForm, Controller, SubmitHandler, Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch } from '../../../hooks/reduxHooks';
 import { createNewCustomer } from '../../../store/slices/customerSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './RegistrationForm.css';
 import { FormFooter } from '../formFooter/FormFooter';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
@@ -116,25 +116,45 @@ export const RegistrationForm = (): JSX.Element => {
       const month = String(data.dateOfBirth.getMonth() + 1).padStart(2, '0');
       const day = String(data.dateOfBirth.getDate()).padStart(2, '0');
       const formattedDate = `${year}-${month}-${day}`;
-      const requestData = {
+
+      const shippingAddress = {
+        firstName: data.firstName.trim(),
+        lastName: data.lastName.trim(),
+        streetName: data.shippingAddress.street.trim(),
+        postalCode: data.shippingAddress.postalCode,
+        city: data.shippingAddress.city,
+        country: countriesCodes[data.shippingAddress.country],
+      };
+
+      let billingAddress;
+      if (data.billingAddressSameAsShipping) {
+        billingAddress = shippingAddress;
+      } else {
+        billingAddress = {
+          firstName: data.firstName.trim(),
+          lastName: data.lastName.trim(),
+          streetName: data.billingAddress.street.trim(),
+          postalCode: data.billingAddress.postalCode,
+          city: data.billingAddress.city,
+          country: countriesCodes[data.billingAddress.country],
+        };
+      }
+
+      const requestData: IRegistrationRequestData = {
         email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
+        firstName: data.firstName.trim(),
+        lastName: data.lastName.trim(),
         password: data.password,
         dateOfBirth: formattedDate,
-        addresses: [
-          {
-            firstName: data.firstName.trim(),
-            lastName: data.lastName.trim(),
-            streetName: data.shippingAddress.street.trim(),
-            postalCode: data.shippingAddress.postalCode,
-            city: data.shippingAddress.city,
-            country: countriesCodes[data.shippingAddress.country],
-          },
-        ],
+        addresses: [shippingAddress, billingAddress],
+        shippingAddresses: [0],
+        billingAddresses: [1],
         defaultShippingAddress: data.defaultShippingAddress ? 0 : undefined,
-        defaultBillingAddress: data.defaultShippingAddress ? 0 : undefined,
+        defaultBillingAddress: data.defaultBillingAddress ? 1 : undefined,
       };
+
+      console.log(requestData);
+
       void dispatch(createNewCustomer({ ...requestData, setOpen })).then((response) => {
         if (createNewCustomer.fulfilled.match(response)) {
           const customerData = response.payload.data;
@@ -149,7 +169,7 @@ export const RegistrationForm = (): JSX.Element => {
     }
   };
 
-  const { control, handleSubmit } = useForm<IRegisterData>({
+  const { control, handleSubmit, watch, setValue } = useForm<IRegisterData>({
     defaultValues: {
       email: '',
       firstName: '',
@@ -180,6 +200,25 @@ export const RegistrationForm = (): JSX.Element => {
     resolver: yupResolver(validationSchema) as Resolver<IRegisterData>,
     mode: 'all',
   });
+
+  const shippingAddress = watch('shippingAddress');
+  const billingAddressSameAsShipping = watch('billingAddressSameAsShipping');
+
+  useEffect(() => {
+    if (billingAddressSameAsShipping) {
+      setValue('billingAddress.country', shippingAddress.country);
+      setValue('billingAddress.street', shippingAddress.street);
+      setValue('billingAddress.city', shippingAddress.city);
+      setValue('billingAddress.postalCode', shippingAddress.postalCode);
+    }
+  }, [
+    billingAddressSameAsShipping,
+    setValue,
+    shippingAddress.city,
+    shippingAddress.country,
+    shippingAddress.postalCode,
+    shippingAddress.street,
+  ]);
 
   return (
     <div>
@@ -287,8 +326,8 @@ export const RegistrationForm = (): JSX.Element => {
           )}
         />
 
+        <h3 className='form-subtitle'>Shipping address information</h3>
         <div className='divider'></div>
-        <h3>Shipping address information</h3>
 
         <Controller
           control={control}
@@ -297,7 +336,9 @@ export const RegistrationForm = (): JSX.Element => {
             <>
               <select
                 {...field}
+                name='shippingAddressCountry'
                 className='registration__select-input'
+                title='Shipping country'
               >
                 {Object.entries(ECountrieOptions).map(([key, value]) => (
                   <option
@@ -397,15 +438,15 @@ export const RegistrationForm = (): JSX.Element => {
                   className={fieldState.error ? 'errorInput' : ''}
                 />
 
-                <label htmlFor='defaultShippingAddress'>Use the same address for both billing and shipping</label>
+                <label htmlFor='billingAddressSameAsShipping'>Set the same address for billing</label>
               </div>
               {fieldState.error && <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>}
             </>
           )}
         />
 
+        <h3 className='form-subtitle'>Billing address information</h3>
         <div className='divider'></div>
-        <h3>Billing address information</h3>
 
         <Controller
           control={control}
@@ -414,7 +455,10 @@ export const RegistrationForm = (): JSX.Element => {
             <>
               <select
                 {...field}
+                name='billingAddressCountry'
                 className='registration__select-input'
+                disabled={billingAddressSameAsShipping}
+                title='Billing address country'
               >
                 {Object.entries(ECountrieOptions).map(([key, value]) => (
                   <option
@@ -437,12 +481,13 @@ export const RegistrationForm = (): JSX.Element => {
           render={({ field, fieldState }) => (
             <Input
               type='text'
-              id='street'
+              id='streetBilling'
               placeholder='Enter your street'
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
               error={fieldState.error?.message}
+              disabled={billingAddressSameAsShipping}
             />
           )}
         />
@@ -453,12 +498,13 @@ export const RegistrationForm = (): JSX.Element => {
           render={({ field, fieldState }) => (
             <Input
               type='text'
-              id='city'
+              id='cityBilling'
               placeholder='Enter your city'
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
               error={fieldState.error?.message}
+              disabled={billingAddressSameAsShipping}
             />
           )}
         />
@@ -469,12 +515,13 @@ export const RegistrationForm = (): JSX.Element => {
           render={({ field, fieldState }) => (
             <Input
               type='text'
-              id='postalCode'
+              id='postalCodeBilling'
               placeholder='Enter your postal code'
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
               error={fieldState.error?.message}
+              disabled={billingAddressSameAsShipping}
             />
           )}
         />
@@ -493,7 +540,7 @@ export const RegistrationForm = (): JSX.Element => {
                   className={fieldState.error ? 'errorInput' : ''}
                 />
 
-                <label htmlFor='defaultShippingAddress'>Set as default billing address</label>
+                <label htmlFor='defaultBillingAddress'>Set as default billing address</label>
               </div>
               {fieldState.error && <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>}
             </>

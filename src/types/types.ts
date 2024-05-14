@@ -18,11 +18,6 @@ export interface IRegisterData {
   // postalCode: string;
   defaultShippingAddress: boolean;
   defaultBillingAddress: boolean;
-  // billingAddressSameAsShipping: boolean;
-  // streetBilling: string;
-  // countryBilling: ECountrieOptions;
-  // cityBilling: string;
-  // postalCodeBilling: string;
   shippingAddress: TAddress;
   billingAddress: TAddress;
   billingAddressSameAsShipping: boolean;
@@ -34,3 +29,25 @@ export type TAddress = {
   city: string;
   postalCode: string;
 };
+
+export interface TAddressRequest {
+  streetName: string;
+  country: string;
+  city: string;
+  postalCode: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface IRegistrationRequestData {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  dateOfBirth: string;
+  addresses: TAddressRequest[];
+  shippingAddresses: number[];
+  billingAddresses: number[];
+  defaultShippingAddress?: number;
+  defaultBillingAddress?: number;
+}
