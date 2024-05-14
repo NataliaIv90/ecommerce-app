@@ -153,8 +153,6 @@ export const RegistrationForm = (): JSX.Element => {
         defaultBillingAddress: data.defaultBillingAddress ? 1 : undefined,
       };
 
-      console.log(requestData);
-
       void dispatch(createNewCustomer({ ...requestData, setOpen })).then((response) => {
         if (createNewCustomer.fulfilled.match(response)) {
           const customerData = response.payload.data;
