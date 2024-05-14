@@ -77,6 +77,8 @@ const validationSchema = Yup.object().shape({
 
 export const RegistrationForm = (): JSX.Element => {
   const dispatch = useAppDispatch();
+  // eslint-disable-next-line
+  const [open, setOpen] = useState(false);
 
   const [requestError, setRequestError] = useState(false);
 
@@ -105,30 +107,17 @@ export const RegistrationForm = (): JSX.Element => {
         defaultShippingAddress: data.defaultShippingAddress ? 0 : undefined,
         defaultBillingAddress: data.defaultShippingAddress ? 0 : undefined,
       };
-
-      void dispatch(createNewCustomer(requestData))
-        .then((response) => {
-          if (createNewCustomer.fulfilled.match(response)) {
-            const customerData = response.payload.data;
-            if (customerData) {
-              alert('Account created successfully! Welcome.');
-            }
-            if (response.payload.error === 'There is already an existing customer with the provided email.') {
-              setRequestError(true);
-            }
-            // eslint-disable-next-line no-empty
-          } else {
+      void dispatch(createNewCustomer({ ...requestData, setOpen })).then((response) => {
+        if (createNewCustomer.fulfilled.match(response)) {
+          const customerData = response.payload.data;
+          if (customerData) {
+            alert('Account created successfully! Welcome.');
           }
-        })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.error(error);
-          if (error.response && error.response.status === 400) {
-            const { message } = error.response.data;
-            return { data: undefined, error: message };
+          if (response.payload.error === 'There is already an existing customer with the provided email.') {
+            setRequestError(true);
           }
-          return { data: undefined, error: 'An unexpected error occurred. Please try again later.' };
-        });
+        }
+      });
     }
   };
 

@@ -11,5 +11,11 @@ export const FormFooter = (): JSX.Element => (
         wideBtn={true}
       />
     </Link>
+    <Link to='/'>
+      <OutlinedButton
+        text='Back to Home'
+        wideBtn={true}
+      />
+    </Link>
   </div>
 );
