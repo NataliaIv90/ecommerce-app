@@ -75,27 +75,7 @@ const validationSchema = Yup.object().shape({
   dateOfBirth: Yup.date()
     .min(new Date('1900-01-01'), 'Date must be after 1900')
     .max(new Date(new Date().getFullYear() - 13, 11, 31), 'User should be at least 13 years'),
-  // street: Yup.string().required('Street is a required field').min(1, 'Street should be min 1 character'),
-  // city: Yup.string()
-  //   .required('City is required field')
-  //   .min(1, 'City should be min 1 characters')
-  //   .matches(/^([A-Z][a-z]*)$/g, 'City can only contain latin letters, start from capital letter'),
-  // country: Yup.string()
-  //   .required('Country is a required field')
-  //   .oneOf([ECountrieOptions.ge, ECountrieOptions.ua, ECountrieOptions.uz]),
-  // postalCode: Yup.string()
-  //   .required('Postal code is required')
-  //   .when(['country'], (country: ECountrieOptions[], schema) => {
-  //     if (country[0] === ECountrieOptions.ua) {
-  //       return schema.matches(/^\d{5}$/, 'Invalid postal code format for Ukraine');
-  //     } else if (country[0] === ECountrieOptions.uz) {
-  //       return schema.matches(/^\d{6}$/, 'Invalid postal code format for Uzbekistan');
-  //     } else if (country[0] === ECountrieOptions.ge) {
-  //       return schema.matches(/^\d{4}$/, 'Invalid postal code format for Georgia');
-  //     } else {
-  //       return schema;
-  //     }
-  //   }),
+
   shippingAddress: addressSchema,
   billingAddress: addressSchema,
   defaultShippingAddress: Yup.boolean(),
@@ -172,13 +152,9 @@ export const RegistrationForm = (): JSX.Element => {
       email: '',
       firstName: '',
       lastName: '',
-      // street: '',
       password: '',
       repeatPassword: '',
       dateOfBirth: new Date('1900-01-01'),
-      // country: ECountrieOptions.ge,
-      // city: '',
-      // postalCode: '',
       defaultShippingAddress: false,
       defaultBillingAddress: false,
       billingAddressSameAsShipping: false,
@@ -444,6 +420,10 @@ export const RegistrationForm = (): JSX.Element => {
         />
 
         <h3 className='form-subtitle'>Billing address information</h3>
+        {billingAddressSameAsShipping ? (
+          <p className='error'>*Disabled for input. Shipping and billing adresses are equal.</p>
+        ) : null}
+
         <div className='divider'></div>
 
         <Controller
