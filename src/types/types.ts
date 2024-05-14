@@ -16,4 +16,5 @@ export interface IRegisterData {
   country: ECountrieOptions;
   city: string;
   postalCode: string;
+  defaultShippingAddress: boolean;
 }

@@ -6,9 +6,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch } from '../../../hooks/reduxHooks';
 import { createNewCustomer } from '../../../store/slices/customerSlice';
 import { useState } from 'react';
-import '../RegistrationForm.css';
+import './RegistrationForm.css';
 import { FormFooter } from '../formFooter/FormFooter';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
+
+const countriesCodes = {
+  Georgia: 'GE',
+  Uzbekistan: 'UZ',
+  Ukraine: 'UA',
+};
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -66,6 +72,7 @@ const validationSchema = Yup.object().shape({
         return schema;
       }
     }),
+  defaultShippingAddress: Yup.boolean(),
 });
 
 export const RegistrationForm = (): JSX.Element => {
@@ -94,9 +101,11 @@ export const RegistrationForm = (): JSX.Element => {
             streetName: data.street.trim(),
             postalCode: data.postalCode,
             city: data.city,
-            country: data.country.slice(0, 2).toUpperCase(),
+            country: countriesCodes[data.country],
           },
         ],
+        defaultShippingAddress: data.defaultShippingAddress ? 0 : undefined,
+        defaultBillingAddress: data.defaultShippingAddress ? 0 : undefined,
       };
       void dispatch(createNewCustomer({ ...requestData, setOpen })).then((response) => {
         if (createNewCustomer.fulfilled.match(response)) {
@@ -124,6 +133,7 @@ export const RegistrationForm = (): JSX.Element => {
       country: ECountrieOptions.ge,
       city: '',
       postalCode: '',
+      defaultShippingAddress: false,
     },
     resolver: yupResolver(validationSchema) as Resolver<IRegisterData>,
     mode: 'all',
@@ -235,12 +245,18 @@ export const RegistrationForm = (): JSX.Element => {
           )}
         />
 
+        <div className='divider'></div>
+
+        <p>Shipping / billing address information</p>
         <Controller
           control={control}
           name='country'
           render={({ field, fieldState }) => (
             <>
-              <select {...field}>
+              <select
+                {...field}
+                className='registration__select-input'
+              >
                 {Object.entries(ECountrieOptions).map(([key, value]) => (
                   <option
                     key={key}
@@ -251,7 +267,7 @@ export const RegistrationForm = (): JSX.Element => {
                 ))}
               </select>
 
-              {fieldState.error && <p>{fieldState.error.message}</p>}
+              {fieldState.error && <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>}
             </>
           )}
         />
@@ -295,12 +311,33 @@ export const RegistrationForm = (): JSX.Element => {
             <Input
               type='text'
               id='postalCode'
-              placeholder='Enter your postalCode'
+              placeholder='Enter your postal code'
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
               error={fieldState.error?.message}
             />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name='defaultShippingAddress'
+          render={({ field, fieldState }) => (
+            <>
+              <div className='registration__checkbox-wrapper'>
+                <input
+                  type='checkbox'
+                  id='defaultShippingAddress'
+                  checked={field.value}
+                  onChange={field.onChange}
+                  className={fieldState.error ? 'errorInput' : ''}
+                />
+
+                <label htmlFor='defaultShippingAddress'>Set as default address</label>
+              </div>
+              {fieldState.error && <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>}
+            </>
           )}
         />
 
