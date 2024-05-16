@@ -63,9 +63,7 @@ export const LoginForm = (): JSX.Element => {
       if (SignIn.fulfilled.match(response)) {
         const customerData = response.payload.customer;
         if (customerData) {
-          if ('id' in customerData) {
-            navigate('/');
-          }
+          navigate('/');
         } else {
           setEmailError(true);
         }

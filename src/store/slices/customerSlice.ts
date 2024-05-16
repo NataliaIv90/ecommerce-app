@@ -14,13 +14,21 @@ export interface Credentials {
 export interface createCustomer extends Credentials {
   id?: string;
 }
-const initialState = {
+interface IinitialState {
+  apiInstance: API;
+  authorized: boolean;
+  email: string;
+  password: string;
+  id: string;
+  customer: Customer | null;
+}
+const initialState: IinitialState = {
   apiInstance: new API(getApiRoot('anonimous')),
   authorized: false,
   email: '',
   password: '',
   id: '',
-  customer: {} as Customer,
+  customer: null,
 };
 export const createNewCustomer = createAsyncThunk('customer/createNew', async (data: createCustomer, thunkAPI) => {
   const state: RootState = thunkAPI.getState() as RootState;
@@ -56,6 +64,9 @@ const customerSlice = createSlice({
     setApi: (state, action: PayloadAction<API>) => {
       state.apiInstance = action.payload;
     },
+    setCustomer: (state, action: PayloadAction<Customer | null>) => {
+      state.customer = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
@@ -72,6 +83,6 @@ const customerSlice = createSlice({
 // eslint-disable-next-line
 export const selectCustomer = (state: RootState) => state.customers;
 // eslint-disable-next-line
-export const { createCustomer, setAuthorization, setApi } = customerSlice.actions;
+export const { createCustomer, setAuthorization, setApi, setCustomer } = customerSlice.actions;
 
 export default customerSlice.reducer;

@@ -8,7 +8,7 @@ export const Main: React.FC = () => {
     <MainWrapper>
       <>
         <p>Main</p>
-        <h3>Hello {customer.firstName} !</h3>
+        <h3>Hello {customer?.firstName} !</h3>
       </>
     </MainWrapper>
   );
