@@ -15,6 +15,15 @@
   width: 100%;
 }
 
+.header__logout-btn {
+  background-color: #9ea0a2;
+  color: white;
+  border: none;
+  outline: none;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
 .header__login-register {
   display: flex;
 }
@@ -38,6 +47,7 @@ span {
 }
 
 .header__link a:hover,
+.header__logout-btn:hover,
 .header__link span:hover {
   color: black;
 }

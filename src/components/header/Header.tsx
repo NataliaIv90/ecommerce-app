@@ -3,9 +3,20 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 import { ReactComponent as LoginKey } from '../../assets/icons/login-key.svg';
 import { ReactComponent as RegisterPlus } from '../../assets/icons/register-plus.svg';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { setApi, setAuthorization, setCustomer } from '../../store/slices/customerSlice';
+import { API } from '../../api/API';
+import { getApiRoot } from '../../api/lib/Client';
 
 export const Header = (): JSX.Element => {
-  const currentUser = null;
+  const dispatch = useAppDispatch();
+  const customer = useAppSelector((state) => state.customers.customer);
+  const signOut = () => {
+    localStorage.removeItem('tokendata');
+    dispatch(setCustomer(null));
+    dispatch(setAuthorization(false));
+    dispatch(setApi(new API(getApiRoot('anonimous'))));
+  };
   return (
     <header className='header'>
       <nav className='header__nav'>
@@ -14,8 +25,13 @@ export const Header = (): JSX.Element => {
             <Link to='/'>Home</Link>
           </li>
           <li className='header__link'>
-            {currentUser ? (
-              <span>Log out</span>
+            {customer ? (
+              <button
+                className='header__logout-btn'
+                onClick={signOut}
+              >
+                Log out
+              </button>
             ) : (
               <div className='header__login-register'>
                 <Link to='/login'>
