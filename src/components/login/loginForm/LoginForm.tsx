@@ -5,7 +5,7 @@ import Input from '../../../shared/ui/Input/Input';
 import { FormFooter } from '../formFooter/FormFooter';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 import { SignIn } from '../../../store/slices/customerSlice';
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import { useAppDispatch } from '../../../hooks/reduxHooks';
 import { useState } from 'react';
 import { Snackbar, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -54,7 +54,6 @@ export const LoginForm = (): JSX.Element => {
   const [open, setOpen] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const customer = useAppSelector((state) => state.customers.customer);
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<ILoginData> = (data) => {
@@ -123,7 +122,7 @@ export const LoginForm = (): JSX.Element => {
                 error={
                   emailError ? 'Customer account with the given credentials not found.' : fieldState.error?.message
                 }
-                value={customer ? customer.email : field.value}
+                value={field.value}
                 onChange={field.onChange}
                 onFocus={() => setEmailError(false)}
               />
@@ -142,7 +141,7 @@ export const LoginForm = (): JSX.Element => {
                 error={
                   passwordError ? 'Customer account with the given credentials not found.' : fieldState.error?.message
                 }
-                value={customer ? customer.password : field.value}
+                value={field.value}
                 onChange={field.onChange}
                 onFocus={() => setPasswordError(false)}
               />
