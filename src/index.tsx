@@ -5,12 +5,15 @@ import { RouterProvider } from 'react-router-dom';
 import router from './routes';
 import { Provider } from 'react-redux';
 import { store } from './store/index';
+import ProtectRoutes from './hooks/ProtectRoutes';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ProtectRoutes>
+        <RouterProvider router={router} />
+      </ProtectRoutes>
     </Provider>
   </React.StrictMode>
 );

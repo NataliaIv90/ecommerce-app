@@ -8,6 +8,7 @@ import { SignIn } from '../../../store/slices/customerSlice';
 import { useAppDispatch } from '../../../hooks/reduxHooks';
 import { useState } from 'react';
 import { Snackbar, IconButton } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 
 export interface ILoginData {
@@ -49,12 +50,11 @@ const validationSchema = Yup.object().shape({
 
 export const LoginForm = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
-
-  // const customer = useAppSelector((state) => state.customers.customer);
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<ILoginData> = (data) => {
     const email = data.email;
@@ -63,7 +63,9 @@ export const LoginForm = (): JSX.Element => {
       if (SignIn.fulfilled.match(response)) {
         const customerData = response.payload.customer;
         if (customerData) {
-          alert(`Welcome ${customerData.firstName}`);
+          if ('id' in customerData) {
+            navigate('/');
+          }
         } else {
           setEmailError(true);
         }
