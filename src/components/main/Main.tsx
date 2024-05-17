@@ -65,14 +65,19 @@ export const Main: React.FC = () => {
 
         <section className='why-us'>
           <h2>Why us?</h2>
-          <div className='icons-container'>
-            {cardsData.map((el) => (
-              <div className='main__card'>
+          <div className='main__icons-container'>
+            {cardsData.map((el, index) => (
+              <div
+                className='main__card'
+                key={index}
+              >
                 <div className='main__card-icon'>{el.icon}</div>
                 <p className='main__card-title'>{el.text}</p>
               </div>
             ))}
           </div>
+          <p>And other reasons</p>
+          <span className='why-us__border-bottom'></span>
         </section>
       </>
     </MainWrapper>
