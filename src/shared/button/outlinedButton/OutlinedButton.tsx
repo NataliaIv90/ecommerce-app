@@ -6,12 +6,23 @@ interface IButtonProps {
   onClick?: () => void;
   wideBtn?: boolean;
   type?: 'submit' | 'button';
+  light?: boolean;
 }
 
-export const OutlinedButton = ({ text, onClick, wideBtn = false, type = 'button' }: IButtonProps): JSX.Element => {
+export const OutlinedButton = ({
+  text,
+  onClick,
+  wideBtn = false,
+  type = 'button',
+  light = false,
+}: IButtonProps): JSX.Element => {
   let classListItems = 'outlinedButton';
   if (wideBtn) {
     classListItems += ' wideBtn';
+  }
+
+  if (light) {
+    classListItems += ' lightBtn';
   }
 
   return (

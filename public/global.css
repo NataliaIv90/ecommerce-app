@@ -1,4 +1,14 @@
 @import './normalize.css';
+@import './breakpoints.css';
+
+/* Breakpoints */
+/* 
+ --mobile: 320px - 480px;
+ --tablets: 481px- 768px;
+ --laptops: 769px - 1024px;
+ --desktops: 1025px - 1200px;
+ --largeScreens: 1025px - 1200px;
+   */
 
 :root {
   --primary-color: #593825;

@@ -35,3 +35,13 @@
   text-decoration: none;
   text-transform: none;
 }
+
+.lightBtn {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.lightBtn:hover {
+  background-color: #ffffff33;
+  /* color: #9ea0a2; */
+}
