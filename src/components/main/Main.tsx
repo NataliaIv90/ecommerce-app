@@ -33,10 +33,10 @@ export const Main: React.FC = () => {
       <>
         <section className='hero'>
           <div className='hero__content'>
-            {customer?.firstName ? <h3>Hello {customer?.firstName} !</h3> : null}
+            {customer?.firstName ? <h3>Hello, {customer?.firstName} !</h3> : null}
             <p>Welcome to the</p>
             <h1 className='hero__title'>House with flowers</h1>
-            <p>Decorate your life with flowers</p>
+            <p>~ Decorate your life with flowers ~</p>
             {/* <Link to='/catalog'> */}
             <OutlinedButton
               text='Shop now'
