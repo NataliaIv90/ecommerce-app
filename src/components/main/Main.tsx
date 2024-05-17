@@ -25,7 +25,14 @@ export const Main: React.FC = () => {
             {/* </Link> */}
           </div>
         </section>
-        <section className='greeting'></section>
+        <section className='greeting'>
+          <p>The House with flowers welcomes you!</p>
+          <p>
+            We create beautiful decor, make beautiful bouquets for the holidays.Our friendly and creative team will be
+            happy to work
+          </p>
+          <p>with you! You can learn more about our company by clicking on the link</p>
+        </section>
         <section className='why-us'></section>
       </>
     </MainWrapper>

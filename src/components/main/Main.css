@@ -7,59 +7,59 @@
  --largeScreens: 1025px - 1200px;
    */
 .hero {
-    background-image: url('../../assets/images/hero.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    padding: 50px 0;
-    width: 100%;
-    font-weight: 400;
-    font-size: 14px;
-    font-family: 'Comic Sans MS', cursive;
-    text-align: center;
+  background-image: url('../../assets/images/hero.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 50px 0;
+  width: 100%;
+  font-weight: 400;
+  font-size: 14px;
+  font-family: 'Comic Sans MS', cursive;
+  text-align: center;
 }
 
 .hero__content {
-    width: 90%;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-direction: column;
-    padding: 15% 0;
-    color: white;
-    border-radius: 5%;
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-direction: column;
+  padding: 15% 0;
+  color: white;
+  border-radius: 5%;
 }
 
 .hero__title {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 @media screen and (min-width: 769px) {
-    .hero {
-        padding: 5% 0;
-        font-size: 18px;
-    }
+  .hero {
+    padding: 5% 0;
+    font-size: 18px;
+  }
 
-    .hero__content {
-        padding: 5% 0;
-    }
+  .hero__content {
+    padding: 5% 0;
+  }
 }
 
 @media screen and (min-width: 1025px) {
-    .hero {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        padding: 50px;
-        height: 85vh;
-        font-size: 24px;
-    }
+  .hero {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 50px;
+    height: 85vh;
+    font-size: 24px;
+  }
 
-    .hero__content {
-        width: 60%;
-        margin: 0;
-        padding: 3%;
-        background: transparent;
-    }
+  .hero__content {
+    width: 60%;
+    margin: 0;
+    padding: 3%;
+    background: transparent;
+  }
 }
