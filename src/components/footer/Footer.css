@@ -1,0 +1,30 @@
+.footer {
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+  background-color: #9ea0a2;
+  padding: 40px 0;
+  color: white;
+  cursor: pointer;
+}
+
+.footer__nav,
+.footer__addresses {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer__nav-item a {
+  color: white;
+  transition: all 0.5s;
+}
+
+.footer__nav-item:hover a {
+  color: black;
+}
+
+.footer__socials {
+  display: flex;
+  gap: 8px;
+}
