@@ -1,8 +1,18 @@
 @import './normalize.css';
 
+/* Breakpoints */
+/* 
+ --mobile: 320px - 480px;
+ --tablets: 481px- 768px;
+ --laptops: 769px - 1024px;
+ --desktops: 1025px - 1200px;
+ --largeScreens: 1025px - 1200px;
+   */
+
 :root {
   --primary-color: #593825;
   --primary-bg: #f5f1f1;
+  --primary-grey: #9ea0a2;
 }
 
 body {
