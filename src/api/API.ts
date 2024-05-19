@@ -59,7 +59,7 @@ export class API {
       console.log('login success:', result);
       return result.body;
       // eslint-disable-next-line
-    } catch (error) { }
+    } catch (error) {}
     return result;
   }
 
@@ -73,7 +73,7 @@ export class API {
       console.log('login success:', result);
       return result.body;
       // eslint-disable-next-line
-    } catch (error) { }
+    } catch (error) {}
     return result;
   }
 }
