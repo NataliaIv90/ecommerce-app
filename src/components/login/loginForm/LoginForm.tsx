@@ -64,7 +64,8 @@ export const LoginForm = (): JSX.Element => {
     const email = data.email;
     const password = data.password;
     if (email && password) {
-      dispatch(SignIn({ email, password })).then((response) => {
+      setLoading(true);
+      void dispatch(SignIn({ email, password, setLoading })).then((response) => {
         if (SignIn.fulfilled.match(response)) {
           const customerData = response.payload.customer;
           if (customerData) {
