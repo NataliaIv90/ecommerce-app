@@ -36,12 +36,18 @@ export const Footer = (): JSX.Element => {
         </li>
         <li className='footer__phone-number'>
           <PhoneOutlinedIcon />
-          <a href='72457448897'>+7 (245) 744-88-97</a>
+          <a
+            href='72457448897'
+            rel='noreferrer'
+          >
+            +7 (245) 744-88-97
+          </a>
         </li>
         <li className='footer__socials'>
           <a
             className='footer__socials__instagram'
             target='_blank'
+            rel='noreferrer'
             href='https://www.instagram.com/'
           >
             <InstagramIcon />{' '}
@@ -49,6 +55,7 @@ export const Footer = (): JSX.Element => {
           <a
             className='footer__socials__facebook'
             target='_blank'
+            rel='noreferrer'
             href='https://www.facebook.com/'
           >
             <FacebookOutlinedIcon />
