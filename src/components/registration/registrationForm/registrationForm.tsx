@@ -145,6 +145,7 @@ export const RegistrationForm = (): JSX.Element => {
             navigate('/');
           }
           if (response.payload.errorMassage === 'There is already an existing customer with the provided email.') {
+            setLoading(false);
             setRequestError(true);
           }
         }
