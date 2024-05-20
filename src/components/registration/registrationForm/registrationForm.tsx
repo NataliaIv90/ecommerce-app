@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import './RegistrationForm.css';
 import { FormFooter } from '../formFooter/FormFooter';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
+import { Loader } from '../../../shared/ui/Loader/Loader';
 
 const countriesCodes = {
   Georgia: 'GE',
@@ -88,6 +89,7 @@ export const RegistrationForm = (): JSX.Element => {
   const dispatch = useAppDispatch();
   // eslint-disable-next-line
   const [open, setOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [requestError, setRequestError] = useState(false);
   const customer = useAppSelector((state) => state.customers.customer);
@@ -135,11 +137,11 @@ export const RegistrationForm = (): JSX.Element => {
         defaultBillingAddress: data.defaultBillingAddress ? 1 : undefined,
       };
 
-      void dispatch(createNewCustomer({ requestData })).then((response) => {
+      setLoading(true);
+      void dispatch(createNewCustomer({ requestData, setLoading })).then((response) => {
         if (createNewCustomer.fulfilled.match(response)) {
           const customerData = response.payload.customer;
           if (customerData) {
-            alert('Account created successfully! Welcome.');
             navigate('/');
           }
           if (response.payload.errorMassage === 'There is already an existing customer with the provided email.') {
@@ -542,6 +544,7 @@ export const RegistrationForm = (): JSX.Element => {
         />
         <FormFooter />
       </form>
+      <Loader isLoading={isLoading} />
     </div>
   );
 };
