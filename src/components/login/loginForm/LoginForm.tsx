@@ -5,11 +5,12 @@ import Input from '../../../shared/ui/Input/Input';
 import { FormFooter } from '../formFooter/FormFooter';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 import { SignIn } from '../../../store/slices/customerSlice';
-import { useAppDispatch } from '../../../hooks/reduxHooks';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import { useState, useEffect } from 'react';
 import { Snackbar, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
+import { Loader } from '../../../shared/ui/Loader/Loader';
 
 export interface ILoginData {
   email: string;
@@ -50,26 +51,40 @@ const validationSchema = Yup.object().shape({
 
 export const LoginForm = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const customer = useAppSelector((state) => state.customers.customer);
 
   const onSubmit: SubmitHandler<ILoginData> = (data) => {
     const email = data.email;
     const password = data.password;
-    dispatch(SignIn({ email, password, setOpen })).then((response) => {
-      if (SignIn.fulfilled.match(response)) {
-        const customerData = response.payload.customer;
-        if (customerData) {
-          navigate('/');
-        } else {
-          setEmailError(true);
+    if (email && password) {
+      setLoading(true);
+      void dispatch(SignIn({ email, password, setOpen, setLoading })).then((response) => {
+        if (SignIn.fulfilled.match(response)) {
+          const customerData = response.payload.customer;
+          if (customerData) {
+            navigate('/');
+          } else {
+            setEmailError(true);
+          }
         }
-      }
-    });
+      });
+    }
   };
+
+  useEffect(() => {
+    setLoading(false);
+    if (customer && Object.keys(customer).length) {
+      navigate('/');
+    }
+    // eslint-disable-next-line
+  }, [customer]);
 
   const { control, handleSubmit } = useForm<ILoginData>({
     defaultValues: {
@@ -171,6 +186,7 @@ export const LoginForm = (): JSX.Element => {
           />
         </form>
       </div>
+      <Loader isLoading={isLoading} />
     </>
   );
 };

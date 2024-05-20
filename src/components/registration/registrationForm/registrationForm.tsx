@@ -87,6 +87,8 @@ export const RegistrationForm = (): JSX.Element => {
   const dispatch = useAppDispatch();
   // eslint-disable-next-line
   const [open, setOpen] = useState(false);
+  // eslint-disable-next-line
+  const [isLoading, setLoading] = useState(false);
 
   const [requestError, setRequestError] = useState(false);
 
@@ -133,7 +135,7 @@ export const RegistrationForm = (): JSX.Element => {
         defaultBillingAddress: data.defaultBillingAddress ? 1 : undefined,
       };
 
-      void dispatch(createNewCustomer({ ...requestData, setOpen })).then((response) => {
+      void dispatch(createNewCustomer({ ...requestData, setOpen, setLoading })).then((response) => {
         if (createNewCustomer.fulfilled.match(response)) {
           const customerData = response.payload.data;
           if (customerData) {

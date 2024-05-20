@@ -9,10 +9,12 @@ export interface Credentials {
   email: string;
   password: string;
   setOpen: (val: boolean) => void;
+  setLoading: (val: boolean) => void;
 }
 
 export interface createCustomer extends Credentials {
   id?: string;
+  setLoading: (val: boolean) => void;
 }
 interface IinitialState {
   apiInstance: API;
@@ -33,6 +35,7 @@ const initialState: IinitialState = {
 export const createNewCustomer = createAsyncThunk('customer/createNew', async (data: createCustomer, thunkAPI) => {
   const state: RootState = thunkAPI.getState() as RootState;
   const response = await state.customers.apiInstance.createCustomer(data);
+  data.setLoading(false);
   return response;
 });
 
@@ -41,6 +44,7 @@ export const SignIn = createAsyncThunk('customers/token', async (credentials: Cr
   const passClient = new API(getApiRoot('password', { email, password }));
   const response = await passClient.signIn(credentials);
   if (!response.customer) credentials.setOpen(true);
+  credentials.setLoading(false);
   return response;
 });
 
