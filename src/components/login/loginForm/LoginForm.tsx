@@ -6,12 +6,11 @@ import { FormFooter } from '../formFooter/FormFooter';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 import { SignIn } from '../../../store/slices/customerSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Snackbar, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import { Loader } from '../../../shared/ui/Loader/Loader';
-import { useEffect } from 'react';
 
 export interface ILoginData {
   email: string;
