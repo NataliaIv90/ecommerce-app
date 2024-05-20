@@ -3,7 +3,8 @@ import * as Yup from 'yup';
 import { ECountrieOptions, IRegisterData, IRegistrationRequestData } from '../../../types/types';
 import { useForm, Controller, SubmitHandler, Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppDispatch } from '../../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import { useNavigate } from 'react-router-dom';
 import { createNewCustomer } from '../../../store/slices/customerSlice';
 import { useEffect, useState } from 'react';
 import './RegistrationForm.css';
@@ -87,8 +88,9 @@ export const RegistrationForm = (): JSX.Element => {
   const dispatch = useAppDispatch();
   // eslint-disable-next-line
   const [open, setOpen] = useState(false);
-
+  const navigate = useNavigate();
   const [requestError, setRequestError] = useState(false);
+  const customer = useAppSelector((state) => state.customers.customer);
 
   const onSubmit: SubmitHandler<IRegisterData> = (data: IRegisterData) => {
     if (data.email && data.password && data.firstName && data.dateOfBirth && data.shippingAddress.country) {
@@ -133,19 +135,27 @@ export const RegistrationForm = (): JSX.Element => {
         defaultBillingAddress: data.defaultBillingAddress ? 1 : undefined,
       };
 
-      void dispatch(createNewCustomer({ ...requestData, setOpen })).then((response) => {
+      void dispatch(createNewCustomer({ requestData })).then((response) => {
         if (createNewCustomer.fulfilled.match(response)) {
-          const customerData = response.payload.data;
+          const customerData = response.payload.customer;
           if (customerData) {
             alert('Account created successfully! Welcome.');
+            navigate('/');
           }
-          if (response.payload.error === 'There is already an existing customer with the provided email.') {
+          if (response.payload.errorMassage === 'There is already an existing customer with the provided email.') {
             setRequestError(true);
           }
         }
       });
     }
   };
+
+  useEffect(() => {
+    if (customer && Object.keys(customer).length) {
+      navigate('/');
+    }
+    // eslint-disable-next-line
+  }, [customer]);
 
   const { control, handleSubmit, watch, setValue } = useForm<IRegisterData>({
     defaultValues: {

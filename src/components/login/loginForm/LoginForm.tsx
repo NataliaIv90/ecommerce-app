@@ -59,7 +59,7 @@ export const LoginForm = (): JSX.Element => {
   const onSubmit: SubmitHandler<ILoginData> = (data) => {
     const email = data.email;
     const password = data.password;
-    dispatch(SignIn({ email, password, setOpen })).then((response) => {
+    dispatch(SignIn({ email, password })).then((response) => {
       if (SignIn.fulfilled.match(response)) {
         const customerData = response.payload.customer;
         if (customerData) {
