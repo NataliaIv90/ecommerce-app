@@ -19,6 +19,7 @@ interface signUp {
 
 export interface createCustomer extends Credentials {
   id?: string;
+  setLoading: (val: boolean) => void;
 }
 interface IinitialState {
   apiInstance: API;
