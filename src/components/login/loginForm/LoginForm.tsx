@@ -71,6 +71,7 @@ export const LoginForm = (): JSX.Element => {
           if (customerData) {
             navigate('/');
           } else {
+            setLoading(false);
             setEmailError(true);
           }
         }
