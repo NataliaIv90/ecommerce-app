@@ -87,8 +87,6 @@ const validationSchema = Yup.object().shape({
 
 export const RegistrationForm = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  // eslint-disable-next-line
-  const [open, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [requestError, setRequestError] = useState(false);
@@ -142,6 +140,7 @@ export const RegistrationForm = (): JSX.Element => {
         if (createNewCustomer.fulfilled.match(response)) {
           const customerData = response.payload.customer;
           if (customerData) {
+            alert(`Successful authorization. Hello ${customerData?.firstName || ''}!`);
             navigate('/');
           }
           if (response.payload.errorMassage === 'There is already an existing customer with the provided email.') {

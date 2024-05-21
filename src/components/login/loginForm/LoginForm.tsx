@@ -7,9 +7,7 @@ import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedBu
 import { SignIn } from '../../../store/slices/customerSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { useState, useEffect } from 'react';
-import { Snackbar, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import CloseIcon from '@mui/icons-material/Close';
 import { Loader } from '../../../shared/ui/Loader/Loader';
 
 export interface ILoginData {
@@ -19,17 +17,11 @@ export interface ILoginData {
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .trim('Email address must not contain leading or trailing whitespace.')
-    .test('no-whitespace', 'Whitespace is not allowed', (value: string | undefined) => !/\s/.test(value as string))
-    .test('lowercase', 'Password must contain lowercase letter', (value) => {
-      if (!value) return true;
-
-      return /[a-z]/.test(value);
-    })
-    .email('Email must be valid email.')
     .required('This is required field, enter your email.')
+    .email('Email must be valid email.')
     .min(3, 'This field shold be at least 3 symbols')
     .max(50, 'This text is too long')
+    .trim('Email address must not contain leading or trailing whitespace.')
     .matches(
       /^(((?=.{3,50}$)[A-Za-z0-9\-_+=!]*)|(?=.{5,50}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+))$/,
       'The domain part of the address with an error, should contain (.domain-name).For example: user@example.com'
@@ -51,9 +43,7 @@ const validationSchema = Yup.object().shape({
 
 export const LoginForm = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
-  const [open, setOpen] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -69,6 +59,7 @@ export const LoginForm = (): JSX.Element => {
         if (SignIn.fulfilled.match(response)) {
           const customerData = response.payload.customer;
           if (customerData) {
+            alert(`Successful authorization. Hello ${customerData?.firstName || ''}!`);
             navigate('/');
           } else {
             setLoading(false);
@@ -81,7 +72,7 @@ export const LoginForm = (): JSX.Element => {
 
   useEffect(() => {
     setLoading(false);
-    if (customer && Object.keys(customer).length) {
+    if (customer) {
       navigate('/');
     }
     // eslint-disable-next-line
@@ -95,26 +86,6 @@ export const LoginForm = (): JSX.Element => {
     mode: 'all',
     resolver: yupResolver(validationSchema),
   });
-
-  const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  const action = (
-    <>
-      <IconButton
-        size='small'
-        aria-label='close'
-        color='inherit'
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize='small' />
-      </IconButton>
-    </>
-  );
 
   return (
     <>
@@ -153,11 +124,11 @@ export const LoginForm = (): JSX.Element => {
                 id='password'
                 placeholder='Enter the password ...'
                 error={
-                  passwordError ? 'Customer account with the given credentials not found.' : fieldState.error?.message
+                  emailError ? 'Customer account with the given credentials not found.' : fieldState.error?.message
                 }
                 value={field.value}
                 onChange={field.onChange}
-                onFocus={() => setPasswordError(false)}
+                onFocus={() => setEmailError(false)}
               />
             )}
           />
@@ -176,15 +147,6 @@ export const LoginForm = (): JSX.Element => {
             wideBtn={true}
           />
           <FormFooter />
-          <Snackbar
-            key={`top,center`}
-            open={open}
-            action={action}
-            autoHideDuration={6000}
-            onClose={handleClose}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            message='Customer account with the given credentials not found.'
-          />
         </form>
       </div>
       <Loader isLoading={isLoading} />
