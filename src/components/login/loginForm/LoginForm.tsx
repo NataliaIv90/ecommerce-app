@@ -7,10 +7,9 @@ import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedBu
 import { SignIn } from '../../../store/slices/customerSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { useState, useEffect } from 'react';
-import { Snackbar, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import CloseIcon from '@mui/icons-material/Close';
 import { Loader } from '../../../shared/ui/Loader/Loader';
+import { Alert } from '@mui/material';
 
 export interface ILoginData {
   email: string;
@@ -45,9 +44,7 @@ const validationSchema = Yup.object().shape({
 
 export const LoginForm = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
-  const [open, setOpen] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -63,6 +60,7 @@ export const LoginForm = (): JSX.Element => {
         if (SignIn.fulfilled.match(response)) {
           const customerData = response.payload.customer;
           if (customerData) {
+            alert(`Successful authorization. Hello ${customerData?.firstName || ''}!`);
             navigate('/');
           } else {
             setLoading(false);
@@ -75,7 +73,7 @@ export const LoginForm = (): JSX.Element => {
 
   useEffect(() => {
     setLoading(false);
-    if (customer && Object.keys(customer).length) {
+    if (customer) {
       navigate('/');
     }
     // eslint-disable-next-line
@@ -89,26 +87,6 @@ export const LoginForm = (): JSX.Element => {
     mode: 'all',
     resolver: yupResolver(validationSchema),
   });
-
-  const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  const action = (
-    <>
-      <IconButton
-        size='small'
-        aria-label='close'
-        color='inherit'
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize='small' />
-      </IconButton>
-    </>
-  );
 
   return (
     <>
@@ -127,9 +105,7 @@ export const LoginForm = (): JSX.Element => {
                 type='email'
                 id='email'
                 placeholder='Enter the email ...'
-                error={
-                  emailError ? 'Customer account with the given credentials not found.' : fieldState.error?.message
-                }
+                error={emailError ? '  ' : fieldState.error?.message}
                 value={field.value}
                 onChange={field.onChange}
                 onFocus={() => setEmailError(false)}
@@ -146,12 +122,10 @@ export const LoginForm = (): JSX.Element => {
                 type={showPassword ? 'text' : 'password'}
                 id='password'
                 placeholder='Enter the password ...'
-                error={
-                  passwordError ? 'Customer account with the given credentials not found.' : fieldState.error?.message
-                }
+                error={emailError ? '  ' : fieldState.error?.message}
                 value={field.value}
                 onChange={field.onChange}
-                onFocus={() => setPasswordError(false)}
+                onFocus={() => setEmailError(false)}
               />
             )}
           />
@@ -170,15 +144,6 @@ export const LoginForm = (): JSX.Element => {
             wideBtn={true}
           />
           <FormFooter />
-          <Snackbar
-            key={`top,center`}
-            open={open}
-            action={action}
-            autoHideDuration={6000}
-            onClose={handleClose}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            message='Customer account with the given credentials not found.'
-          />
         </form>
       </div>
       <Loader isLoading={isLoading} />

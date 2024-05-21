@@ -10,7 +10,6 @@ export interface Credentials {
   email: string;
   password: string;
   setLoading: (val: boolean) => void;
-  // setOpen: (val: boolean) => void;
 }
 
 interface signUp {

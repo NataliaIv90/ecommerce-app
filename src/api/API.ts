@@ -50,24 +50,32 @@ export class API {
   }
 
   async signIn(credentials: Credentials): Promise<CustomerSignInResult> {
+    let errorMsg = '';
     const result: CustomerSignInResult = {} as CustomerSignInResult;
-    // eslint-disable-next-line no-console
-    console.log('signin cred', credentials);
     try {
       const result = await this.client.me().login().post({ body: credentials }).execute();
       return result.body;
-      // eslint-disable-next-line
-    } catch (error) {}
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        alert(errorMsg);
+      }
+    }
     return result;
   }
 
   async signInByToken(): Promise<Customer> {
+    let errorMsg = '';
     const result: Customer = {} as Customer;
     try {
       const result = await this.client.me().get().execute();
       return result.body;
-      // eslint-disable-next-line
-    } catch (error) {}
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        alert(errorMsg);
+      }
+    }
     return result;
   }
 }
