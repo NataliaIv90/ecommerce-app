@@ -154,7 +154,7 @@ export const RegistrationForm = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (customer && Object.keys(customer).length) {
+    if (customer) {
       navigate('/');
     }
     // eslint-disable-next-line
@@ -221,6 +221,7 @@ export const RegistrationForm = (): JSX.Element => {
               type='text'
               id='email'
               placeholder='Enter your email'
+              autoComplete='email'
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
@@ -241,6 +242,7 @@ export const RegistrationForm = (): JSX.Element => {
               type='password'
               id='password'
               placeholder='Enter your password'
+              autoComplete='new-password'
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
@@ -257,6 +259,7 @@ export const RegistrationForm = (): JSX.Element => {
               type='password'
               id='repeatPassword'
               placeholder='Enter password one more time'
+              autoComplete='new-password'
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}

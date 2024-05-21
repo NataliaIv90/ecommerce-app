@@ -62,7 +62,6 @@ export const SignIn = createAsyncThunk('customers/token', async (credentials: Cr
   const { email, password } = credentials;
   const passClient = new API(getApiRoot('password', { email, password }));
   const response = await passClient.signIn(credentials);
-  // if (!response.customer) credentials.setOpen(true);
   return response;
 });
 
