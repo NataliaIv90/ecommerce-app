@@ -65,6 +65,8 @@ export class API {
     const result: Customer = {} as Customer;
     try {
       const result = await this.client.me().get().execute();
+    try {
+      const result = await this.client.me().get().execute()
       return result.body;
       // eslint-disable-next-line
     } catch (error) {}
