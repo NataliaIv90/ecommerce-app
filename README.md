@@ -98,3 +98,21 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+
+
+## `Project keys`
+
+You can use the project by putting the key values
+given for you after registering on the commercetools platform.
+
+REACT_APP_API_HOST_URL={{host}}
+
+REACT_APP_API_PROJECT_KEY={{project_key}}
+
+REACT_APP_API_AUTH_URL={{auth_url}}
+
+REACT_APP_API_CLIENT_ID={{client_id}}
+
+REACT_APP_API_CLIENT_SECRET={{client_secret}}
+
+REACT_APP_API_SCOPES={{scopes}}
