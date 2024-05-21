@@ -9,6 +9,7 @@ import { ClientType } from '../../types/Enums';
 export interface Credentials {
   email: string;
   password: string;
+  setLoading: (val: boolean) => void;
   // setOpen: (val: boolean) => void;
 }
 
@@ -19,7 +20,6 @@ interface signUp {
 
 export interface createCustomer extends Credentials {
   id?: string;
-  setLoading: (val: boolean) => void;
 }
 interface IinitialState {
   apiInstance: API;
@@ -52,7 +52,13 @@ export const createNewCustomer = createAsyncThunk('customer/createNew', async (d
         password: data.requestData.password as string,
       })
     );
-    await passClient.signIn({ email: data.requestData.email, password: data.requestData.password as string });
+    await passClient.signIn({
+      email: data.requestData.email,
+      password: data.requestData.password as string,
+      setLoading: function (val: boolean): void {
+        throw new Error('Function not implemented.');
+      },
+    });
   }
   data.setLoading(false);
   return { customer: response.data?.customer, errorMassage: response.error || '' };
