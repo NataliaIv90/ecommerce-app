@@ -19,17 +19,11 @@ export interface ILoginData {
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .trim('Email address must not contain leading or trailing whitespace.')
-    .test('no-whitespace', 'Whitespace is not allowed', (value: string | undefined) => !/\s/.test(value as string))
-    .test('lowercase', 'Password must contain lowercase letter', (value) => {
-      if (!value) return true;
-
-      return /[a-z]/.test(value);
-    })
-    .email('Email must be valid email.')
     .required('This is required field, enter your email.')
+    .email('Email must be valid email.')
     .min(3, 'This field shold be at least 3 symbols')
     .max(50, 'This text is too long')
+    .trim('Email address must not contain leading or trailing whitespace.')
     .matches(
       /^(((?=.{3,50}$)[A-Za-z0-9\-_+=!]*)|(?=.{5,50}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+))$/,
       'The domain part of the address with an error, should contain (.domain-name).For example: user@example.com'

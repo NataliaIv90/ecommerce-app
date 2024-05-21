@@ -21,7 +21,7 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>(
           ref={ref}
           {...restProps}
         />
-        {error && <p className='error'>{error}</p>}
+        <p className={error ? 'error_visibility' : 'error_invisible'}>{error ? error : 'Error'}</p>
       </div>
     );
   }

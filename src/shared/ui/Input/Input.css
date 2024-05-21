@@ -13,7 +13,12 @@
   border-bottom: 1px solid transparent;
 }
 
-.error {
+.error_invisible {
+  opacity: 0;
+}
+
+.error_visibility {
+  opacity: 100;
   color: red;
   font-weight: 500;
 }
