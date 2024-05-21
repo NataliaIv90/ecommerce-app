@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from '../../../shared/ui/Loader/Loader';
-import { Alert } from '@mui/material';
 
 export interface ILoginData {
   email: string;
@@ -105,7 +104,9 @@ export const LoginForm = (): JSX.Element => {
                 type='email'
                 id='email'
                 placeholder='Enter the email ...'
-                error={emailError ? '  ' : fieldState.error?.message}
+                error={
+                  emailError ? 'Customer account with the given credentials not found.' : fieldState.error?.message
+                }
                 value={field.value}
                 onChange={field.onChange}
                 onFocus={() => setEmailError(false)}
@@ -122,7 +123,9 @@ export const LoginForm = (): JSX.Element => {
                 type={showPassword ? 'text' : 'password'}
                 id='password'
                 placeholder='Enter the password ...'
-                error={emailError ? '  ' : fieldState.error?.message}
+                error={
+                  emailError ? 'Customer account with the given credentials not found.' : fieldState.error?.message
+                }
                 value={field.value}
                 onChange={field.onChange}
                 onFocus={() => setEmailError(false)}
