@@ -3,12 +3,17 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../store';
 import { API } from '../../api/API';
 import { getApiRoot } from '../../api/lib/Client';
-import { type Customer } from '@commercetools/platform-sdk';
+import { type Customer, type CustomerDraft } from '@commercetools/platform-sdk';
+import { ClientType } from '../../types/Enums';
 
 export interface Credentials {
   email: string;
   password: string;
-  setOpen: (val: boolean) => void;
+  // setOpen: (val: boolean) => void;
+}
+
+interface signUp {
+  requestData: CustomerDraft;
   setLoading: (val: boolean) => void;
 }
 
@@ -23,7 +28,9 @@ interface IinitialState {
   password: string;
   id: string;
   customer: Customer | null;
+  isLoading: boolean;
 }
+
 const initialState: IinitialState = {
   apiInstance: new API(getApiRoot('anonimous')),
   authorized: false,
@@ -31,20 +38,30 @@ const initialState: IinitialState = {
   password: '',
   id: '',
   customer: null,
+  isLoading: true,
 };
-export const createNewCustomer = createAsyncThunk('customer/createNew', async (data: createCustomer, thunkAPI) => {
+
+export const createNewCustomer = createAsyncThunk('customer/createNew', async (data: signUp, thunkAPI) => {
   const state: RootState = thunkAPI.getState() as RootState;
-  const response = await state.customers.apiInstance.createCustomer(data);
+  const { ...draft } = { ...data.requestData };
+  const response = await state.customers.apiInstance.createCustomer(draft);
+  if (response.data) {
+    const passClient = new API(
+      getApiRoot(ClientType.password, {
+        email: data.requestData.email,
+        password: data.requestData.password as string,
+      })
+    );
+    await passClient.signIn({ email: data.requestData.email, password: data.requestData.password as string });
+  }
   data.setLoading(false);
-  return response;
+  return { customer: response.data?.customer, errorMassage: response.error || '' };
 });
 
 export const SignIn = createAsyncThunk('customers/token', async (credentials: Credentials) => {
   const { email, password } = credentials;
   const passClient = new API(getApiRoot('password', { email, password }));
   const response = await passClient.signIn(credentials);
-  if (!response.customer) credentials.setOpen(true);
-  credentials.setLoading(false);
   return response;
 });
 
@@ -74,7 +91,9 @@ const customerSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
-      state.customer = action.payload.data?.customer || state.customer;
+      if (action.payload.customer) {
+        state.customer = action.payload.customer || state.customer;
+      }
     });
     builder.addCase(SignIn.fulfilled, (state, action) => {
       state.customer = action.payload.customer;

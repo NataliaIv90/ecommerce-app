@@ -3,12 +3,14 @@ import * as Yup from 'yup';
 import { ECountrieOptions, IRegisterData, IRegistrationRequestData } from '../../../types/types';
 import { useForm, Controller, SubmitHandler, Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppDispatch } from '../../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import { useNavigate } from 'react-router-dom';
 import { createNewCustomer } from '../../../store/slices/customerSlice';
 import { useEffect, useState } from 'react';
 import './RegistrationForm.css';
 import { FormFooter } from '../formFooter/FormFooter';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
+import { Loader } from '../../../shared/ui/Loader/Loader';
 
 const countriesCodes = {
   Georgia: 'GE',
@@ -87,10 +89,10 @@ export const RegistrationForm = (): JSX.Element => {
   const dispatch = useAppDispatch();
   // eslint-disable-next-line
   const [open, setOpen] = useState(false);
-  // eslint-disable-next-line
   const [isLoading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const [requestError, setRequestError] = useState(false);
+  const customer = useAppSelector((state) => state.customers.customer);
 
   const onSubmit: SubmitHandler<IRegisterData> = (data: IRegisterData) => {
     if (data.email && data.password && data.firstName && data.dateOfBirth && data.shippingAddress.country) {
@@ -135,19 +137,28 @@ export const RegistrationForm = (): JSX.Element => {
         defaultBillingAddress: data.defaultBillingAddress ? 1 : undefined,
       };
 
-      void dispatch(createNewCustomer({ ...requestData, setOpen, setLoading })).then((response) => {
+      setLoading(true);
+      void dispatch(createNewCustomer({ requestData, setLoading })).then((response) => {
         if (createNewCustomer.fulfilled.match(response)) {
-          const customerData = response.payload.data;
+          const customerData = response.payload.customer;
           if (customerData) {
-            alert('Account created successfully! Welcome.');
+            navigate('/');
           }
-          if (response.payload.error === 'There is already an existing customer with the provided email.') {
+          if (response.payload.errorMassage === 'There is already an existing customer with the provided email.') {
+            setLoading(false);
             setRequestError(true);
           }
         }
       });
     }
   };
+
+  useEffect(() => {
+    if (customer) {
+      navigate('/');
+    }
+    // eslint-disable-next-line
+  }, [customer]);
 
   const { control, handleSubmit, watch, setValue } = useForm<IRegisterData>({
     defaultValues: {
@@ -210,6 +221,7 @@ export const RegistrationForm = (): JSX.Element => {
               type='text'
               id='email'
               placeholder='Enter your email'
+              autoComplete='email'
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
@@ -230,6 +242,7 @@ export const RegistrationForm = (): JSX.Element => {
               type='password'
               id='password'
               placeholder='Enter your password'
+              autoComplete='new-password'
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
@@ -246,6 +259,7 @@ export const RegistrationForm = (): JSX.Element => {
               type='password'
               id='repeatPassword'
               placeholder='Enter password one more time'
+              autoComplete='new-password'
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
@@ -534,6 +548,7 @@ export const RegistrationForm = (): JSX.Element => {
         />
         <FormFooter />
       </form>
+      <Loader isLoading={isLoading} />
     </div>
   );
 };

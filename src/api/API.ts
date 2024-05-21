@@ -55,8 +55,6 @@ export class API {
     console.log('signin cred', credentials);
     try {
       const result = await this.client.me().login().post({ body: credentials }).execute();
-      // eslint-disable-next-line no-console
-      console.log('login success:', result);
       return result.body;
       // eslint-disable-next-line
     } catch (error) {}
@@ -65,12 +63,10 @@ export class API {
 
   async signInByToken(): Promise<Customer> {
     const result: Customer = {} as Customer;
-    // eslint-disable-next-line no-console
-    console.log('signIn token');
     try {
       const result = await this.client.me().get().execute();
-      // eslint-disable-next-line no-console
-      console.log('login success:', result);
+    try {
+      const result = await this.client.me().get().execute()
       return result.body;
       // eslint-disable-next-line
     } catch (error) {}
