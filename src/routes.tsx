@@ -3,12 +3,15 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { Main } from './components/main/Main';
 import { Login } from './components/login/Login';
 import { Registration } from './components/registration/Registration';
+import { ProductList } from './components/productList/ProductList';
+import { ProductDetail } from './components/productDetail/ProductDetail';
 import { App } from './components/app/App';
 import { RoutingError404 } from './components/routingError/RoutingError404';
 
 export enum ERoutesPaths {
   Login = 'login',
   Registration = 'registration',
+  Products = 'products',
   Error404 = '404',
 }
 
@@ -28,6 +31,14 @@ const router = createBrowserRouter([
       {
         element: <Registration />,
         path: ERoutesPaths.Registration,
+      },
+      {
+        element: <ProductList />,
+        path: ERoutesPaths.Products,
+      },
+      {
+        element: <ProductDetail />,
+        path: `${ERoutesPaths.Products}/:id`,
       },
       {
         element: <RoutingError404 />,
