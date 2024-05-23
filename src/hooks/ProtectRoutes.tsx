@@ -1,13 +1,12 @@
-import React, { ReactNode } from 'react';
-import { useAuth } from './AuthHooks';
+import React from 'react';
+import { useAppSelector } from './reduxHooks';
+import { Navigate, Outlet } from 'react-router-dom';
+import { ERoutesPaths } from '../routes';
 
-interface ProtectRoutesProps {
-  children: ReactNode;
-}
+export const ProtectRoutes: React.FC = () => {
+  const isAuth = useAppSelector((state) => state.customers.authorized);
 
-export const ProtectRoutes: React.FC<ProtectRoutesProps> = ({ children }) => {
-  useAuth();
-  return <>{children}</>;
+  return isAuth ? <Outlet /> : <Navigate to={`/${ERoutesPaths.Login}`} />;
 };
 
 export default ProtectRoutes;
