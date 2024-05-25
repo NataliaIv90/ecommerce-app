@@ -1,0 +1,39 @@
+{
+  "productType": {
+    "id": "f5536d37-57a7-4b1f-b4fa-1b4557133a0d",
+    "typeId": "product-type"
+  },
+  "categories": [
+    {
+      "typeId": "category",
+      "id": "36da2b34-eccd-4a91-af76-c9c0b49fa007"
+    }
+  ],
+  "name": {
+    "en": "Rose flowers"
+  },
+  "slug": {
+    "en": "rose-flowers"
+  },
+  "masterVariant": {
+    "sku": "SKU-2",
+    "prices": [
+      {
+        "value": {
+          "currencyCode": "EUR",
+          "centAmount": 80
+        }
+      }
+    ],
+    "images": [
+      {
+        "url": "https://fridas.it/wp-content/uploads/2022/01/BRoseRosse_60cm_1601_2.jpg",
+        "label": "Master Image",
+        "dimensions": {
+          "w": 1638,
+          "h": 2048
+        }
+      }
+    ]
+  }
+}
