@@ -78,4 +78,16 @@ export class API {
     }
     return result;
   }
+  // eslint-disable-next-line
+  async getProducts() {
+    let errorMsg = '';
+    try {
+      const { body } = await this.client.productProjections().get().execute();
+
+      return { data: body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
 }

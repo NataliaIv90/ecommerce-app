@@ -5,11 +5,13 @@ import { Login } from './components/login/Login';
 import { Registration } from './components/registration/Registration';
 import { App } from './components/app/App';
 import { RoutingError404 } from './components/routingError/RoutingError404';
+import CatalogPage from './components/catalog/CatalogPage';
 
 export enum ERoutesPaths {
   Login = 'login',
   Registration = 'registration',
   Error404 = '404',
+  Catalog = 'catalog',
 }
 
 const router = createBrowserRouter([
@@ -28,6 +30,10 @@ const router = createBrowserRouter([
       {
         element: <Registration />,
         path: ERoutesPaths.Registration,
+      },
+      {
+        element: <CatalogPage />,
+        path: ERoutesPaths.Catalog,
       },
       {
         element: <RoutingError404 />,
