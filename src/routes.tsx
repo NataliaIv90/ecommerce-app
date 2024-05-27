@@ -5,7 +5,7 @@ import { Login } from './components/login/Login';
 import { Registration } from './components/registration/Registration';
 import { App } from './components/app/App';
 import { RoutingError404 } from './components/routingError/RoutingError404';
-import { Product } from './components/product/Product';
+import { ProductCoponent } from './components/product/Product';
 
 export enum ERoutesPaths {
   Login = 'login',
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
         path: ERoutesPaths.Error404,
       },
       {
-        element: <Product />,
+        element: <ProductCoponent />,
         path: `${ERoutesPaths.Product}/:id`,
       },
       {
