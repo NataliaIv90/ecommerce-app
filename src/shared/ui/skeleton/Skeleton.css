@@ -18,7 +18,7 @@
   animation: 2s skeletonAnimation ease-in infinite;
 }
 
-.product-card-skeleton-item{
+.product-card-skeleton-item {
   width: 100%;
   margin-bottom: 20px;
   background-color: #d3d3d3;
@@ -36,7 +36,7 @@
   height: 20vh;
 }
 
-.large, 
+.large,
 .image {
   height: 30vh;
 }
@@ -48,11 +48,11 @@
     align-items: stretch;
   }
 
-  .product-card-skeleton__section{
+  .product-card-skeleton__section {
     height: 40vh;
   }
 
-  .product-card-skeleton__right-section{
+  .product-card-skeleton__right-section {
     width: 100%;
   }
 
@@ -60,7 +60,7 @@
     height: 50vh;
   }
 
-  .image{
+  .image {
     width: 500px;
     aspect-ratio: 4/5;
     height: 400px;
