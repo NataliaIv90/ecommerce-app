@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Product } from '@commercetools/platform-sdk';
-import { APIInstance } from '../api/API'; // Ensure correct import path
+import { APIInstance } from '../api/API';
 
 type TFetchProductResponce = {
   product: Product | null;

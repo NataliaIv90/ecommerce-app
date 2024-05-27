@@ -1,10 +1,11 @@
 import { Image, Price } from '@commercetools/platform-sdk';
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 import './ProductCard.css';
 import { ImageGallery } from './imageGallery/ImageGallery';
 import { RateStarIcon } from '../../../shared/icons/rateStarIcon/RateStarIcon';
 import { QuantityController } from '../../../shared/button/quantityController/QuantityController';
+import SvgCircleIcon from '../../../shared/icons/circle/CircleIcon';
 
 export interface IProductCardProps {
   name: string | '';
@@ -24,19 +25,70 @@ const addToCart = (id: string, name: string, amount: number) => {
 export const ProductCard: FC<IProductCardProps> = ({ name, description, images, id, rate = 5 }): JSX.Element => {
   const [amount, setAmount] = useState<number>(1);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
 
   const handleToggleDescription = () => {
     setIsExpanded(!isExpanded);
   };
 
+  const setImageIndex = (index: number) => {
+    if (index !== currentImageIndex) {
+      setCurrentImageIndex(index);
+    }
+  };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current - touchEndX.current > 50) {
+      // Swipe left
+      if (currentImageIndex < images.length - 1) {
+        setImageIndex(currentImageIndex + 1);
+      }
+    } else if (touchEndX.current - touchStartX.current > 50) {
+      // Swipe right
+      if (currentImageIndex > 0) {
+        setImageIndex(currentImageIndex - 1);
+      }
+    }
+  };
+
   return (
     <div className='product-card'>
-      <div className='product-card__imageContainer'>
+      <div
+        className='product-card__imageContainer'
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <img
           className='product-card__image'
-          src={images[0].url}
-          alt={images[0].label}
+          src={images[currentImageIndex].url}
+          alt={images[currentImageIndex].label}
         />
+
+        {images.length > 1 ? (
+          <ul className='product-card__main-slider-container'>
+            {images.map((__, index) => (
+              <li key={index}>
+                <button
+                  className='product-card__main-image-slider'
+                  onClick={() => setImageIndex(index)}
+                >
+                  <SvgCircleIcon selected={currentImageIndex === index} />
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
 
       <div className='product-card__description'>
