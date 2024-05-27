@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useFetchProduct } from '../../hooks/useFetchProduct';
 import { ProductCard } from './productCard/ProductCard';
 import { ProductCardSkeleton } from '../../shared/ui/skeleton/Skeleton';
+import { ErrorPage } from '../errorPage/ErrorPage';
 // 56dc7aaf-5908-4c0a-8582-a79f2cc94985
 
 export const ProductCoponent = (): JSX.Element => {
@@ -10,7 +11,7 @@ export const ProductCoponent = (): JSX.Element => {
   const { product, errorMsg } = useFetchProduct(id || 'default-product-id');
 
   if (errorMsg) {
-    return <p>{errorMsg}</p>;
+    return <ErrorPage message={errorMsg} />;
   }
 
   return (
