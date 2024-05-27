@@ -21,7 +21,7 @@ export const ProductCoponent = (): JSX.Element => {
           name={product.masterData.current.name['en-US'] || ''}
           description={product.masterData.current.description ? product.masterData.current.description['en-US'] : ''}
           images={product.masterData.current.masterVariant.images || []}
-          prices={product.masterData.current.masterVariant.price}
+          prices={product.masterData.current.masterVariant.prices}
           id={product.id}
         />
       ) : (
