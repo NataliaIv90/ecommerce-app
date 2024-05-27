@@ -65,6 +65,7 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
             setAmount={setAmount}
           />
         </div>
+
         {description ? (
           <>
             <h3 className='product-card__description-title'>Description:</h3>
