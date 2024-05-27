@@ -107,17 +107,17 @@
   cursor: pointer;
 }
 
-.product-price__discount-mode{
+.product-price__discount-mode {
   display: flex;
   gap: 1rem;
 }
 
-.old-price{
+.old-price {
   text-decoration: line-through;
 }
 
-.new-price{
-  color:rgb(250, 0, 0);
+.new-price {
+  color: rgb(250, 0, 0);
 }
 
 @media screen and (min-width: 769px) {
@@ -140,10 +140,10 @@
     width: 300px;
     padding: 10px;
   }
-  
-.product-card__price-value {
-  font-size: 1.3rem;
-}
+
+  .product-card__price-value {
+    font-size: 1.3rem;
+  }
 }
 
 @media screen and (min-width: 1025px) {

@@ -14,18 +14,10 @@ export interface IProductCardProps {
   description: string | '';
   images: Image[] | [];
   prices: Price[] | undefined;
-  rate?: number;
   id: string;
 }
 
-export const ProductCard: FC<IProductCardProps> = ({
-  name,
-  description,
-  images,
-  id,
-  prices,
-  rate = 5,
-}): JSX.Element => {
+export const ProductCard: FC<IProductCardProps> = ({ name, description, images, id, prices }): JSX.Element => {
   const [amount, setAmount] = useState<number>(1);
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
