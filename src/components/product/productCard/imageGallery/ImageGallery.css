@@ -6,7 +6,7 @@
   padding: 10px;
 }
 
-.product-card__imagesGallery{
+.product-card__imagesGallery {
   margin-top: 1rem;
   display: flex;
   justify-content: center;
@@ -20,19 +20,19 @@
   margin: 30px 0 50px;
 }
 
-.image-gallery-btn{
+.image-gallery-btn {
   background-color: transparent;
   border: 1px solid #ddd;
   transition: all 0.2s;
   margin: 0 0.5rem;
 }
 
-.image-gallery-btn:hover{
+.image-gallery-btn:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
 
-.image-gallery-slider{
+.image-gallery-slider {
   border: none;
   background-color: transparent;
 }

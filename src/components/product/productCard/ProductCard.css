@@ -59,7 +59,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   line-height: 1.5;
-  max-height: calc(1.5em * 4); /* This sets the max height to 4 lines */
+  max-height: calc(1.5em * 4);
 }
 
 .product-card__description-text.collapsed {
@@ -89,12 +89,12 @@
   font-family: 'Comic Sans MS', cursive;
 }
 
-.product-card__main-image-slider{
+.product-card__main-image-slider {
   border: none;
   background: transparent;
 }
 
-.product-card__main-slider-container{
+.product-card__main-slider-container {
   list-style: none;
   display: flex;
   justify-content: center;
@@ -103,7 +103,7 @@
   flex-wrap: wrap;
 }
 
-.product-card__main-image-slider:hover{
+.product-card__main-image-slider:hover {
   cursor: pointer;
 }
 
