@@ -12,6 +12,7 @@
 
 .product-modal {
   position: relative;
+  background: white;
 }
 
 .product-modal__btn {
