@@ -35,7 +35,6 @@ const router = createBrowserRouter([
       },
       {
         element: <ProtectRoutes />,
-        path: ERoutesPaths.Root,
         children: [
           {
             element: <Profile />,
