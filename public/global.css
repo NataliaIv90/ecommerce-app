@@ -13,6 +13,8 @@
   --primary-color: #593825;
   --primary-bg: #f5f1f1;
   --primary-grey: #9ea0a2;
+  --basic-font: Verdana, sans-serif;
+  --accent-font: 'Comic Sans MS', cursive;
 }
 
 body {

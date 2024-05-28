@@ -7,6 +7,7 @@ import { App } from './components/app/App';
 import { RoutingError404 } from './components/routingError/RoutingError404';
 import ProtectRoutes from './hooks/ProtectRoutes';
 import { Profile } from './components/profile/Profile';
+import { ProductCoponent } from './components/product/Product';
 
 export enum ERoutesPaths {
   Root = '/',
@@ -14,6 +15,7 @@ export enum ERoutesPaths {
   Registration = 'registration',
   Profile = 'profile',
   Error404 = '404',
+  Product = 'product',
 }
 
 const router = createBrowserRouter([
@@ -45,6 +47,10 @@ const router = createBrowserRouter([
       {
         element: <RoutingError404 />,
         path: ERoutesPaths.Error404,
+      },
+      {
+        element: <ProductCoponent />,
+        path: `${ERoutesPaths.Product}/:id`,
       },
       {
         element: <Navigate to={ERoutesPaths.Error404} />,
