@@ -49,12 +49,10 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
 
   const handleTouchEnd = () => {
     if (touchStartX.current - touchEndX.current > 50) {
-      // Swipe left
       if (currentImageIndex < images.length - 1) {
         setImageIndex(currentImageIndex + 1);
       }
     } else if (touchEndX.current - touchStartX.current > 50) {
-      // Swipe right
       if (currentImageIndex > 0) {
         setImageIndex(currentImageIndex - 1);
       }
