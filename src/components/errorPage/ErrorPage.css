@@ -1,0 +1,84 @@
+.error-page {
+  height: 100vh;
+  background-image: url('../../assets/images/flowers-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 50px;
+  color: #593825;
+  font-size: 12px;
+  font-family: Verdana, sans-serif;
+}
+
+.error-page__title {
+  font-size: 36px;
+  color: rgb(112, 57, 137);
+  font-family: 'Comic Sans MS', cursive;
+}
+
+.error-page__subtitle {
+  color: rgb(235, 0, 0);
+  font-size: 18px;
+  margin: 30px 0;
+  font-family: 'Comic Sans MS', cursive;
+}
+
+.error-page__btnContainer {
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+@media screen and (min-width: 700px) {
+  .error-page {
+    padding-left: 80px;
+    font-size: 16px;
+  }
+
+  .error-page_contentContainer {
+    width: 80%;
+  }
+
+  .error-page__title {
+    font-size: 48px;
+    margin-bottom: 3rem;
+  }
+
+  .error-page__subtitle {
+    font-size: 24px;
+  }
+
+  .error-page__btnContainer {
+    display: inline-block;
+    margin-top: 2rem;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .error-page {
+    padding-left: 100px;
+    text-align: center;
+  }
+
+  .error-page_contentContainer {
+    width: 60%;
+  }
+
+  .error-page__title {
+    font-size: 64px;
+  }
+
+  .error-page__subtitle {
+    font-size: 36px;
+  }
+
+  .error-page__btnContainer {
+    margin-top: 3rem;
+  }
+}
+
+.App {
+  width: 100%;
+}

@@ -1,0 +1,17 @@
+.product-card__image-gallery-item {
+  width: 200px;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  height: auto;
+  padding: 10px;
+}
+
+.product-card__imagesGallery {
+  grid-column: 1/3;
+}
+
+.product-card__gallery-title {
+  font-family: 'Comic Sans MS', cursive;
+  text-align: center;
+  margin: 30px 0 50px;
+}
