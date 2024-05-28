@@ -3,7 +3,7 @@ import { useAppSelector } from '../../hooks/reduxHooks';
 import { MainWrapper } from '../mainWrapper/MainWrapper';
 import './Main.css';
 import { OutlinedButton } from '../../shared/button/outlinedButton/OutlinedButton';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { CarIcon, PhotoIcon, PaymentIcon, ChatIcon } from './mainCards/MainCards';
 
 const cardsData = [
@@ -37,12 +37,12 @@ export const Main: React.FC = () => {
             <p>Welcome to the</p>
             <h1 className='hero__title'>House with flowers</h1>
             <p>~ Decorate your life with flowers ~</p>
-            {/* <Link to='/catalog'> */}
-            <OutlinedButton
-              text='Shop now'
-              light={true}
-            />
-            {/* </Link> */}
+            <Link to='/catalog'>
+              <OutlinedButton
+                text='Shop now'
+                light={true}
+              />
+            </Link>
           </div>
         </section>
 

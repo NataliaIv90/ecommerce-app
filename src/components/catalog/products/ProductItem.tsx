@@ -3,6 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Skeleton from '@mui/material/Skeleton';
+import { setRightPrice } from '../../../utils/price-formatting-functions';
 
 const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
   const language = 'en-US';
@@ -35,7 +36,12 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
         <p className='catalog-card__description'>{product.description && product.description[language]}</p>
         <div className='catalog-card__info'>
           <span className='catalog-card__price'>
-            ${product.masterVariant.prices && product.masterVariant.prices[imageOrPriceNumber].value.centAmount}
+            {product.masterVariant?.prices
+              ? setRightPrice(
+                  product.masterVariant.prices[imageOrPriceNumber].value.centAmount,
+                  product.masterVariant.prices[0].discounted?.value.centAmount
+                )
+              : '0.00'}
           </span>
           <div>
             <FavoriteBorderIcon />
