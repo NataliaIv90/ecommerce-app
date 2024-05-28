@@ -10,7 +10,7 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
   return (
     <>
       <RouterLink
-        to={`product${product.id}`}
+        to={`${product.id}`}
         className='catalog-card'
       >
         {product ? (

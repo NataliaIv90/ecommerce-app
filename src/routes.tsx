@@ -56,7 +56,7 @@ const router = createBrowserRouter([
       },
       {
         element: <ProductCoponent />,
-        path: `${ERoutesPaths.Product}/:id`,
+        path: `${ERoutesPaths.Catalog}/:id`,
       },
       {
         element: <Navigate to={ERoutesPaths.Error404} />,

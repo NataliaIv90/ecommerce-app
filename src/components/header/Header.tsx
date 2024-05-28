@@ -26,9 +26,6 @@ export const Header = (): JSX.Element => {
           <li className='header__link'>
             <Link to='/'>Home</Link>
           </li>
-          <li>
-            <Link to='/catalog'>Catalog</Link>
-          </li>
           <li className='header__link'>
             {customer ? (
               <div className='header__profile-logout'>
