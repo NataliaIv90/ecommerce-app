@@ -6,23 +6,18 @@ import { ImageGallery } from './imageGallery/ImageGallery';
 import { RateStarIcon } from '../../../shared/icons/rateStarIcon/RateStarIcon';
 import { QuantityController } from '../../../shared/button/quantityController/QuantityController';
 import SvgCircleIcon from '../../../shared/icons/circle/CircleIcon';
+import { setRightPrice } from '../../../utils/price-formatting-functions';
+import { addToCart } from '../../../utils/addToCart';
 
 export interface IProductCardProps {
   name: string | '';
   description: string | '';
   images: Image[] | [];
-  prices: Price | undefined;
-  rate?: number;
+  prices: Price[] | undefined;
   id: string;
 }
 
-const addToCart = (id: string, name: string, amount: number) => {
-  alert(
-    `You want to add to cart:\n id - ${id}, \nname - ${name} \namount - ${amount}. \nThis functionality is on the way`
-  );
-};
-
-export const ProductCard: FC<IProductCardProps> = ({ name, description, images, id, rate = 5 }): JSX.Element => {
+export const ProductCard: FC<IProductCardProps> = ({ name, description, images, id, prices }): JSX.Element => {
   const [amount, setAmount] = useState<number>(1);
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
@@ -102,7 +97,9 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
           <div className='product-card__reviews-number'>0 reviews</div>
         </div>
         <div className='product-card__price-container'>
-          <div className='product-card__price-value'>$ 20</div>
+          <div className='product-card__price-value'>
+            {prices ? setRightPrice(prices[0].value.centAmount, prices[0].discounted?.value.centAmount) : '0.00'}
+          </div>
           <div>In stock</div>
         </div>
         <div className='product-card__cart-button-container'>

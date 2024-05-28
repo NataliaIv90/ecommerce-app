@@ -85,7 +85,7 @@
 }
 
 .product-card__price-value {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-family: 'Comic Sans MS', cursive;
 }
 
@@ -107,6 +107,19 @@
   cursor: pointer;
 }
 
+.product-price__discount-mode {
+  display: flex;
+  gap: 1rem;
+}
+
+.old-price {
+  text-decoration: line-through;
+}
+
+.new-price {
+  color: rgb(250, 0, 0);
+}
+
 @media screen and (min-width: 769px) {
   .product-card {
     display: grid;
@@ -126,6 +139,10 @@
   .product-card__image {
     width: 300px;
     padding: 10px;
+  }
+
+  .product-card__price-value {
+    font-size: 1.3rem;
   }
 }
 
