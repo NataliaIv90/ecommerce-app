@@ -10,10 +10,10 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
     <>
       <RouterLink
         to={`${product.id}`}
-        className='product-card'
+        className='catalog-card'
       >
         <img
-          className='product-card__image'
+          className='catalog-card__image'
           src={
             product.masterVariant.images?.length
               ? `${product.masterVariant.images[imageOrPriceNumber].url}`
@@ -21,10 +21,10 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
           }
           alt={product.name[language]}
         />
-        <h2 className='product-card__title'>{product.name[language]}</h2>
-        <p className='product-card__description'>{product.description && product.description[language]}</p>
-        <div className='product-card__info'>
-          <span className='product-card__price'>
+        <h2 className='catalog-card__title'>{product.name[language]}</h2>
+        <p className='catalog-card__description'>{product.description && product.description[language]}</p>
+        <div className='catalog-card__info'>
+          <span className='catalog-card__price'>
             ${product.masterVariant.prices && product.masterVariant.prices[imageOrPriceNumber].value.centAmount}
           </span>
           <div>

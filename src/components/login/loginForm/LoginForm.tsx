@@ -73,7 +73,7 @@ export const LoginForm = (): JSX.Element => {
   useEffect(() => {
     setLoading(false);
     if (customer) {
-      navigate('/');
+      navigate('/profile');
     }
     // eslint-disable-next-line
   }, [customer]);

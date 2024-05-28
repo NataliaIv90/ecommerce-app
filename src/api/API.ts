@@ -3,9 +3,11 @@ import {
   Customer,
   CustomerSignInResult,
   CustomerDraft,
+  Product,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { Credentials } from '../store/slices/customerSlice';
+import { apiRoot } from './lib/Client';
 
 export class API {
   private client: ByProjectKeyRequestBuilder;
@@ -91,4 +93,18 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
+
+  async getProductById(productId: string): Promise<Product | undefined> {
+    try {
+      const { body } = await this.client.products().withId({ ID: productId }).get().execute();
+      return body;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      alert(errorMsg);
+      return undefined;
+    }
+  }
 }
+
+// Export the API instance
+export const APIInstance = new API(apiRoot);

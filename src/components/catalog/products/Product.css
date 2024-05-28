@@ -8,14 +8,14 @@
   color: var(--primary-color);
 }
 
-.product-list {
+.catalog-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   justify-content: space-between;
   gap: 100px 20px;
 }
 
-.product-card__image {
+.catalog-card__image {
   max-width: 100%;
   max-height: 432px;
   width: 100%;
@@ -24,7 +24,7 @@
   object-position: center;
 }
 
-.product-card__title {
+.catalog-card__title {
   font-size: 24px;
   color: var(--primary-color);
   font-weight: 700;
@@ -37,20 +37,20 @@
   min-height: 30px;
 }
 
-.product-card__price {
+.catalog-card__price {
   font-size: 14px;
   color: var(--primary-color);
   font-weight: 600;
   margin: 0;
 }
 
-.product-card__info {
+.catalog-card__info {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.product-card__description {
+.catalog-card__description {
   font-size: 14px;
   color: var(--primary-color);
   font-weight: 500;

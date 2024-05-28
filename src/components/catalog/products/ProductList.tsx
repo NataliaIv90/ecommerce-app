@@ -7,7 +7,7 @@ const ProductList = (): JSX.Element => {
   const products = useAppSelector((state) => state.products.products);
   const isLoading = useAppSelector((state) => state.products.isLoading);
   return (
-    <div className='product-list'>
+    <div className='catalog-list'>
       {isLoading
         ? 'Loading...'
         : products.map((product) => (
