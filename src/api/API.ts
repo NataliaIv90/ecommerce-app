@@ -87,6 +87,7 @@ export class API {
       return { data: body, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
+      alert(errorMsg);
       return { data: undefined, error: errorMsg };
     }
   }
