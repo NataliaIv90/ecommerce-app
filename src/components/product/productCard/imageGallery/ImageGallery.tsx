@@ -4,18 +4,24 @@ import './ImageGallery.css';
 
 interface ImageGalleryProps {
   images: Image[];
+  // onClick: (index: number) => void;
+  // currentIndex: number;
 }
 
 export const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => (
   <div className='product-card__imagesGallery'>
-    <h2 className='product-card__gallery-title'>More images:</h2>
     {images.map((image, index) => (
-      <img
-        className='product-card__image-gallery-item'
+      <button
+        className='image-gallery-btn'
         key={index}
-        src={image.url}
-        alt={image.label || `Image ${index + 1}`}
-      />
+        // onClick={() => onClick(index)}
+      >
+        <img
+          className='product-card__image-gallery-item'
+          src={image.url}
+          alt={image.label || `Image ${index + 1}`}
+        />
+      </button>
     ))}
   </div>
 );

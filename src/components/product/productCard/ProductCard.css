@@ -19,7 +19,7 @@
 .product-card__image {
   width: 90%;
   aspect-ratio: 4/5;
-  object-fit: cover;
+  object-fit: contain;
   height: auto;
 }
 
@@ -59,7 +59,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   line-height: 1.5;
-  max-height: calc(1.5em * 4); /* This sets the max height to 4 lines */
+  max-height: calc(1.5em * 4);
 }
 
 .product-card__description-text.collapsed {
@@ -87,6 +87,24 @@
 .product-card__price-value {
   font-size: 1.3rem;
   font-family: 'Comic Sans MS', cursive;
+}
+
+.product-card__main-image-slider {
+  border: none;
+  background: transparent;
+}
+
+.product-card__main-slider-container {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.product-card__main-image-slider:hover {
+  cursor: pointer;
 }
 
 @media screen and (min-width: 769px) {
