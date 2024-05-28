@@ -160,13 +160,13 @@
   }
 }
 
-.unstyled-button{
+.unstyled-button {
   border: none;
   background: none;
   padding: 0;
   margin: 0;
 }
 
-.unstyled-button:hover{
+.unstyled-button:hover {
   cursor: pointer;
 }
