@@ -64,8 +64,10 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
     <div className='product-card'>
       {isModalVisible ? (
         <ProductModal
-          src={images[currentImageIndex].url}
-          alt={images[currentImageIndex].label || ''}
+          currentIndex={currentImageIndex}
+          images={images}
+          // src={images[currentImageIndex].url}
+          // alt={images[currentImageIndex].label || ''}
           onClick={toggleOpenedModal}
         />
       ) : null}
