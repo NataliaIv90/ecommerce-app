@@ -39,7 +39,7 @@
   background-color: transparent;
 }
 
-.product-card__imagesGallery__images-container{
+.product-card__imagesGallery__images-container {
   display: flex;
   justify-content: center;
   grid-column: 1/3;

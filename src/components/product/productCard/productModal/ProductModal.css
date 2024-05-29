@@ -43,8 +43,8 @@
   object-fit: contain;
 }
 
-.product-modal__slider-container{
+.product-modal__slider-container {
   position: absolute;
-    bottom: 20px;
-    width: 100%;
+  bottom: 20px;
+  width: 100%;
 }
