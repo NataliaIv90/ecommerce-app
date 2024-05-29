@@ -20,7 +20,6 @@
   aspect-ratio: 4/5;
   object-fit: cover;
   object-position: center;
-  /* height: auto; */
 }
 
 .product-card__image:not(:last-child) {

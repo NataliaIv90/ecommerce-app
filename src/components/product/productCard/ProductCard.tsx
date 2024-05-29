@@ -5,7 +5,6 @@ import './ProductCard.css';
 import { ImageGallery } from './imageGallery/ImageGallery';
 import { RateStarIcon } from '../../../shared/icons/rateStarIcon/RateStarIcon';
 import { QuantityController } from '../../../shared/button/quantityController/QuantityController';
-// import SvgCircleIcon from '../../../shared/icons/circle/CircleIcon';
 import { setRightPrice } from '../../../utils/price-formatting-functions';
 import { addToCart } from '../../../utils/addToCart';
 import { ProductModal } from './productModal/ProductModal';
