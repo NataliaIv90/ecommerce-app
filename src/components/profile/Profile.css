@@ -1,0 +1,38 @@
+.profile-container {
+  display: flex;
+}
+.profile-nav {
+  width: 30%;
+}
+
+.profile-nav__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profile-nav__item {
+  transition: all 0.5s;
+  cursor: pointer;
+  color: #59382580;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+.profile-nav__item.active {
+  color: #593825;
+}
+
+.profile-nav__item:hover {
+  color: #593825;
+}
+
+.profile-details {
+  width: 70%;
+}
+
+.profile-info-field {
+  border: none;
+  border-bottom: 1px solid #593825;
+}
