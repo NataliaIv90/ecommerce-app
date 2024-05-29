@@ -22,6 +22,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => (
           className='product-card__image-gallery-item'
           src={image.url}
           alt={image.label || `Image ${index + 1}`}
+          key={index}
         />
         // </button>
       ))}
