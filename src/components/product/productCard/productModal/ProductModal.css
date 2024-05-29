@@ -42,3 +42,9 @@
   max-height: 90vh;
   object-fit: contain;
 }
+
+.product-modal__slider-container{
+  position: absolute;
+    bottom: 20px;
+    width: 100%;
+}

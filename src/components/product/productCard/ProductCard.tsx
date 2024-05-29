@@ -5,10 +5,11 @@ import './ProductCard.css';
 import { ImageGallery } from './imageGallery/ImageGallery';
 import { RateStarIcon } from '../../../shared/icons/rateStarIcon/RateStarIcon';
 import { QuantityController } from '../../../shared/button/quantityController/QuantityController';
-import SvgCircleIcon from '../../../shared/icons/circle/CircleIcon';
+// import SvgCircleIcon from '../../../shared/icons/circle/CircleIcon';
 import { setRightPrice } from '../../../utils/price-formatting-functions';
 import { addToCart } from '../../../utils/addToCart';
 import { ProductModal } from './productModal/ProductModal';
+import { ProductMainImageSlider } from './productMainImageSlider/ProductMainImageSlider';
 
 export interface IProductCardProps {
   name: string | '';
@@ -67,6 +68,9 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
           src={images[currentImageIndex].url}
           alt={images[currentImageIndex].label || ''}
           onClick={toggleOpenedModal}
+          currentImageIndex={currentImageIndex}
+          setImageIndex={setCurrentImageIndex}
+          images={images}
         />
       ) : null}
       <div
@@ -88,18 +92,11 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
         </button>
 
         {images.length > 1 ? (
-          <ul className='product-card__main-slider-container'>
-            {images.map((__, index) => (
-              <li key={index}>
-                <button
-                  className='product-card__main-image-slider'
-                  onClick={() => setImageIndex(index)}
-                >
-                  <SvgCircleIcon selected={currentImageIndex === index} />
-                </button>
-              </li>
-            ))}
-          </ul>
+          <ProductMainImageSlider
+            currentImageIndex={currentImageIndex}
+            setImageIndex={setImageIndex}
+            images={images}
+          />
         ) : null}
       </div>
 

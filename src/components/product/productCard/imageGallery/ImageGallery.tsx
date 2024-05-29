@@ -10,18 +10,21 @@ interface ImageGalleryProps {
 
 export const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => (
   <div className='product-card__imagesGallery'>
-    {images.map((image, index) => (
-      <button
-        className='image-gallery-btn'
-        key={index}
-        // onClick={() => onClick(index)}
-      >
+    <h2 className='product-card__gallery-title'>More images: </h2>
+    <div className='product-card__imagesGallery__images-container'>
+      {images.map((image, index) => (
+        // <button
+        //   className='image-gallery-btn'
+        //   key={index}
+        //   // onClick={() => onClick(index)}
+        // >
         <img
           className='product-card__image-gallery-item'
           src={image.url}
           alt={image.label || `Image ${index + 1}`}
         />
-      </button>
-    ))}
+        // </button>
+      ))}
+    </div>
   </div>
 );
