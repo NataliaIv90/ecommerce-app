@@ -25,13 +25,13 @@
 }
 
 .swiper-button-prev,
-.swiper-button-next{
-    position: fixed;
+.swiper-button-next {
+  position: fixed;
 }
 
 .swiper-pagination-fraction,
 .swiper-pagination-custom,
 .swiper-horizontal>.swiper-pagination-bullets,
 .swiper-pagination-bullets.swiper-pagination-horizontal {
-    bottom:3%;
+  bottom: 3%;
 }
