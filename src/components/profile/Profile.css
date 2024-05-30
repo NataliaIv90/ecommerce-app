@@ -1,6 +1,8 @@
-.profile-container {
+.profile-wraper {
   display: flex;
+  padding: 30px 0;
 }
+
 .profile-nav {
   width: 30%;
 }
@@ -8,31 +10,35 @@
 .profile-nav__list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem;
 }
 
 .profile-nav__item {
-  transition: all 0.5s;
-  cursor: pointer;
-  color: #59382580;
   border: none;
   outline: none;
+  color: #435;
+  cursor: pointer;
   background: none;
+  padding: 1.2rem;
+  text-align: right;
 }
 
 .profile-nav__item.active {
-  color: #593825;
+  color: rgb(148, 113, 183);
 }
 
-.profile-nav__item:hover {
-  color: #593825;
-}
-
-.profile-details {
+.profile-info {
   width: 70%;
+  padding: 1.5rem 1.2rem;
+  border-left: 1px solid grey;
 }
 
-.profile-info-field {
-  border: none;
-  border-bottom: 1px solid #593825;
+@media screen and (max-width: 480px) {
+  .profile-nav {
+    width: 35%;
+  }
+
+  .profile-info {
+    width: 65%;
+  }
 }
