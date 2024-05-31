@@ -6,6 +6,7 @@ import CatalogSkeleton from './CatalogSkeleton';
 import { useAppDispatch } from '../../hooks/reduxHooks';
 import { getProducts } from '../../store/slices/productSlice';
 import { useEffect } from 'react';
+import { MainWrapper } from '../mainWrapper/MainWrapper';
 
 const CatalogPage = (): JSX.Element => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
@@ -15,15 +16,17 @@ const CatalogPage = (): JSX.Element => {
     //eslint-disable-next-line
   }, []);
   return (
-    <section className='catalog'>
-      <div className='container'>
-        <h1 className='catalog__title'>{!isLoading ? 'Choose the bouquet of your dreams!' : ''}</h1>
-        <div className='catalog-list'>
-          {isLoading ? Array.from(new Array(9)).map((_, index) => <CatalogSkeleton key={index} />) : <ProductList />}
+    <MainWrapper>
+      <section className='catalog'>
+        <div className='container'>
+          <h1 className='catalog__title'>{!isLoading ? 'Choose the bouquet of your dreams!' : ''}</h1>
+          <div className='catalog-list'>
+            {isLoading ? Array.from(new Array(9)).map((_, index) => <CatalogSkeleton key={index} />) : <ProductList />}
+          </div>
         </div>
-      </div>
-      <Message />
-    </section>
+        <Message />
+      </section>
+    </MainWrapper>
   );
 };
 
