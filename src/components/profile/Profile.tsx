@@ -16,7 +16,7 @@ export const Profile = (): JSX.Element => {
 
   return (
     <MainWrapper>
-      <div className='profile-wraper'>
+      <div className='profile-wrapper'>
         <div className='profile-nav'>
           <nav>
             <ul className='profile-nav__list'>
