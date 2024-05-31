@@ -59,3 +59,9 @@ span {
 .header__link a:hover .header__icon {
   fill: black;
 }
+@media screen and (max-width: 480px) {
+  .header__login-register {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
