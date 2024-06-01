@@ -4,6 +4,7 @@ import {
   CustomerSignInResult,
   CustomerDraft,
   Product,
+  CustomerUpdate,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { type ProductProjectionPagedQueryResponse } from '@commercetools/platform-sdk';
@@ -104,6 +105,31 @@ export class API {
       alert(errorMsg);
       return undefined;
     }
+  }
+
+  // ADD
+  async updateCustomer(customerId: string, updatedCustomerData: CustomerUpdate): Promise<Customer> {
+    let errorMsg = '';
+    const result: Customer = {} as Customer;
+    try {
+      const { body } = await this.client
+        .customers()
+        .withId({ ID: customerId })
+        .post({
+          body: {
+            version: updatedCustomerData.version,
+            actions: updatedCustomerData.actions,
+          },
+        })
+        .execute();
+      return body;
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        alert(errorMsg);
+      }
+    }
+    return result;
   }
 }
 
