@@ -4,7 +4,7 @@ import { useForm, Controller, SubmitHandler, Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { UpdateCustomer } from '../../../store/slices/customerSlice';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 import { Loader } from '../../../shared/ui/Loader/Loader';
 
