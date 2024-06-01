@@ -6,6 +6,7 @@ import {
   Product,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
+import { type ProductProjectionPagedQueryResponse } from '@commercetools/platform-sdk';
 import { Credentials } from '../store/slices/customerSlice';
 import { apiRoot } from './lib/Client';
 
@@ -79,6 +80,19 @@ export class API {
       }
     }
     return result;
+  }
+
+  async getProducts(): Promise<{ data: ProductProjectionPagedQueryResponse | undefined; error: string }> {
+    let errorMsg = '';
+    try {
+      const { body } = await this.client.productProjections().get().execute();
+
+      return { data: body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      alert(errorMsg);
+      return { data: undefined, error: errorMsg };
+    }
   }
 
   async getProductById(productId: string): Promise<Product | undefined> {

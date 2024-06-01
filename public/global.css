@@ -9,6 +9,10 @@
  --largeScreens: 1025px - 1200px;
    */
 
+* {
+  box-sizing: border-box;
+}
+
 :root {
   --primary-color: #593825;
   --primary-bg: #f5f1f1;
@@ -30,8 +34,16 @@ h4,
 h5,
 h6 {
   font-family: 'Comic Sans MS', cursive;
+  margin: 0;
 }
 
 ::placeholder {
   color: var(--primary-color);
+}
+
+.container {
+  max-width: 1140px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
 }
