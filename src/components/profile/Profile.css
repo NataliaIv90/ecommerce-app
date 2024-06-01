@@ -1,6 +1,7 @@
 .profile-wrapper {
   display: flex;
   padding: 30px 0;
+  position: relative;
 }
 
 .profile-nav {
