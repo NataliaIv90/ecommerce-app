@@ -65,23 +65,15 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
         to={id}
         className='catalog-card'
       >
-        {product ? (
-          <img
-            className='catalog-card__image'
-            src={
-              product.masterVariant.images?.length
-                ? `${product.masterVariant.images[imageOrPriceNumber].url}`
-                : 'https://media.istockphoto.com/id/1216251206/vector/no-image-available-icon.jpg?s=612x612&w=0&k=20&c=6C0wzKp_NZgexxoECc8HD4jRpXATfcu__peSYecAwt0='
-            }
-            alt={name}
-          />
-        ) : (
-          <Skeleton
-            variant='rectangular'
-            width={210}
-            height={118}
-          />
-        )}
+        <img
+          className='catalog-card__image'
+          src={
+            product.masterVariant.images?.length
+              ? `${product.masterVariant.images[imageOrPriceNumber].url}`
+              : 'https://media.istockphoto.com/id/1216251206/vector/no-image-available-icon.jpg?s=612x612&w=0&k=20&c=6C0wzKp_NZgexxoECc8HD4jRpXATfcu__peSYecAwt0='
+          }
+          alt={name}
+        />
 
         <h2 className='catalog-card__title'>{name}</h2>
         <p className='catalog-card__description'>{product.description && product.description[language]}</p>
