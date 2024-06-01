@@ -2,7 +2,6 @@ import { type ProductProjection } from '@commercetools/platform-sdk';
 import { Link as RouterLink } from 'react-router-dom';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Skeleton from '@mui/material/Skeleton';
 import { useState } from 'react';
 import { addToCart } from '../../../utils/addToCart';
 import Snackbar from '@mui/material/Snackbar';
