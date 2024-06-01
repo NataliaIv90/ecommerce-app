@@ -24,7 +24,9 @@ export const Header = (): JSX.Element => {
       <nav className='header__nav'>
         <ul className='header__link-list'>
           <li className='header__link'>
-            <Link to='/'>Home</Link>
+            <Link to='/'>
+              <span className='header__brand'>Flowers</span>
+            </Link>
           </li>
           <li className='header__link'>
             <Link to='/catalog'>Catalog</Link>
