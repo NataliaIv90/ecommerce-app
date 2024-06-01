@@ -8,6 +8,7 @@ import { QuantityController } from '../../../shared/button/quantityController/Qu
 import SvgCircleIcon from '../../../shared/icons/circle/CircleIcon';
 import { setRightPrice } from '../../../utils/price-formatting-functions';
 import { addToCart } from '../../../utils/addToCart';
+import { ProductModal } from './productModal/ProductModal';
 
 export interface IProductCardProps {
   name: string | '';
@@ -21,6 +22,7 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
   const [amount, setAmount] = useState<number>(1);
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
 
@@ -54,19 +56,36 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
     }
   };
 
+  const toggleOpenedModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
   return (
     <div className='product-card'>
+      {isModalVisible ? (
+        <ProductModal
+          src={images[currentImageIndex].url}
+          alt={images[currentImageIndex].label || ''}
+          onClick={toggleOpenedModal}
+        />
+      ) : null}
       <div
         className='product-card__imageContainer'
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <img
-          className='product-card__image'
-          src={images[currentImageIndex].url}
-          alt={images[currentImageIndex].label}
-        />
+        <button
+          onClick={toggleOpenedModal}
+          className='unstyled-button'
+          title='zoom image'
+        >
+          <img
+            className='product-card__image'
+            src={images[currentImageIndex].url}
+            alt={images[currentImageIndex].label}
+          />
+        </button>
 
         {images.length > 1 ? (
           <ul className='product-card__main-slider-container'>
