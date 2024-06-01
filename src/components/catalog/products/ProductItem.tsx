@@ -2,6 +2,7 @@ import { type ProductProjection } from '@commercetools/platform-sdk';
 import { Link as RouterLink } from 'react-router-dom';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { setRightPrice } from '../../../utils/price-formatting-functions';
 import { useState } from 'react';
 import { addToCart } from '../../../utils/addToCart';
 import Snackbar from '@mui/material/Snackbar';
@@ -78,7 +79,12 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
         <p className='catalog-card__description'>{product.description && product.description[language]}</p>
         <div className='catalog-card__info'>
           <span className='catalog-card__price'>
-            ${product.masterVariant.prices && product.masterVariant.prices[imageOrPriceNumber].value.centAmount}
+            {product.masterVariant?.prices
+              ? setRightPrice(
+                  product.masterVariant.prices[imageOrPriceNumber].value.centAmount,
+                  product.masterVariant.prices[0].discounted?.value.centAmount
+                )
+              : '0.00'}
           </span>
           <div>
             <button
