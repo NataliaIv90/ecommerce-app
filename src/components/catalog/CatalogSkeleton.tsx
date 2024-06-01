@@ -1,6 +1,4 @@
-import React from 'react';
 import Skeleton from '@mui/material/Skeleton';
-import { Box } from '@mui/material';
 
 export const CatalogSkeleton = (): JSX.Element => {
   return (
