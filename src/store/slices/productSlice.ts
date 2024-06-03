@@ -54,25 +54,26 @@ export const getProductsWithFilter = createAsyncThunk('products/getProductsWithF
   return response;
 });
 
-function buildTree(data: Category[]) {
+export const buildTree = (data: Category[]): CategoryInternal[] => {
   const newData: CategoryInternal[] = data.map((node) => {
     (node as CategoryInternal).children = [] as CategoryInternal[];
-
     return node;
   });
-  const rootNodes: CategoryInternal[] = newData.filter((node) => node.ancestors.length);
+  const rootNodes: CategoryInternal[] = newData.filter((node) => !node.ancestors.length);
 
   newData.forEach((node) => {
-    console.log(node, rootNodes);
     if (!rootNodes.includes(node)) {
-      const closestParentId = node.ancestors.pop()?.id;
-      const parent = rootNodes.find((root) => console.log(root.id === closestParentId));
-      parent!.children?.push(node);
+      node.ancestors.forEach(({ id }) => {
+        const closestParentId = id;
+        const parent = rootNodes.find((root) => root.id === closestParentId);
+        if (parent && parent.children) {
+          parent.children.push(node);
+        }
+      });
     }
   });
   return rootNodes;
-}
-
+};
 export const buildQueryFilter = (filter: FilterProducts): string[] => {
   const keys = Object.keys(filter);
   const queryFilter = keys.reduce((query, key) => {
