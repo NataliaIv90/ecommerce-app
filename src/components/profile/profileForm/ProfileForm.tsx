@@ -18,6 +18,7 @@ interface IProfileFormProps {
 }
 
 export const ProfileForm = ({ selectedItem }: IProfileFormProps): JSX.Element => {
+  const [isEditing, setIsEditing] = useState(false);
   const dispatch = useAppDispatch();
   const customer = useAppSelector((state) => state.customers.customer);
   const [isLoading, setLoading] = useState(false);
@@ -57,8 +58,8 @@ export const ProfileForm = ({ selectedItem }: IProfileFormProps): JSX.Element =>
     }
   };
 
-  const shippingAddresses: Address[] | null = getShippingAddresses(customer);
-  const billingAddresses: Address[] | null = getBillinggAddresses(customer);
+  const shippingAddresses: Address[] = getShippingAddresses(customer);
+  const billingAddresses: Address[] = getBillinggAddresses(customer);
 
   const shippingAddress = {
     city: '',
@@ -106,311 +107,407 @@ export const ProfileForm = ({ selectedItem }: IProfileFormProps): JSX.Element =>
     mode: 'all',
   });
 
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+  };
+
   return (
     <div>
-      <form
-        className='profile-form'
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        {selectedItem === 'personal_info' ? (
-          <>
-            <label htmlFor='firstName'>First Name: </label>
-            <Controller
-              control={control}
-              name='firstName'
-              render={({ field, fieldState }) => (
-                <Input
-                  name='firstName'
-                  type='text'
-                  id='firstName'
-                  placeholder='Enter your first name'
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  error={fieldState.error?.message}
-                />
-              )}
-            />
+      {isEditing ? (
+        <form
+          className='profile-form'
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          {selectedItem === 'personal_info' ? (
+            <>
+              <label htmlFor='firstName'>First Name: </label>
+              <Controller
+                control={control}
+                name='firstName'
+                render={({ field, fieldState }) => (
+                  <Input
+                    name='firstName'
+                    type='text'
+                    id='firstName'
+                    placeholder='Enter your first name'
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    error={fieldState.error?.message}
+                  />
+                )}
+              />
 
-            <br />
+              <br />
 
-            <label htmlFor='lastName'>Last Name: </label>
-            <Controller
-              control={control}
-              name='lastName'
-              render={({ field, fieldState }) => (
-                <Input
-                  name='lastName'
-                  type='text'
-                  id='lastName'
-                  placeholder='Enter your last name'
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  error={fieldState.error?.message}
-                />
-              )}
-            />
+              <label htmlFor='lastName'>Last Name: </label>
+              <Controller
+                control={control}
+                name='lastName'
+                render={({ field, fieldState }) => (
+                  <Input
+                    name='lastName'
+                    type='text'
+                    id='lastName'
+                    placeholder='Enter your last name'
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    error={fieldState.error?.message}
+                  />
+                )}
+              />
 
-            <br />
+              <br />
 
-            <label htmlFor='dateOfBirth'>Date of birth: </label>
+              <label htmlFor='dateOfBirth'>Date of birth: </label>
 
-            <Controller
-              control={control}
-              name='dateOfBirth'
-              render={({ field, fieldState }) => (
-                <Input
-                  name='dateOfBirth'
-                  type='date'
-                  id='dateOfBirth'
-                  placeholder='Enter your date of birth'
-                  value={field.value instanceof Date ? field.value.toISOString().substr(0, 10) : field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  error={fieldState.error?.message}
-                />
-              )}
-            />
-          </>
-        ) : null}
+              <Controller
+                control={control}
+                name='dateOfBirth'
+                render={({ field, fieldState }) => (
+                  <Input
+                    name='dateOfBirth'
+                    type='date'
+                    id='dateOfBirth'
+                    placeholder='Enter your date of birth'
+                    value={field.value instanceof Date ? field.value.toISOString().substr(0, 10) : field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    error={fieldState.error?.message}
+                  />
+                )}
+              />
+            </>
+          ) : null}
 
-        <br />
+          <br />
 
-        {selectedItem === 'addresses' ? (
-          <>
-            <h2>Shipping addresses</h2>
-            <br />
-            {shippingAddresses?.map((address) => {
-              const isDefaultShippingAddress = isDefault(address, customer?.defaultShippingAddressId);
-              return (
-                <div
-                  key={address.id}
-                  className={'address-container' + (isDefaultShippingAddress ? ' default' : '')}
-                >
-                  {isDefaultShippingAddress ? <h3>Default Shipping Address</h3> : null}
-                  <br />
-                  <label
-                    className='country-label'
-                    htmlFor='shippingAddressCountry'
+          {selectedItem === 'addresses' ? (
+            <>
+              <h2>Shipping addresses</h2>
+              <br />
+              {shippingAddresses?.map((address) => {
+                const isDefaultShippingAddress = isDefault(address, customer?.defaultShippingAddressId);
+                return (
+                  <div
+                    key={address.id}
+                    className={'address-container' + (isDefaultShippingAddress ? ' default' : '')}
                   >
-                    Country:{' '}
-                  </label>
-                  <Controller
-                    control={control}
-                    name='shippingAddress.country'
-                    render={({ field, fieldState }) => (
-                      <>
-                        <select
-                          {...field}
-                          name='shippingAddressCountry'
-                          className='registration__select-input'
-                          title='Shipping country'
-                        >
-                          {Object.entries(ECountrieOptions).map(([key, value]) => (
-                            <option
-                              key={key}
-                              value={value}
-                            >
-                              {value}
-                            </option>
-                          ))}
-                        </select>
+                    {isDefaultShippingAddress ? <h3>Default Shipping Address</h3> : null}
+                    <br />
+                    <label
+                      className='country-label'
+                      htmlFor='shippingAddressCountry'
+                    >
+                      Country:{' '}
+                    </label>
+                    <Controller
+                      control={control}
+                      name='shippingAddress.country'
+                      render={({ field, fieldState }) => (
+                        <>
+                          <select
+                            {...field}
+                            name='shippingAddressCountry'
+                            className='registration__select-input'
+                            title='Shipping country'
+                          >
+                            {Object.entries(ECountrieOptions).map(([key, value]) => (
+                              <option
+                                key={key}
+                                value={value}
+                              >
+                                {value}
+                              </option>
+                            ))}
+                          </select>
 
-                        {fieldState.error && (
-                          <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>
-                        )}
-                      </>
-                    )}
-                  />
+                          {fieldState.error && (
+                            <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>
+                          )}
+                        </>
+                      )}
+                    />
 
-                  <br />
+                    <br />
 
-                  <label htmlFor='shippingAddress.street'>Street: </label>
-                  <Controller
-                    control={control}
-                    name='shippingAddress.street'
-                    render={({ field, fieldState }) => (
-                      <Input
-                        name='shippingAddress.street'
-                        type='text'
-                        id='street'
-                        placeholder='Enter your street'
-                        value={field.value}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={fieldState.error?.message}
-                      />
-                    )}
-                  />
+                    <label htmlFor='shippingAddress.street'>Street: </label>
+                    <Controller
+                      control={control}
+                      name='shippingAddress.street'
+                      render={({ field, fieldState }) => (
+                        <Input
+                          name='shippingAddress.street'
+                          type='text'
+                          id='street'
+                          placeholder='Enter your street'
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          error={fieldState.error?.message}
+                        />
+                      )}
+                    />
 
-                  <br />
+                    <br />
 
-                  <label htmlFor='shippingAddress.city'>City: </label>
-                  <Controller
-                    control={control}
-                    name='shippingAddress.city'
-                    render={({ field, fieldState }) => (
-                      <Input
-                        name='shippingAddress.city'
-                        type='text'
-                        id='city'
-                        placeholder='Enter your city'
-                        value={field.value}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={fieldState.error?.message}
-                      />
-                    )}
-                  />
+                    <label htmlFor='shippingAddress.city'>City: </label>
+                    <Controller
+                      control={control}
+                      name='shippingAddress.city'
+                      render={({ field, fieldState }) => (
+                        <Input
+                          name='shippingAddress.city'
+                          type='text'
+                          id='city'
+                          placeholder='Enter your city'
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          error={fieldState.error?.message}
+                        />
+                      )}
+                    />
 
-                  <br />
+                    <br />
 
-                  <label htmlFor='shippingAddress.postalCode'>Postal Code: </label>
-                  <Controller
-                    control={control}
-                    name='shippingAddress.postalCode'
-                    render={({ field, fieldState }) => (
-                      <Input
-                        type='text'
-                        id='postalCode'
-                        placeholder='Enter your postal code'
-                        value={field.value}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={fieldState.error?.message}
-                      />
-                    )}
-                  />
+                    <label htmlFor='shippingAddress.postalCode'>Postal Code: </label>
+                    <Controller
+                      control={control}
+                      name='shippingAddress.postalCode'
+                      render={({ field, fieldState }) => (
+                        <Input
+                          type='text'
+                          id='postalCode'
+                          placeholder='Enter your postal code'
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          error={fieldState.error?.message}
+                        />
+                      )}
+                    />
 
-                  <button className='delete-address'>X</button>
-                </div>
-              );
-            })}
+                    <button className='delete-address'>X</button>
+                  </div>
+                );
+              })}
 
-            <button className='add-new-address'>Add Shipping Address</button>
+              <button className='add-new-address'>Add Shipping Address</button>
 
-            <br />
+              <br />
 
-            <h2>Billing addresses</h2>
+              <h2>Billing addresses</h2>
 
-            <br />
+              <br />
 
-            {billingAddresses?.map((address) => {
-              const isDefaultBillingAddress = isDefault(address, customer?.defaultShippingAddressId);
+              {billingAddresses?.map((address) => {
+                const isDefaultBillingAddress = isDefault(address, customer?.defaultBillingAddressId);
 
-              return (
-                <div
-                  key={address.id}
-                  className={'address-container' + (isDefaultBillingAddress ? ' default' : '')}
-                >
-                  {isDefaultBillingAddress ? <h3>Default Billing Address</h3> : null}
-                  <br />
-                  <label
-                    className='country-label'
-                    htmlFor='billingAddressCountry'
+                return (
+                  <div
+                    key={address.id}
+                    className={'address-container' + (isDefaultBillingAddress ? ' default' : '')}
                   >
-                    Country:{' '}
-                  </label>
-                  <Controller
-                    control={control}
-                    name='billingAddress.country'
-                    render={({ field, fieldState }) => (
-                      <>
-                        <select
-                          {...field}
-                          name='billingAddressCountry'
-                          className='registration__select-input'
-                          title='Billing address country'
-                        >
-                          {Object.entries(ECountrieOptions).map(([key, value]) => (
-                            <option
-                              key={key}
-                              value={value}
-                            >
-                              {value}
-                            </option>
-                          ))}
-                        </select>
+                    {isDefaultBillingAddress ? <h3>Default Billing Address</h3> : null}
+                    <br />
+                    <label
+                      className='country-label'
+                      htmlFor='billingAddressCountry'
+                    >
+                      Country:{' '}
+                    </label>
+                    <Controller
+                      control={control}
+                      name='billingAddress.country'
+                      render={({ field, fieldState }) => (
+                        <>
+                          <select
+                            {...field}
+                            name='billingAddressCountry'
+                            className='registration__select-input'
+                            title='Billing address country'
+                          >
+                            {Object.entries(ECountrieOptions).map(([key, value]) => (
+                              <option
+                                key={key}
+                                value={value}
+                              >
+                                {value}
+                              </option>
+                            ))}
+                          </select>
 
-                        {fieldState.error && (
-                          <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>
-                        )}
-                      </>
-                    )}
-                  />
+                          {fieldState.error && (
+                            <p className={fieldState.error ? 'error' : ''}>{fieldState.error.message}</p>
+                          )}
+                        </>
+                      )}
+                    />
 
-                  <br />
-                  <label htmlFor='billingAddress.street'>Street: </label>
-                  <Controller
-                    control={control}
-                    name='billingAddress.street'
-                    render={({ field, fieldState }) => (
-                      <Input
-                        name='billingAddress.street'
-                        type='text'
-                        id='streetBilling'
-                        placeholder='Enter your street'
-                        value={field.value}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={fieldState.error?.message}
-                      />
-                    )}
-                  />
+                    <br />
+                    <label htmlFor='billingAddress.street'>Street: </label>
+                    <Controller
+                      control={control}
+                      name='billingAddress.street'
+                      render={({ field, fieldState }) => (
+                        <Input
+                          name='billingAddress.street'
+                          type='text'
+                          id='streetBilling'
+                          placeholder='Enter your street'
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          error={fieldState.error?.message}
+                        />
+                      )}
+                    />
 
-                  <br />
-                  <label htmlFor='billingAddress.city'>City: </label>
-                  <Controller
-                    control={control}
-                    name='billingAddress.city'
-                    render={({ field, fieldState }) => (
-                      <Input
-                        type='text'
-                        id='cityBilling'
-                        placeholder='Enter your city'
-                        value={field.value}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={fieldState.error?.message}
-                      />
-                    )}
-                  />
+                    <br />
+                    <label htmlFor='billingAddress.city'>City: </label>
+                    <Controller
+                      control={control}
+                      name='billingAddress.city'
+                      render={({ field, fieldState }) => (
+                        <Input
+                          type='text'
+                          id='cityBilling'
+                          placeholder='Enter your city'
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          error={fieldState.error?.message}
+                        />
+                      )}
+                    />
 
-                  <br />
-                  <label htmlFor='billingAddress.postalCode'>Postal Code: </label>
-                  <Controller
-                    control={control}
-                    name='billingAddress.postalCode'
-                    render={({ field, fieldState }) => (
-                      <Input
-                        name='billingAddress.postalCode'
-                        type='text'
-                        id='postalCodeBilling'
-                        placeholder='Enter your postal code'
-                        value={field.value}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={fieldState.error?.message}
-                      />
-                    )}
-                  />
+                    <br />
+                    <label htmlFor='billingAddress.postalCode'>Postal Code: </label>
+                    <Controller
+                      control={control}
+                      name='billingAddress.postalCode'
+                      render={({ field, fieldState }) => (
+                        <Input
+                          name='billingAddress.postalCode'
+                          type='text'
+                          id='postalCodeBilling'
+                          placeholder='Enter your postal code'
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          error={fieldState.error?.message}
+                        />
+                      )}
+                    />
 
-                  <button className='delete-address'>X</button>
-                </div>
-              );
-            })}
-            <button className='add-new-address'>Add Billing Address</button>
-          </>
-        ) : null}
+                    <button className='delete-address'>X</button>
+                  </div>
+                );
+              })}
+              <button className='add-new-address'>Add Billing Address</button>
+            </>
+          ) : null}
 
-        <br />
-        <OutlinedButton
-          wideBtn={false}
-          type='submit'
-          text='Save'
-        />
-      </form>
+          <br />
+          <div className='editting-btns-container'>
+            <OutlinedButton
+              wideBtn={false}
+              type='submit'
+              text='Save'
+            />
+            <button
+              className='outlinedButton editting-cancel'
+              onClick={handleEditToggle}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div id='profile-view'>
+          {selectedItem === 'personal_info' && (
+            <div className='profile-details'>
+              <span>First Name:</span> <span>{customer?.firstName}</span>
+              <span>Last Name:</span> <span>{customer?.lastName}</span>
+              <span>Email:</span> <span>{customer?.email}</span>
+              <span>Date of birth:</span> <span>{customer?.dateOfBirth}</span>
+            </div>
+          )}
+
+          {selectedItem === 'addresses' && (
+            <div className='addresses-container'>
+              <h3>Shipping addresses</h3>
+              {shippingAddresses.map((address) => {
+                const isDefaultShppingAddress = isDefault(address, customer?.defaultShippingAddressId);
+                return (
+                  <div
+                    key={address.id}
+                    className='address-container'
+                  >
+                    {isDefaultShppingAddress && <h4>Default Shipping Address</h4>}
+                    <div className='address__label-value-wrapper'>
+                      <span className='address-info__label'>Country</span>
+                      <span>{address?.country}</span>
+                    </div>
+                    <div className='address__label-value-wrapper'>
+                      <span className='address-info__label'>Street</span>
+                      <span>{address.streetName}</span>
+                    </div>
+                    <div className='address__label-value-wrapper'>
+                      <span className='address-info__label'>City</span>
+                      <span>{address.city}</span>
+                    </div>
+                    <div className='address__label-value-wrapper'>
+                      <span className='address-info__label'>Postal code</span>
+                      <span>{address.postalCode}</span>
+                    </div>
+                  </div>
+                );
+              })}
+
+              <h3>Billing addresses</h3>
+              {billingAddresses.map((address) => {
+                const isDefaultBillingAddress = isDefault(address, customer?.defaultShippingAddressId);
+                return (
+                  <div
+                    key={address.id}
+                    className='address-container'
+                  >
+                    {isDefaultBillingAddress && <h4>Default Billing Address</h4>}
+                    <div className='address__label-value-wrapper'>
+                      <span className='address-info__label'>Country</span>
+                      <span>{address?.country}</span>
+                    </div>
+                    <div className='address__label-value-wrapper'>
+                      <span className='address-info__label'>Street</span>
+                      <span>{address.streetName}</span>
+                    </div>
+                    <div className='address__label-value-wrapper'>
+                      <span className='address-info__label'>City</span>
+                      <span>{address.city}</span>
+                    </div>
+                    <div className='address__label-value-wrapper'>
+                      <span className='address-info__label'>Postal code</span>
+                      <span>{address.postalCode}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {!isEditing && (
+        <button
+          className='outlinedButton editting-btn'
+          onClick={handleEditToggle}
+        >
+          Edit
+        </button>
+      )}
       <Loader isLoading={isLoading} />
     </div>
   );
