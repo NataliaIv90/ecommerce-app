@@ -1,0 +1,91 @@
+.profile-form input,
+.profile-form select {
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  display: inline;
+}
+
+.profile-form input {
+  margin-top: 20px;
+}
+.profile-form div {
+  display: inline-block;
+}
+
+.profile-form .error_visibility {
+  margin-left: 150px;
+}
+
+.profile-form label,
+.profile-form .country-label {
+  margin-right: 20px;
+  padding: 0.5rem;
+  position: relative;
+  bottom: 0;
+}
+
+.profile-form label {
+  bottom: 25px;
+}
+
+.profile-form .outlinedButton {
+  margin-left: 50%;
+  transform: translateX(-50%);
+  background-color: rgb(188, 188, 188);
+  transition: all 0.5s;
+  fill: white;
+  border-radius: 30px;
+}
+
+.profile-form:hover {
+  color: black;
+}
+
+.address-container {
+  position: relative;
+  padding: 0.8rem;
+  background: #f5f4f4;
+  width: 100%;
+}
+
+.address-container.default {
+  background: rgb(247, 240, 232);
+}
+
+.add-new-address {
+  margin: 1.2rem;
+  border: none;
+  outline: none;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.5s;
+  background-color: rgb(188, 188, 188);
+  color: #000;
+}
+
+.add-new-address:hover {
+  color: #fff;
+  background-color: rgb(188, 188, 188);
+}
+
+.delete-address {
+  margin: 1.2rem;
+  border: none;
+  outline: none;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.5s;
+  background-color: rgb(188, 188, 188);
+  fill: white;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.delete-address:hover {
+  color: #fff;
+  background-color: #a9a5a5;
+}

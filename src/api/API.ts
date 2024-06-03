@@ -4,8 +4,10 @@ import {
   CustomerSignInResult,
   CustomerDraft,
   Product,
+  CustomerUpdate,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
+import { type ProductProjectionPagedQueryResponse } from '@commercetools/platform-sdk';
 import { Credentials } from '../store/slices/customerSlice';
 import { apiRoot } from './lib/Client';
 
@@ -81,6 +83,19 @@ export class API {
     return result;
   }
 
+  async getProducts(): Promise<{ data: ProductProjectionPagedQueryResponse | undefined; error: string }> {
+    let errorMsg = '';
+    try {
+      const { body } = await this.client.productProjections().get().execute();
+
+      return { data: body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      alert(errorMsg);
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
   async getProductById(productId: string): Promise<Product | undefined> {
     try {
       const { body } = await this.client.products().withId({ ID: productId }).get().execute();
@@ -90,6 +105,31 @@ export class API {
       alert(errorMsg);
       return undefined;
     }
+  }
+
+  // ADD
+  async updateCustomer(customerId: string, updatedCustomerData: CustomerUpdate): Promise<Customer> {
+    let errorMsg = '';
+    const result: Customer = {} as Customer;
+    try {
+      const { body } = await this.client
+        .customers()
+        .withId({ ID: customerId })
+        .post({
+          body: {
+            version: updatedCustomerData.version,
+            actions: updatedCustomerData.actions,
+          },
+        })
+        .execute();
+      return body;
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        alert(errorMsg);
+      }
+    }
+    return result;
   }
 }
 
