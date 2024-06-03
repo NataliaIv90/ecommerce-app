@@ -91,7 +91,7 @@ export class API {
         .get({
           queryArgs: {
             limit: 10,
-            facet: ['variants.attributes.color.en', 'variants.price.centAmount'],
+            facet: ['variants.attributes.color.en', 'variants.attributes.size.en', 'variants.price.centAmount'],
           },
         })
         .execute();
@@ -169,7 +169,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
-            facet: ['variants.attributes.color.en', 'variants.price.centAmount'],
+            facet: [`variants.attributes.color.en`, 'variants.price.centAmount'],
             filter: [`categories.id:subtree("${catId}")`],
           },
         })
@@ -191,7 +191,7 @@ export class API {
     }
   }
   //eslint-disable-next-line
-  async getProductsWithFilter(filter: string[]) {
+  async getProductsWithFilter(filter: string[], sort: string, search: string = '') {
     let errorMsg = '';
     try {
       const respsone = await this.client
@@ -199,6 +199,9 @@ export class API {
         .search()
         .get({
           queryArgs: {
+            'text.en': search,
+            fuzzy: true,
+            sort,
             'filter.query': filter,
           },
         })
