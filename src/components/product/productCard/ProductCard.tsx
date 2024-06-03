@@ -85,7 +85,7 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
           <img
             className='product-card__image'
             src={images[currentImageIndex].url}
-            alt={images[currentImageIndex].label}
+            alt={`${images[currentImageIndex].label} main`}
           />
         </button>
 
@@ -96,6 +96,7 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
                 <button
                   className='product-card__main-image-slider'
                   onClick={() => setImageIndex(index)}
+                  data-testid={`image-slider-button-${index}`}
                 >
                   <SvgCircleIcon selected={currentImageIndex === index} />
                 </button>
@@ -118,7 +119,10 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
           <div className='product-card__reviews-number'>0 reviews</div>
         </div>
         <div className='product-card__price-container'>
-          <div className='product-card__price-value'>
+          <div
+            className='product-card__price-value'
+            data-testid='price-value'
+          >
             {prices ? setRightPrice(prices[0].value.centAmount, prices[0].discounted?.value.centAmount) : '0.00'}
           </div>
           <div>In stock</div>
