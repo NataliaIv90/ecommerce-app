@@ -9,9 +9,7 @@ import { useEffect } from 'react';
 import { MainWrapper } from '../mainWrapper/MainWrapper';
 import { useState } from 'react';
 import { CatalogTree } from '../../shared/ui/catalogTree/CatalogTree';
-import { Typography } from '@mui/material';
 import { Box } from '@mui/material';
-import { Divider } from '@mui/material';
 import RangeSlider from '../../shared/ui/Slider';
 import PriceChangeIcon from '@mui/icons-material/PriceChange';
 
@@ -62,8 +60,6 @@ const CatalogPage = (): JSX.Element => {
                   pt: 1,
                 }}
               >
-                <Typography variant='h5'>Categories</Typography>
-                <Divider sx={{ mb: 2, mt: 2 }} />
                 {categories.length !== 0 && (
                   <CatalogTree
                     categories={categories}

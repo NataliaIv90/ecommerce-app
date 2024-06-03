@@ -28,7 +28,7 @@ export const CatalogTree: React.FC<{
         }}
         sx={{ borderRadius: '5%' }}
       >
-        {Array.isArray(nodes?.children) ? renderTree(nodes?.children) : ''}
+        {Array.isArray(nodes?.children) ? renderTree(nodes.children) : ''}
         {/* {nodes.name && nodes.name[language]} */}
       </TreeItem>
     ));
