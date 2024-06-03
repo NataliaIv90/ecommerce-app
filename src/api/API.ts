@@ -7,7 +7,6 @@ import {
   CustomerUpdate,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-import { type ProductProjectionPagedQueryResponse } from '@commercetools/platform-sdk';
 import { Credentials } from '../store/slices/customerSlice';
 import { apiRoot } from './lib/Client';
 
@@ -82,11 +81,20 @@ export class API {
     }
     return result;
   }
-
-  async getProducts(): Promise<{ data: ProductProjectionPagedQueryResponse | undefined; error: string }> {
+  //eslint-disable-next-line
+  async getProducts() {
+    // : Promise<{ data: ProductProjectionPagedQueryResponse | undefined; error: string }>
     let errorMsg = '';
     try {
-      const { body } = await this.client.productProjections().get().execute();
+      const { body } = await this.client
+        .productProjections()
+        .get({
+          queryArgs: {
+            limit: 10,
+            facet: ['variants.attributes.color.en', 'variants.price.centAmount'],
+          },
+        })
+        .execute();
 
       return { data: body, error: errorMsg };
     } catch (error) {
@@ -131,6 +139,124 @@ export class API {
     }
     return result;
   }
+
+  // eslint-disable-next-line
+  async getCategories() {
+    let errorMsg = '';
+    try {
+      const { body } = await this.client
+        .categories()
+        .get({
+          queryArgs: {
+            sort: 'orderHint asc',
+          },
+        })
+        .execute();
+      const result = body.results;
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  //eslint-disable-next-line
+  async getProductsByCat(catId: string) {
+    console.log('catID', catId);
+    const errorMsg = '';
+    try {
+      const response = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            facet: ['variants.attributes.color.en', 'variants.price.centAmount'],
+            filter: [`categories.id:subtree("${catId}")`],
+          },
+        })
+        .execute();
+      // const response = await this.client
+      //   .productProjections()
+      //   .search()
+      //   .get({
+      //     queryArgs: {
+      //       'filter.query': 'categories.id:subtree("ffb8e5bc-dbad-4ae9-b530-e569f3022ac1")',
+      //     },
+      //   })
+      //   .execute();
+      const result = response;
+      return { data: result.body.results, error: errorMsg };
+      console.log('success', response);
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+  //eslint-disable-next-line
+  async getProductsWithFilter(filter: string[]) {
+    let errorMsg = '';
+    try {
+      const respsone = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            'filter.query': filter,
+          },
+        })
+        .execute();
+      const result = respsone;
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  // async getCategories(catId: string): Promise<Category | undefined> {
+  //   // let errorMsg = '';
+  //   try {
+  //     const { body } = await this.client.categories().withId({ ID: catId }).get().execute();
+  //     return body;
+  //     // const result = body.results;
+  //     // return { data: result, error: errorMsg };
+  //   } catch (error) {
+  //     console.log(error);
+  //     //   if (error instanceof Error) errorMsg = error.message;
+  //     //   return { data: undefined, error: errorMsg };
+  //     // }
+  //   }
+  // }
+
+  // async getProductsByCat(catId: string): Promise<
+  //   | {
+  //       data: ProductProjection[];
+  //       error: string;
+  //     }
+  //   | {
+  //       data: undefined;
+  //       error: string;
+  //     }
+  // > {
+  //   let errorMsg = '';
+  //   try {
+  //     const respsone = await this.client
+  //       .productProjections()
+  //       .search()
+  //       .get({
+  //         queryArgs: {
+  //           limit: 10,
+  //           facets: ['variants.attributes.color.en'],
+  //           filter: [`categories.id:subtree("${catId}")`],
+  //         },
+  //       })
+  //       .execute();
+  //     const result = respsone;
+  //     return { data: result.body.results, error: errorMsg };
+  //   } catch (error) {
+  //     if (error instanceof Error) errorMsg = error.message;
+  //     return { data: undefined, error: errorMsg };
+  //   }
+  // }
 }
 
 // Export the API instance
