@@ -6,6 +6,7 @@ import { ProfileForm } from './profileForm/ProfileForm';
 const PROFILE_NAV_ITEMS = [
   { id: 'personal_info', displayName: 'Personal information' },
   { id: 'addresses', displayName: 'Addresses' },
+  // { id: 'reset_password', displayName: 'Reset password' },
 ];
 
 export const Profile = (): JSX.Element => {

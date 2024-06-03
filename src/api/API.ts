@@ -131,6 +131,27 @@ export class API {
     }
     return result;
   }
+
+  // async changePassword(customerId: string, changePassword: CustomerChangePassword): Promise<Customer> {
+  //   let errorMsg = '';
+  //   const result: Customer = {} as Customer;
+  //   try {
+  //     const { body } = await this.client
+  //       .customers()
+  //       .withId({ ID: customerId })
+  //       .post({
+  //         body: changePassword,
+  //       })
+  //       .execute();
+  //     return body;
+  //   } catch (error) {
+  //     if (error instanceof Error) {
+  //       errorMsg = error.message;
+  //       alert(errorMsg);
+  //     }
+  //   }
+  //   return result;
+  // }
 }
 
 // Export the API instance
