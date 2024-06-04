@@ -4,12 +4,15 @@ import './products/Product.css';
 import Message from '../../shared/ui/Message/Message';
 import CatalogSkeleton from './CatalogSkeleton';
 import { useAppDispatch } from '../../hooks/reduxHooks';
-import { getProducts, getCategories, getProductsWithFilter } from '../../store/slices/productSlice';
+import { getProducts, getCategories } from '../../store/slices/productSlice';
 import { useEffect } from 'react';
 import { MainWrapper } from '../mainWrapper/MainWrapper';
 import { useState } from 'react';
-import { CatalogTree } from '../../shared/ui/catalogTree/CatalogTree';
-import { Toolbar } from './filters/Toolbar';
+// import { CatalogTree } from '../../shared/ui/catalogTree/CatalogTree';
+import { Box } from '@mui/material';
+// import RangeSlider from '../../shared/ui/Slider';
+// import PriceChangeIcon from '@mui/icons-material/PriceChange';
+import { Filters } from './filters/Filters';
 
 const CatalogPage = (): JSX.Element => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
@@ -37,7 +40,7 @@ const CatalogPage = (): JSX.Element => {
   }, [activeCat]);
 
   // const handleCatClick = (catId: string) => dispatch(getProductsByCat('36da2b34-eccd-4a91-af76-c9c0b49fa007'));
-  const handleCatClick = () => void dispatch(getProductsWithFilter());
+  // const handleCatClick = (catId: string) => dispatch(getProductsByCat(catId));
 
   return (
     <MainWrapper>
@@ -49,14 +52,15 @@ const CatalogPage = (): JSX.Element => {
           </div>
           <div className='catalog__inner'>
             <div className='catalog-category'>
-              {categories.length && (
+              {/* {categories.length && (
                 <CatalogTree
                   categories={categories}
                   handleClick={handleCatClick}
                   selected={selected}
                   setSelected={setSelected}
                 />
-              )}
+              )} */}
+              <Filters />
             </div>
             <div className='catalog-list'>
               {isLoading ? (

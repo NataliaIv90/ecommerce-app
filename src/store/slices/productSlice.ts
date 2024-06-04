@@ -40,8 +40,7 @@ export const getProductsByCat = createAsyncThunk('products/getProductsByCat', as
   const state: RootState = thunkAPI.getState() as RootState;
   const passClient = state.customers.apiInstance;
   const response = await passClient.getProductsByCat(catId);
-  console.log(buildQueryFilter(state.products.filters));
-  // console.log(response);
+  // console.log(buildQueryFilter(state.products.filters));
 
   return response?.data;
 });
@@ -66,7 +65,6 @@ export const getProductsWithFilter = createAsyncThunk('products/getProductsWithF
 });
 
 export const buildTree = (data: Category[]): CategoryInternal[] => {
-  console.log(data);
   const newData: CategoryInternal[] = data.map((node) => {
     (node as CategoryInternal).children = [] as CategoryInternal[];
     return node;
@@ -78,7 +76,6 @@ export const buildTree = (data: Category[]): CategoryInternal[] => {
       node.ancestors.forEach(({ id }) => {
         const closestParentId = id;
         const parent = rootNodes.find((root) => root.id === closestParentId);
-        console.log(node);
         if (parent && parent.children) {
           parent.children.push(node);
         }

@@ -1,10 +1,6 @@
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { CategoryInternal } from '../../../types/products';
-import { SetStateAction, SyntheticEvent } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
-import { useState, useEffect } from 'react';
-import { setCategory } from '../../../store/slices/productSlice';
 
 const language = 'en-US';
 const treeSX = {
@@ -46,7 +42,6 @@ export const CatalogTree: React.FC<{
         sx={{ borderRadius: '5%' }}
       >
         {Array.isArray(nodes?.children) ? renderTree(nodes.children) : ''}
-        {/* {nodes.name && nodes.name[language]} */}
       </TreeItem>
     ));
   return (
@@ -54,12 +49,10 @@ export const CatalogTree: React.FC<{
       aria-label='categories tree'
       defaultExpandedItems={['root']}
       sx={treeSX}
-      //eslint-disable-next-line
-      selected={selected}
-      onNodeSelect={(_event: SyntheticEvent<Element, Event>, nodeId: SetStateAction<string>) => {
-        setSelected(nodeId as string);
+      selectedItems={selected}
+      onSelectedItemsChange={(_event: React.SyntheticEvent, itemIds: string | null) => {
+        return setSelected(itemIds as string);
       }}
-      expanded={expanded}
     >
       {renderTree(categories)}
     </SimpleTreeView>
