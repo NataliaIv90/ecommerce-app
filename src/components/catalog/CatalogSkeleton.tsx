@@ -3,7 +3,7 @@ import Skeleton from '@mui/material/Skeleton';
 export const CatalogSkeleton = (): JSX.Element => {
   return (
     <>
-      <div className='skeleton-card'>
+      <div className='skeleton-card catalog-card'>
         <Skeleton
           variant='rectangular'
           width='100%'

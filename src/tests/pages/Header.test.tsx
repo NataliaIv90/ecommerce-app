@@ -72,7 +72,7 @@ describe('Header component tests', () => {
       </MemoryRouter>
     );
 
-    // expect(getByText('Home')).toBeInTheDocument();
+    expect(getByText('Flowers')).toBeInTheDocument();
     expect(getByText('John')).toBeInTheDocument();
     expect(getByText('Log out')).toBeInTheDocument();
   });
@@ -123,7 +123,7 @@ describe('Header component tests', () => {
       </MemoryRouter>
     );
 
-    // expect(getByText('Home')).toBeInTheDocument();
+    expect(getByText('Flowers')).toBeInTheDocument();
     expect(getByText('Login')).toBeInTheDocument();
     expect(getByText('Register')).toBeInTheDocument();
   });
