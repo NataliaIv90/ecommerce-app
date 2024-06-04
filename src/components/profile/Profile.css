@@ -45,10 +45,17 @@
   .profile-wrapper {
     flex-direction: column;
     font-size: 12px;
+    padding-top: 3rem;
   }
 
   .profile-nav__list {
     display: flex;
     flex-direction: row;
+    gap: 0;
+  }
+
+  .profile-nav__item {
+    padding: 0.8rem;
+    text-align: center;
   }
 }

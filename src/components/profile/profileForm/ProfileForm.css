@@ -19,10 +19,6 @@
   display: inline-block;
 }
 
-.profile-form .error_visibility {
-  margin-left: 150px;
-}
-
 .profile-form label,
 .profile-form .country-label {
   margin-right: 20px;
