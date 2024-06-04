@@ -12,11 +12,9 @@ module.exports = {
     '^.+\\.(ts|tsx)$': 'ts-jest',
     '\\.[jt]sx?$': 'babel-jest',
     '^.+\\.m?jsx?$': 'babel-jest',
-    '\\.css$': '<rootDir>/src/tests/mocks/cssTransform.ts',
+    '\\.css$': '<rootDir>/src/tests/mocks/cssTransform.js',
   },
   setupFilesAfterEnv: ['<rootDir>/src/tests/setupTests.ts'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
-  transformIgnorePatterns: [
-    '/node_modules/(?!(swiper))',
-  ],
+  transformIgnorePatterns: ['/node_modules/(?!(swiper))'],
 };
