@@ -46,7 +46,6 @@ export const CatalogTree: React.FC<{
         sx={{ borderRadius: '5%' }}
       >
         {Array.isArray(nodes?.children) ? renderTree(nodes.children) : ''}
-        {/* {nodes.name && nodes.name[language]} */}
       </TreeItem>
     ));
   return (
@@ -54,12 +53,10 @@ export const CatalogTree: React.FC<{
       aria-label='categories tree'
       defaultExpandedItems={['root']}
       sx={treeSX}
-      //eslint-disable-next-line
-      selected={selected}
-      onNodeSelect={(_event: SyntheticEvent<Element, Event>, nodeId: SetStateAction<string>) => {
-        setSelected(nodeId as string);
+      selectedItems={selected}
+      onSelectedItemsChange={(_event: React.SyntheticEvent, itemIds: string | null) => {
+        return setSelected(itemIds as string);
       }}
-      expanded={expanded}
     >
       {renderTree(categories)}
     </SimpleTreeView>

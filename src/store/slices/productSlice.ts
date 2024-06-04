@@ -37,12 +37,10 @@ export const getProducts = createAsyncThunk('products/getProducts', async (_, th
 });
 
 export const getProductsByCat = createAsyncThunk('products/getProductsByCat', async (catId: string, thunkAPI) => {
+  thunkAPI.dispatch(setLoading(true));
   const state: RootState = thunkAPI.getState() as RootState;
   const passClient = state.customers.apiInstance;
   const response = await passClient.getProductsByCat(catId);
-  console.log(buildQueryFilter(state.products.filters));
-  // console.log(response);
-
   return response?.data;
 });
 
@@ -60,10 +58,20 @@ export const getProductsWithFilter = createAsyncThunk('products/getProductsWithF
   const filter = buildQueryFilter(state.products.filters);
   const sort = `${state.products.sort.prop} ${state.products.sort.direction}`;
   const search = state.products.search;
-
   const response = await passClient.getProductsWithFilter(filter, sort, search);
   return response;
 });
+
+export const getProductsbySearch = createAsyncThunk(
+  'products/getProductsbySearch',
+  async (searchStr: string, thunkAPI) => {
+    thunkAPI.dispatch(setLoading(true));
+    const state: RootState = thunkAPI.getState() as RootState;
+    const passClient = state.customers.apiInstance;
+    const response = await passClient.getProductsBySearch(searchStr);
+    return response.data;
+  }
+);
 
 export const buildTree = (data: Category[]): CategoryInternal[] => {
   console.log(data);
@@ -98,11 +106,11 @@ export const buildQueryFilter = (filter: FilterProducts): string[] => {
         }
         break;
       case 'colors': {
-        if (filter[key]?.length) option = `variants.attributes.color.en:"${filter[key]?.join('","')}"`;
+        if (filter[key]?.length) option = `variants.attributes.color.en-US:"${filter[key]?.join('","')}"`;
         break;
       }
       case 'size': {
-        if (filter[key]?.length) option = `variants.attributes.size.en:"${filter[key]?.join('","')}"`;
+        if (filter[key]?.length) option = `variants.attributes.size.en-US:"${filter[key]?.join('","')}"`;
         break;
       }
       case 'catId': {
@@ -170,6 +178,9 @@ const productSlice = createSlice({
       const { operand } = action.payload;
       state.filters.price = { lower, upper, operand };
     },
+    setSearch: (state, action: PayloadAction<typeof state.search>) => {
+      state.search = action.payload;
+    },
     setSortingOptions: (state, action: PayloadAction<typeof state.sort>) => {
       state.sort = action.payload;
     },
@@ -210,11 +221,17 @@ const productSlice = createSlice({
       // });
       productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
     });
+
+    builder.addCase(getProductsbySearch.fulfilled, (state, action) => {
+      state.products = action.payload ? action.payload : ([] as ProductProjection[]);
+      productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
+    });
   },
 });
 
 //eslint-disable-next-line
 export const selectProduct = (state: RootState) => state.products;
-export const { setLoading, changeSnackbarInfo, setPrice, setSortingOptions, setCategory } = productSlice.actions;
+export const { setLoading, changeSnackbarInfo, setPrice, setSortingOptions, setCategory, setSearch } =
+  productSlice.actions;
 
 export default productSlice.reducer;

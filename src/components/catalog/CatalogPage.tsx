@@ -8,7 +8,11 @@ import { getProducts, getCategories, getProductsWithFilter } from '../../store/s
 import { useEffect } from 'react';
 import { MainWrapper } from '../mainWrapper/MainWrapper';
 import { useState } from 'react';
-import { CatalogTree } from '../../shared/ui/catalogTree/CatalogTree';
+// import { CatalogTree } from '../../shared/ui/catalogTree/CatalogTree';
+import { Box } from '@mui/material';
+// import RangeSlider from '../../shared/ui/Slider';
+// import PriceChangeIcon from '@mui/icons-material/PriceChange';
+import { Filters } from './filters/Filters';
 import { Toolbar } from './filters/Toolbar';
 
 const CatalogPage = (): JSX.Element => {
@@ -31,13 +35,14 @@ const CatalogPage = (): JSX.Element => {
     if (!categories.length) void loadData();
     else void dispatch(getProductsWithFilter());
   }, [JSON.stringify(filters), JSON.stringify(sort), search]);
+  // ;
 
   useEffect(() => {
     activeCat ? setSelected(activeCat) : setSelected('');
   }, [activeCat]);
 
   // const handleCatClick = (catId: string) => dispatch(getProductsByCat('36da2b34-eccd-4a91-af76-c9c0b49fa007'));
-  const handleCatClick = () => void dispatch(getProductsWithFilter());
+  // const handleCatClick = () => void dispatch(getProductsWithFilter());
 
   return (
     <MainWrapper>
@@ -49,14 +54,15 @@ const CatalogPage = (): JSX.Element => {
           </div>
           <div className='catalog__inner'>
             <div className='catalog-category'>
-              {categories.length && (
+              {/* {categories.length && (
                 <CatalogTree
                   categories={categories}
                   handleClick={handleCatClick}
                   selected={selected}
                   setSelected={setSelected}
                 />
-              )}
+              )} */}
+              <Filters />
             </div>
             <div className='catalog-list'>
               {isLoading ? (
