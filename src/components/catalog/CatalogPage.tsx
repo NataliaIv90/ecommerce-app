@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { MainWrapper } from '../mainWrapper/MainWrapper';
 import { useState } from 'react';
 // import { CatalogTree } from '../../shared/ui/catalogTree/CatalogTree';
-import { Box } from '@mui/material';
+// import { Box } from '@mui/material';
 // import RangeSlider from '../../shared/ui/Slider';
 // import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import { Filters } from './filters/Filters';
@@ -35,6 +35,7 @@ const CatalogPage = (): JSX.Element => {
   useEffect(() => {
     if (!categories.length) void loadData();
     else void dispatch(getProductsWithFilter());
+    //eslint-disable-next-line
   }, [JSON.stringify(filters), JSON.stringify(sort), search]);
 
   useEffect(() => {
