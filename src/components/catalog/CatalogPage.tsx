@@ -8,10 +8,11 @@ import { getProducts, getCategories, getProductsByCat } from '../../store/slices
 import { useEffect } from 'react';
 import { MainWrapper } from '../mainWrapper/MainWrapper';
 import { useState } from 'react';
-import { CatalogTree } from '../../shared/ui/catalogTree/CatalogTree';
+// import { CatalogTree } from '../../shared/ui/catalogTree/CatalogTree';
 import { Box } from '@mui/material';
-import RangeSlider from '../../shared/ui/Slider';
-import PriceChangeIcon from '@mui/icons-material/PriceChange';
+// import RangeSlider from '../../shared/ui/Slider';
+// import PriceChangeIcon from '@mui/icons-material/PriceChange';
+import { Filters } from './filters/Filters';
 
 const CatalogPage = (): JSX.Element => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
@@ -40,7 +41,7 @@ const CatalogPage = (): JSX.Element => {
   };
 
   // const handleCatClick = (catId: string) => dispatch(getProductsByCat('36da2b34-eccd-4a91-af76-c9c0b49fa007'));
-  const handleCatClick = (catId: string) => dispatch(getProductsByCat(catId));
+  // const handleCatClick = (catId: string) => dispatch(getProductsByCat(catId));
 
   return (
     <MainWrapper>
@@ -60,24 +61,25 @@ const CatalogPage = (): JSX.Element => {
                   pt: 1,
                 }}
               >
-                {categories.length !== 0 && (
+                {/* {categories.length !== 0 && (
                   <CatalogTree
                     categories={categories}
                     handleClick={handleCatClick}
                     selected={selected}
                     setSelected={setSelected}
                   />
-                )}
+                )} */}
+                <Filters />
               </Box>
             </div>
           )}
-          <br />
+          {/* <br />
           <div>
             <Box>
               <PriceChangeIcon sx={{ display: 'block', marginInline: 'auto', color: '#87a2ab' }} />
               <RangeSlider />
             </Box>
-          </div>
+          </div> */}
           <div className='catalog-list'>
             {isLoading ? Array.from(new Array(9)).map((_, index) => <CatalogSkeleton key={index} />) : <ProductList />}
           </div>
