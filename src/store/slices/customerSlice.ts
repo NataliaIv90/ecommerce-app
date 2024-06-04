@@ -11,6 +11,15 @@ import {
   CustomerSetFirstNameAction,
   CustomerSetLastNameAction,
   CustomerSetDateOfBirthAction,
+  Address,
+  CustomerChangeAddressAction,
+  CustomerAddAddressAction,
+  CustomerAddBillingAddressIdAction,
+  CustomerAddShippingAddressIdAction,
+  CustomerRemoveAddressAction,
+  CustomerSetDefaultShippingAddressAction,
+  CustomerSetDefaultBillingAddressAction,
+  CustomerChangePassword,
 } from '@commercetools/platform-sdk';
 import { ClientType } from '../../types/Enums';
 
@@ -20,6 +29,15 @@ type CustomerUpdateFields = {
   setLastName?: { lastName: string };
   setEmail?: { email: string };
   setDateOfBirth?: { dateOfBirth: string };
+  changeShippingAddress?: { addressId?: string; address: Address };
+  changeBillingAddress?: { addressId?: string; address: Address };
+  addBillingAddress?: { address: Address };
+  addShippingAddress?: { address: Address };
+  addBillingAddressId?: { addressId?: string };
+  addShippingAddressId?: { addressId?: string };
+  removeAddress?: { addressId?: string };
+  setDefaultShippingAddress?: { addressId?: string };
+  setDefaultBillingAddress?: { addressId?: string };
 };
 
 interface UpdateCustomerData {
@@ -105,7 +123,6 @@ export const UpdateCustomer = createAsyncThunk(
     const existingCustomer = state.customers.customer;
 
     if (!existingCustomer) {
-      // Handle the case where the existing customer is not found
       return thunkAPI.rejectWithValue('Existing customer not found');
     }
 
@@ -145,6 +162,80 @@ export const UpdateCustomer = createAsyncThunk(
                 dateOfBirth: (value as { dateOfBirth: string }).dateOfBirth,
               } as CustomerSetDateOfBirthAction,
             ];
+          case 'changeShippingAddress':
+            return [
+              ...acc,
+              {
+                action: 'changeAddress',
+                addressId: (value as { addressId: string; address: Address }).addressId,
+                address: (value as { addressId: string; address: Address }).address,
+              } as CustomerChangeAddressAction,
+            ];
+          case 'changeBillingAddress':
+            return [
+              ...acc,
+              {
+                action: 'changeAddress',
+                addressId: (value as { addressId: string; address: Address }).addressId,
+                address: (value as { addressId: string; address: Address }).address,
+              } as CustomerChangeAddressAction,
+            ];
+          case 'addBillingAddress':
+            return [
+              ...acc,
+              {
+                action: 'addAddress',
+                address: (value as { address: Address }).address,
+              } as CustomerAddAddressAction,
+            ];
+          case 'addBillingAddressId':
+            return [
+              ...acc,
+              {
+                action: 'addBillingAddressId',
+                addressId: (value as { addressId: string }).addressId,
+              } as CustomerAddBillingAddressIdAction,
+            ];
+          case 'addShippingAddress':
+            return [
+              ...acc,
+              {
+                action: 'addAddress',
+                address: (value as { address: Address }).address,
+              } as CustomerAddAddressAction,
+            ];
+          case 'addShippingAddressId':
+            return [
+              ...acc,
+              {
+                action: 'addShippingAddressId',
+                addressId: (value as { addressId: string }).addressId,
+              } as CustomerAddShippingAddressIdAction,
+            ];
+          case 'removeAddress':
+            return [
+              ...acc,
+              {
+                action: 'removeAddress',
+                addressId: (value as { addressId: string }).addressId,
+              } as CustomerRemoveAddressAction,
+            ];
+          case 'setDefaultShippingAddress':
+            return [
+              ...acc,
+              {
+                action: 'setDefaultShippingAddress',
+                addressId: (value as { addressId: string }).addressId,
+              } as CustomerSetDefaultShippingAddressAction,
+            ];
+          case 'setDefaultBillingAddress':
+            return [
+              ...acc,
+              {
+                action: 'setDefaultBillingAddress',
+                addressId: (value as { addressId: string }).addressId,
+              } as CustomerSetDefaultBillingAddressAction,
+            ];
           default:
             return acc;
         }
@@ -153,9 +244,43 @@ export const UpdateCustomer = createAsyncThunk(
 
     try {
       const updatedCustomer = await apiInstance.updateCustomer(customerId, updatedCustomerData);
-      return updatedCustomer;
+
+      return Object.keys(updatedCustomer).length ? updatedCustomer : null;
     } catch (error) {
       throw new Error('Error while updating customer');
+    }
+  }
+);
+
+interface ChnagePasswordFields {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export const ChangePassword = createAsyncThunk(
+  'customer/changePassword',
+  async (data: ChnagePasswordFields, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const apiInstance = state.customers.apiInstance;
+
+    const existingCustomer = state.customers.customer;
+
+    if (!existingCustomer) {
+      return thunkAPI.rejectWithValue('Existing customer not found');
+    }
+
+    const chnageCustomerPassword: CustomerChangePassword = {
+      id: existingCustomer.id,
+      version: existingCustomer.version,
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+    };
+
+    try {
+      const updatedCustomer: Customer | null = await apiInstance.changePassword(chnageCustomerPassword);
+      return updatedCustomer;
+    } catch (error) {
+      throw new Error('Error while changing password!');
     }
   }
 );
@@ -191,6 +316,11 @@ const customerSlice = createSlice({
       state.customer = action.payload;
     });
     builder.addCase(UpdateCustomer.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.customer = action.payload || state.customer;
+      }
+    });
+    builder.addCase(ChangePassword.fulfilled, (state, action) => {
       if (action.payload) {
         state.customer = action.payload || state.customer;
       }

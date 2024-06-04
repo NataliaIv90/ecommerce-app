@@ -48,6 +48,9 @@ const CatalogPage = (): JSX.Element => {
   // const handleCatClick = (catId: string) => dispatch(getProductsByCat('36da2b34-eccd-4a91-af76-c9c0b49fa007'));
   // const handleCatClick = () => void dispatch(getProductsWithFilter());
 
+  // const handleCatClick = (catId: string) => dispatch(getProductsByCat(catId));
+
+
   return (
     <MainWrapper>
       <section className='catalog'>

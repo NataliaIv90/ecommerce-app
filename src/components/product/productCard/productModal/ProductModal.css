@@ -12,11 +12,10 @@
 
 .product-modal {
   position: relative;
-  background: white;
 }
 
 .product-modal__btn {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 20px;
   background-color: #fff;
@@ -24,6 +23,7 @@
   padding: 4px 7px;
   border: 1px solid #848484;
   border-radius: 2px;
+  z-index: 5;
 }
 
 .product-modal__btn:hover {
