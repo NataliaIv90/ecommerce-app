@@ -28,6 +28,7 @@ export const RangeSlider: React.FC = () => {
 
   useEffect(() => {
     setCurrPrice([price.lower, price.upper]);
+    //eslint-disable-next-line
   }, [JSON.stringify(price)]);
 
   const handleChangeFinish = () => {

@@ -48,7 +48,8 @@ export class API {
     } catch (error) {
       if (error instanceof Error) {
         errorMsg = error.message;
-        alert(errorMsg);
+        //eslint-disable-next-line
+        console.error(errorMsg);
       }
       return { data: undefined, error: errorMsg };
     }
@@ -63,7 +64,8 @@ export class API {
     } catch (error) {
       if (error instanceof Error) {
         errorMsg = error.message;
-        alert(errorMsg);
+        //eslint-disable-next-line
+        console.error(errorMsg);
       }
     }
     return result;
@@ -78,7 +80,8 @@ export class API {
     } catch (error) {
       if (error instanceof Error) {
         errorMsg = error.message;
-        alert(errorMsg);
+        //eslint-disable-next-line
+        console.error(errorMsg);
       }
     }
     return result;
@@ -101,7 +104,8 @@ export class API {
       return { data: body, error: errorMsg };
     } catch (error) {
       if (error instanceof Error) errorMsg = error.message;
-      alert(errorMsg);
+      //eslint-disable-next-line
+      console.error(errorMsg);
       return { data: undefined, error: errorMsg };
     }
   }
@@ -112,7 +116,8 @@ export class API {
       return body;
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Unknown error';
-      alert(errorMsg);
+      //eslint-disable-next-line
+      console.error(errorMsg);
       return undefined;
     }
   }
@@ -136,7 +141,8 @@ export class API {
     } catch (error) {
       if (error instanceof Error) {
         errorMsg = error.message;
-        alert(errorMsg);
+        //eslint-disable-next-line
+        console.error(errorMsg);
       }
     }
     return result;
