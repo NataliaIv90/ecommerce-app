@@ -21,6 +21,7 @@ export const CatalogTree: React.FC<{
 }> = ({ categories, handleClick, selected, setSelected }) => {
   const dispatch = useAppDispatch();
   const categoriesNotTransfromed = useAppSelector((state) => state.products.categoriesNotTransfromed);
+  //eslint-disable-next-line
   const [expanded, setExpanded] = useState([] as string[]);
   useEffect(() => {
     const node = categoriesNotTransfromed.find((node) => node.id === selected);

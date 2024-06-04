@@ -38,7 +38,7 @@ export const Filters = (): JSX.Element => {
   useEffect(() => {
     if (!categories.length) void loadData();
     else void dispatch(getProductsWithFilter());
-    // eslint-disable-next-line
+    //eslint-disable-next-line
   }, [JSON.stringify(filters)]);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export const Filters = (): JSX.Element => {
       >
         Reset
       </Button>
-      {categories.length && (
+      {categories.length !== 0 && (
         <CatalogTree
           categories={categories}
           handleClick={handleCatClick}

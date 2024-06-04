@@ -1,7 +1,10 @@
 export enum SortOptions {
+  //eslint-disable-next-line
   price = 'price',
-  color = 'variants.attributes.color.en',
-  size = 'variants.attributes.size.en',
+  //eslint-disable-next-line
+  color = 'variants.attributes.color.en-US',
+  //eslint-disable-next-line
+  size = 'variants.attributes.size.en-US',
 }
 
 export enum ClientType {
