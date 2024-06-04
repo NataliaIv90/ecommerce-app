@@ -20,6 +20,7 @@ export const SortBar: React.FC = () => {
 
   useEffect(() => {
     void dispatch(setSortingOptions({ direction: sortDirection, prop: sort }));
+    //eslint-disable-next-line
   }, [sort, sortDirection]);
   return (
     <Box sx={{ display: 'flex' }}>

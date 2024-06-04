@@ -136,6 +136,7 @@ const productSlice = createSlice({
                 !!term && size.push(term);
                 break;
               case 'variants.price.centAmount':
+                //eslint-disable-next-line
                 {
                   //eslint-disable-next-line
                   !!term && prices.push(Number(term));
