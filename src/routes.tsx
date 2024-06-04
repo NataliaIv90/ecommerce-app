@@ -9,6 +9,7 @@ import CatalogPage from './components/catalog/CatalogPage';
 import ProtectRoutes from './hooks/ProtectRoutes';
 import { Profile } from './components/profile/Profile';
 import { ProductCoponent } from './components/product/Product';
+import { ErrorPage } from './components/errorPage/ErrorPage';
 
 export enum ERoutesPaths {
   Root = '/',
@@ -18,12 +19,14 @@ export enum ERoutesPaths {
   Error404 = '404',
   Catalog = 'catalog',
   Product = 'product',
+  Error500 = '500',
 }
 
 const router = createBrowserRouter([
   {
     element: <App />,
     path: ERoutesPaths.Root,
+    errorElement: <ErrorPage />,
     children: [
       {
         element: <Main />,

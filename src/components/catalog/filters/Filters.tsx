@@ -38,6 +38,7 @@ export const Filters = (): JSX.Element => {
   useEffect(() => {
     if (!categories.length) void loadData();
     else void dispatch(getProductsWithFilter());
+
     //eslint-disable-next-line
   }, [JSON.stringify(filters)]);
 
