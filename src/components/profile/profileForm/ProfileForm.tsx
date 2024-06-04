@@ -5,6 +5,7 @@ import { Address } from '@commercetools/platform-sdk';
 import PersoanlDetails from '../personalDetails/PersonalDetails';
 import Addresses from '../addresses/Addresses';
 import './ProfileForm.css';
+import ResetPassword from '../resetPassword/ResetPassword';
 
 interface IProfileFormProps {
   selectedItem: string;
@@ -39,7 +40,7 @@ export const ProfileForm = ({ selectedItem }: IProfileFormProps): JSX.Element =>
               handleEditToggle={handleEditToggle}
             />
           )}
-          {/* {selectedItem === 'reset_password' && <ResetPassword handleEditToggle={handleEditToggle} />} */}
+          {selectedItem === 'change_password' && <ResetPassword handleEditToggle={handleEditToggle} />}
         </>
       ) : (
         <div id='profile-view'>
@@ -119,12 +120,12 @@ export const ProfileForm = ({ selectedItem }: IProfileFormProps): JSX.Element =>
             </div>
           )}
 
-          {/* {selectedItem === 'reset_password' && (
+          {selectedItem === 'change_password' && (
             <div className='address__label-value-wrapper'>
               <span className='address-info__label'>Password</span>
-              <span>******</span>
+              <span>********</span>
             </div>
-          )} */}
+          )}
         </div>
       )}
 

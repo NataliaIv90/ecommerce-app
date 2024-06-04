@@ -19,6 +19,7 @@ import {
   CustomerRemoveAddressAction,
   CustomerSetDefaultShippingAddressAction,
   CustomerSetDefaultBillingAddressAction,
+  CustomerChangePassword,
 } from '@commercetools/platform-sdk';
 import { ClientType } from '../../types/Enums';
 
@@ -122,7 +123,6 @@ export const UpdateCustomer = createAsyncThunk(
     const existingCustomer = state.customers.customer;
 
     if (!existingCustomer) {
-      // Handle the case where the existing customer is not found
       return thunkAPI.rejectWithValue('Existing customer not found');
     }
 
@@ -252,21 +252,38 @@ export const UpdateCustomer = createAsyncThunk(
   }
 );
 
-// export const ChangePassword = createAsyncThunk(
-//   'customer/changePassword',
-//   async (data: CustomerChangePassword, thunkAPI) => {
-//     const state: RootState = thunkAPI.getState() as RootState;
-//     const { id } = data;
-//     const apiInstance = state.customers.apiInstance;
-//     try {
-//       const updatedCustomer = await apiInstance.changePassword(id, data);
+interface ChnagePasswordFields {
+  currentPassword: string;
+  newPassword: string;
+}
 
-//       return Object.keys(updatedCustomer).length ? updatedCustomer : null;
-//     } catch (error) {
-//       throw new Error('Error while updating customer');
-//     }
-//   }
-// );
+export const ChangePassword = createAsyncThunk(
+  'customer/changePassword',
+  async (data: ChnagePasswordFields, thunkAPI) => {
+    const state: RootState = thunkAPI.getState() as RootState;
+    const apiInstance = state.customers.apiInstance;
+
+    const existingCustomer = state.customers.customer;
+
+    if (!existingCustomer) {
+      return thunkAPI.rejectWithValue('Existing customer not found');
+    }
+
+    const chnageCustomerPassword: CustomerChangePassword = {
+      id: existingCustomer.id,
+      version: existingCustomer.version,
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+    };
+
+    try {
+      const updatedCustomer: Customer | null = await apiInstance.changePassword(chnageCustomerPassword);
+      return updatedCustomer;
+    } catch (error) {
+      throw new Error('Error while changing password!');
+    }
+  }
+);
 
 const customerSlice = createSlice({
   name: 'customer',
@@ -303,11 +320,11 @@ const customerSlice = createSlice({
         state.customer = action.payload || state.customer;
       }
     });
-    // builder.addCase(ChangePassword.fulfilled, (state, action) => {
-    //   if (action.payload) {
-    //     state.customer = action.payload || state.customer;
-    //   }
-    // });
+    builder.addCase(ChangePassword.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.customer = action.payload || state.customer;
+      }
+    });
   },
 });
 // eslint-disable-next-line

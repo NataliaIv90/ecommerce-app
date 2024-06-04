@@ -1,4 +1,4 @@
-import { Address, Customer } from '@commercetools/platform-sdk';
+import { Customer } from '@commercetools/platform-sdk';
 import { Controller, Resolver, useForm } from 'react-hook-form';
 import { ECountrieOptions } from '../../../../types/types';
 import validationSchema from '../addressCard/shippingAddressValidationSchema';
