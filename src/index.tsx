@@ -1,12 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { App } from './components/app/App';
 import reportWebVitals from './reportWebVitals';
+import { RouterProvider } from 'react-router-dom';
+import router from './routes';
+import { Provider } from 'react-redux';
+import { store } from './store/index';
+import ProtectRoutes from './hooks/ProtectRoutes';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <ProtectRoutes>
+        <RouterProvider router={router} />
+      </ProtectRoutes>
+    </Provider>
   </React.StrictMode>
 );
 

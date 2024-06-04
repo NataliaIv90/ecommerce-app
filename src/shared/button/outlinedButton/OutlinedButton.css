@@ -1,0 +1,47 @@
+.outlinedButton {
+  font-size: 12px;
+  padding: 6px 12px;
+  font-weight: 400;
+  text-transform: uppercase;
+  border: 1px solid #9ea0a2;
+  background-color: transparent;
+  transition: all 0.5s;
+  color: #3d3d3d;
+  margin: 1rem 0;
+}
+
+.outlinedButton:hover {
+  cursor: pointer;
+  background-color: #9ea0a2;
+  color: #ffffff;
+}
+
+@media screen and (min-width: 700px) {
+  .outlinedButton {
+    padding: 12px 24px;
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .outlinedButton {
+    padding: 18px 64px;
+  }
+}
+
+.wideBtn {
+  width: 100%;
+  padding: 10px 0;
+  text-decoration: none;
+  text-transform: none;
+}
+
+.lightBtn {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.lightBtn:hover {
+  background-color: #ffffff33;
+  /* color: #9ea0a2; */
+}
