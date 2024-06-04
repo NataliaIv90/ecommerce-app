@@ -4,7 +4,7 @@ import './products/Product.css';
 import Message from '../../shared/ui/Message/Message';
 import CatalogSkeleton from './CatalogSkeleton';
 import { useAppDispatch } from '../../hooks/reduxHooks';
-import { getProducts, getCategories, getProductsByCat } from '../../store/slices/productSlice';
+import { getProducts, getCategories } from '../../store/slices/productSlice';
 import { useEffect } from 'react';
 import { MainWrapper } from '../mainWrapper/MainWrapper';
 import { useState } from 'react';
@@ -19,6 +19,7 @@ const CatalogPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const categories = useAppSelector((state) => state.products.categories);
+  // eslint-disable-next-line
   const [selected, setSelected] = useState('');
 
   const loadData = (): void => {

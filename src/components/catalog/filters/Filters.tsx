@@ -1,6 +1,6 @@
 import { CatalogTree } from '../../../shared/ui/catalogTree/CatalogTree';
 
-import { Recycling as RecyclingIcon, PriceChange as PriceChangeIcon } from '@mui/icons-material';
+import { Recycling as RecyclingIcon } from '@mui/icons-material';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import {
@@ -38,6 +38,7 @@ export const Filters = (): JSX.Element => {
   useEffect(() => {
     if (!categories.length) void loadData();
     else void dispatch(getProductsWithFilter());
+    // eslint-disable-next-line
   }, [JSON.stringify(filters)]);
 
   useEffect(() => {
