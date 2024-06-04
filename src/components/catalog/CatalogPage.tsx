@@ -4,7 +4,7 @@ import './products/Product.css';
 import Message from '../../shared/ui/Message/Message';
 import CatalogSkeleton from './CatalogSkeleton';
 import { useAppDispatch } from '../../hooks/reduxHooks';
-import { getProducts, getCategories } from '../../store/slices/productSlice';
+import { getProducts, getCategories, getProductsWithFilter } from '../../store/slices/productSlice';
 import { useEffect } from 'react';
 import { MainWrapper } from '../mainWrapper/MainWrapper';
 import { useState } from 'react';
@@ -13,6 +13,7 @@ import { Box } from '@mui/material';
 // import RangeSlider from '../../shared/ui/Slider';
 // import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import { Filters } from './filters/Filters';
+import { Toolbar } from './filters/Toolbar';
 
 const CatalogPage = (): JSX.Element => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
@@ -23,6 +24,7 @@ const CatalogPage = (): JSX.Element => {
   const activeCat = useAppSelector((state) => state.products.filters.catId);
   const sort = useAppSelector((state) => state.products.sort);
   const search = useAppSelector((state) => state.products.search);
+  // eslint-disable-next-line
   const [selected, setSelected] = useState(activeCat ? activeCat : '');
 
   const loadData = (): void => {

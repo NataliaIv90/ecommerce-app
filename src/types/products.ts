@@ -1,11 +1,5 @@
 import { type Category, type ProductProjection } from '@commercetools/platform-sdk';
-// import { SortOptions } from '@/types/Enums';
-
-export enum SortOptions {
-  price = 'price',
-  color = 'variants.attributes.color.en',
-  size = 'variants.attributes.size.en',
-}
+import { SortOptions } from './Enums';
 
 export interface CategoryInternal extends Category {
   children?: CategoryInternal[];

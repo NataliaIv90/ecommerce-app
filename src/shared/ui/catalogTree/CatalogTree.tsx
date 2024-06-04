@@ -1,6 +1,9 @@
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { CategoryInternal } from '../../../types/products';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import { useState, useEffect } from 'react';
+import { setCategory } from '../../../store/slices/productSlice';
 
 const language = 'en-US';
 const treeSX = {
