@@ -5,6 +5,7 @@ import {
   CustomerDraft,
   Product,
   CustomerUpdate,
+  CustomerChangePassword,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { Credentials } from '../store/slices/customerSlice';
@@ -214,6 +215,7 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
+
   //eslint-disable-next-line
   async getProductsBySearch(search: string) {
     let errorMsg = '';
@@ -233,6 +235,20 @@ export class API {
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
     }
+  }
+
+  async changePassword(changePassword: CustomerChangePassword): Promise<Customer | null> {
+    let errorMsg = '';
+    try {
+      const { body } = await this.client.customers().password().post({ body: changePassword }).execute();
+      return body;
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        alert(errorMsg);
+      }
+    }
+    return null;
   }
 }
 

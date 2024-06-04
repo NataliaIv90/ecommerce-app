@@ -25,6 +25,7 @@ const CatalogPage = (): JSX.Element => {
   const activeCat = useAppSelector((state) => state.products.filters.catId);
   const sort = useAppSelector((state) => state.products.sort);
   const search = useAppSelector((state) => state.products.search);
+
   //eslint-disable-next-line
   const [selected, setSelected] = useState(activeCat ? activeCat : '');
 
@@ -47,6 +48,7 @@ const CatalogPage = (): JSX.Element => {
 
   // const handleCatClick = (catId: string) => dispatch(getProductsByCat('36da2b34-eccd-4a91-af76-c9c0b49fa007'));
   // const handleCatClick = () => void dispatch(getProductsWithFilter());
+  // const handleCatClick = (catId: string) => dispatch(getProductsByCat(catId));
 
   return (
     <MainWrapper>

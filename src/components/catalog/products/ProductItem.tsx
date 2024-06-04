@@ -65,34 +65,40 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
         to={id}
         className='catalog-card'
       >
-        <img
-          className='catalog-card__image'
-          src={
-            product.masterVariant.images?.length
-              ? `${product.masterVariant.images[imageOrPriceNumber].url}`
-              : 'https://media.istockphoto.com/id/1216251206/vector/no-image-available-icon.jpg?s=612x612&w=0&k=20&c=6C0wzKp_NZgexxoECc8HD4jRpXATfcu__peSYecAwt0='
-          }
-          alt={name}
-        />
+        <div className='catalog-card__image-wrapp'>
+          <img
+            className='catalog-card__image'
+            src={
+              product.masterVariant.images?.length
+                ? `${product.masterVariant.images[imageOrPriceNumber].url}`
+                : 'https://media.istockphoto.com/id/1216251206/vector/no-image-available-icon.jpg?s=612x612&w=0&k=20&c=6C0wzKp_NZgexxoECc8HD4jRpXATfcu__peSYecAwt0='
+            }
+            alt={name}
+          />
+        </div>
 
-        <h2 className='catalog-card__title'>{name}</h2>
-        <p className='catalog-card__description'>{product.description && product.description[language]}</p>
-        <div className='catalog-card__info'>
-          <span className='catalog-card__price'>
-            {product.masterVariant?.prices
-              ? setRightPrice(
-                  product.masterVariant.prices[imageOrPriceNumber].value.centAmount,
-                  product.masterVariant.prices[0].discounted?.value.centAmount
-                )
-              : '0.00'}
-          </span>
+        <div className='catalog-content'>
           <div>
-            <button
-              className='catalog-card__button'
-              onClick={addToCartFunc}
-            >
-              {isColorBasket ? <ShoppingCartIcon /> : <ShoppingCartOutlinedIcon />}
-            </button>
+            <h2 className='catalog-card__title'>{name}</h2>
+            <p className='catalog-card__description'>{product.description && product.description[language]}</p>
+          </div>
+          <div className='catalog-card__info'>
+            <span className='catalog-card__price'>
+              {product.masterVariant?.prices
+                ? setRightPrice(
+                    product.masterVariant.prices[imageOrPriceNumber].value.centAmount,
+                    product.masterVariant.prices[0].discounted?.value.centAmount
+                  )
+                : '0.00'}
+            </span>
+            <div>
+              <button
+                className='catalog-card__button'
+                onClick={addToCartFunc}
+              >
+                {isColorBasket ? <ShoppingCartIcon /> : <ShoppingCartOutlinedIcon />}
+              </button>
+            </div>
           </div>
         </div>
       </RouterLink>

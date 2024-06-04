@@ -38,6 +38,7 @@ export const Filters = (): JSX.Element => {
   useEffect(() => {
     if (!categories.length) void loadData();
     else void dispatch(getProductsWithFilter());
+
     //eslint-disable-next-line
   }, [JSON.stringify(filters)]);
 
@@ -57,8 +58,9 @@ export const Filters = (): JSX.Element => {
       }}
     >
       <Typography
-        variant='h5'
+        variant='h6'
         color='#87a2ab'
+        padding='15px'
       >
         Filters
       </Typography>
@@ -68,7 +70,7 @@ export const Filters = (): JSX.Element => {
         variant='outlined'
         size='small'
         startIcon={<RecyclingIcon />}
-        sx={{ '&:focus': { outline: 'none' }, margin: 'auto' }}
+        sx={{ '&:focus': { outline: 'none' }, marginLeft: 'auto', marginRight: '20px' }}
         onClick={() => handleAllCategories()}
       >
         Reset
