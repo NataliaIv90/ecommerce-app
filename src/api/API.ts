@@ -236,7 +236,7 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
-
+  //eslint-disable-next-line
   async changePassword(changePassword: CustomerChangePassword): Promise<Customer | null> {
     let errorMsg = '';
     try {
