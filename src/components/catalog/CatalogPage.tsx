@@ -24,7 +24,8 @@ const CatalogPage = (): JSX.Element => {
   const activeCat = useAppSelector((state) => state.products.filters.catId);
   const sort = useAppSelector((state) => state.products.sort);
   const search = useAppSelector((state) => state.products.search);
-  // eslint-disable-next-line
+
+  //eslint-disable-next-line
   const [selected, setSelected] = useState(activeCat ? activeCat : '');
 
   const loadData = (): void => {
@@ -34,15 +35,18 @@ const CatalogPage = (): JSX.Element => {
 
   useEffect(() => {
     if (!categories.length) void loadData();
+    //eslint-disable-next-line
     else void dispatch(getProductsWithFilter());
     //eslint-disable-next-line
   }, [JSON.stringify(filters), JSON.stringify(sort), search]);
+  // ;
 
   useEffect(() => {
     activeCat ? setSelected(activeCat) : setSelected('');
   }, [activeCat]);
 
   // const handleCatClick = (catId: string) => dispatch(getProductsByCat('36da2b34-eccd-4a91-af76-c9c0b49fa007'));
+  // const handleCatClick = () => void dispatch(getProductsWithFilter());
   // const handleCatClick = (catId: string) => dispatch(getProductsByCat(catId));
 
   return (
