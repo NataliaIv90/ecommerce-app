@@ -74,7 +74,6 @@ export const getProductsbySearch = createAsyncThunk(
 );
 
 export const buildTree = (data: Category[]): CategoryInternal[] => {
-  console.log(data);
   const newData: CategoryInternal[] = data.map((node) => {
     (node as CategoryInternal).children = [] as CategoryInternal[];
     return node;
@@ -86,7 +85,6 @@ export const buildTree = (data: Category[]): CategoryInternal[] => {
       node.ancestors.forEach(({ id }) => {
         const closestParentId = id;
         const parent = rootNodes.find((root) => root.id === closestParentId);
-        console.log(node);
         if (parent && parent.children) {
           parent.children.push(node);
         }
@@ -147,6 +145,7 @@ const productSlice = createSlice({
                 !!term && size.push(term);
                 break;
               case 'variants.price.centAmount':
+                //eslint-disable-next-line
                 {
                   //eslint-disable-next-line
                   !!term && prices.push(Number(term));

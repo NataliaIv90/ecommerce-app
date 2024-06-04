@@ -162,7 +162,6 @@ export class API {
   }
   //eslint-disable-next-line
   async getProductsByCat(catId: string) {
-    console.log('catID', catId);
     const errorMsg = '';
     try {
       const response = await this.client
@@ -186,8 +185,8 @@ export class API {
       //   .execute();
       const result = response;
       return { data: result.body.results, error: errorMsg };
-      console.log('success', response);
     } catch (error) {
+      //eslint-disable-next-line
       console.log('error', error);
     }
   }

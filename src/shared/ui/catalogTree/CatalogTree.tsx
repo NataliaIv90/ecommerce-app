@@ -1,7 +1,6 @@
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { CategoryInternal } from '../../../types/products';
-import { SetStateAction, SyntheticEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { useState, useEffect } from 'react';
 import { setCategory } from '../../../store/slices/productSlice';
@@ -22,6 +21,7 @@ export const CatalogTree: React.FC<{
 }> = ({ categories, handleClick, selected, setSelected }) => {
   const dispatch = useAppDispatch();
   const categoriesNotTransfromed = useAppSelector((state) => state.products.categoriesNotTransfromed);
+  //eslint-disable-next-line
   const [expanded, setExpanded] = useState([] as string[]);
   useEffect(() => {
     const node = categoriesNotTransfromed.find((node) => node.id === selected);
