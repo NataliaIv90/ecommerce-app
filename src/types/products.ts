@@ -1,12 +1,5 @@
 import { type Category, type ProductProjection } from '@commercetools/platform-sdk';
-// import { SortOptions } from '@/types/Enums';
-
-export enum SortOptions {
-  price = 'price',
-  name = 'name.en',
-  color = 'variants.attributes.color.en',
-  size = 'variants.attributes.size.en',
-}
+import { SortOptions } from './Enums';
 
 export interface CategoryInternal extends Category {
   children?: CategoryInternal[];
@@ -20,8 +13,6 @@ export type FilterProducts = {
   };
   colors?: string[];
   size?: string[];
-  manufacturer?: string[];
-  gender?: string[];
   catId?: string;
 };
 
@@ -30,19 +21,11 @@ export type filterActiveFormat = {
     value: string;
     action: () => void;
   };
-  gender: {
-    value: string;
-    action: () => void;
-  };
   color: {
     value: string;
     action: () => void;
   };
   size: {
-    value: string;
-    action: () => void;
-  };
-  brand: {
     value: string;
     action: () => void;
   };
@@ -56,8 +39,6 @@ export type InitialState = {
   filters: FilterProducts;
   colors: string[];
   size: string[];
-  gender: string[];
-  manufacturer: string[];
   maxPrice: number;
   isLoading: boolean;
   sort: {
@@ -65,10 +46,6 @@ export type InitialState = {
     prop: SortOptions;
   };
   search: string;
-  total: number;
-  limit: number;
-  currentPage: number;
-  count: number;
   digits: number;
   productsForSlider: ProductProjection[];
 };

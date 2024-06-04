@@ -69,6 +69,21 @@
   margin: 0;
 }
 
+.catalog__inner {
+  display: flex;
+}
+
+.catalog-category {
+  min-width: 25%;
+}
+.catalog-toolbar {
+  display: flex;
+  justify-content: end;
+}
+
+.catalog-list {
+  width: 100%;
+}
 /* Responsive styles */
 
 @media (min-width: 1024px) {
@@ -119,5 +134,8 @@
 
   .catalog-card__title {
     margin-top: 25px;
+  }
+  .catalog__inner {
+    flex-direction: column;
   }
 }
