@@ -21,31 +21,31 @@ const CatalogPage = (): JSX.Element => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
   const dispatch = useAppDispatch();
 
-  const categories = useAppSelector((state) => state.products.categories);
-  const filters = useAppSelector((state) => state.products.filters);
-  const activeCat = useAppSelector((state) => state.products.filters.catId);
-  const sort = useAppSelector((state) => state.products.sort);
-  const search = useAppSelector((state) => state.products.search);
+  // const categories = useAppSelector((state) => state.products.categories);
+  // const filters = useAppSelector((state) => state.products.filters);
+  // const activeCat = useAppSelector((state) => state.products.filters.catId);
+  // const sort = useAppSelector((state) => state.products.sort);
+  // const search = useAppSelector((state) => state.products.search);
 
-  //eslint-disable-next-line
-  const [selected, setSelected] = useState(activeCat ? activeCat : '');
+  // //eslint-disable-next-line
+  // const [selected, setSelected] = useState(activeCat ? activeCat : '');
 
-  const loadData = (): void => {
-    void dispatch(getCategories());
-    void dispatch(getProducts());
-  };
+  // const loadData = (): void => {
+  //   void dispatch(getCategories());
+  //   void dispatch(getProducts());
+  // };
 
-  useEffect(() => {
-    if (!categories.length) void loadData();
-    //eslint-disable-next-line
-    else void dispatch(getProductsWithFilter());
-    //eslint-disable-next-line
-  }, [JSON.stringify(filters), JSON.stringify(sort), search]);
-  // ;
+  // useEffect(() => {
+  //   if (!categories.length) void loadData();
+  //   //eslint-disable-next-line
+  //   else void dispatch(getProductsWithFilter());
+  //   //eslint-disable-next-line
+  // }, [JSON.stringify(filters), JSON.stringify(sort), search]);
+  // // ;
 
-  useEffect(() => {
-    activeCat ? setSelected(activeCat) : setSelected('');
-  }, [activeCat]);
+  // useEffect(() => {
+  //   activeCat ? setSelected(activeCat) : setSelected('');
+  // }, [activeCat]);
 
   // const handleCatClick = (catId: string) => dispatch(getProductsByCat('36da2b34-eccd-4a91-af76-c9c0b49fa007'));
   // const handleCatClick = () => void dispatch(getProductsWithFilter());
@@ -62,18 +62,8 @@ const CatalogPage = (): JSX.Element => {
           </div>
           <div className='catalog__inner'>
             <div className='catalog-category'>
-              {/* {categories.length && (
-                <CatalogTree
-                  categories={categories}
-                  handleClick={handleCatClick}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
-              )} */}
               <Filters />
             </div>
-
-            {/* catalog-list */}
             {isLoading ? <CatalogSkeletonList /> : <ProductList />}
           </div>
         </div>

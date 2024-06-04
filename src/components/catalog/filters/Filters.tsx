@@ -26,8 +26,8 @@ export const Filters = (): JSX.Element => {
   };
 
   const handleCatClick = (catId: string) => {
-    dispatch(getProductsByCat(catId));
-    // dispatch(getProductsWithFilter());
+    // dispatch(getProductsByCat(catId));
+    dispatch(getProductsWithFilter());
   };
 
   const loadData = (): void => {

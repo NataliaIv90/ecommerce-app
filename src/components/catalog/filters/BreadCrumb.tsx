@@ -29,11 +29,12 @@ export const BreadCrumbs: React.FC = () => {
       const currentNode = cats?.find((node) => node.id === cat) as Category;
       currentNode?.ancestors.forEach((node) => {
         path.push({
-          name: cats?.find((parent) => parent?.id === node.id)?.name.en as string,
+          name: cats?.find((parent) => parent?.id === node.id)?.name['en-US'] as string,
           action: () => {
             dispatch(resetFilter());
             dispatch(setSearch(''));
-            dispatch(setCategory({ categoryId: node.id }));
+            dispatch(setCategory({ categoryId: node?.id }));
+            console.log(node.id);
           },
         });
       });
@@ -43,7 +44,7 @@ export const BreadCrumbs: React.FC = () => {
           action: () => {
             dispatch(resetFilter());
             dispatch(setSearch(''));
-            dispatch(setCategory({ categoryId: currentNode.id }));
+            dispatch(setCategory({ categoryId: currentNode?.id }));
           },
         });
       }

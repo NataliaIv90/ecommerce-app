@@ -55,7 +55,7 @@ export const getProductsWithFilter = createAsyncThunk('products/getProductsWithF
   thunkAPI.dispatch(setLoading(true));
   const state: RootState = thunkAPI.getState() as RootState;
   const passClient = state.customers.apiInstance;
-  const filter = buildQueryFilter(state.products.filters);
+  const filter = buildQueryFilter(state.products?.filters);
   const sort = `${state.products.sort.prop} ${state.products.sort.direction}`;
   const search = state.products.search;
   const response = await passClient.getProductsWithFilter(filter, sort, search);
@@ -136,11 +136,11 @@ const productSlice = createSlice({
         if (facetData.terms.length) {
           facetData.terms.forEach(({ term }: { term: string; count: number }) => {
             switch (facet) {
-              case 'variants.attributes.color.en':
+              case 'variants.attributes.color.en-US':
                 //eslint-disable-next-line
                 !!term && colors.push(term);
                 break;
-              case 'variants.attributes.size.en':
+              case 'variants.attributes.size.en-US':
                 //eslint-disable-next-line
                 !!term && size.push(term);
                 break;
@@ -194,16 +194,30 @@ const productSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // builder.addCase(getProducts.fulfilled, (state, action) => {
+    //   if (action.payload) {
+    //     state.products = action.payload ? action.payload.results : ([] as ProductProjection[]);
+    //   } else {
+    //     state.snackbarInfo = {
+    //       message: '',
+    //       errorMessage: 'Something went wrong!',
+    //     };
+    //   }
+    //   productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
+    // });
     builder.addCase(getProducts.fulfilled, (state, action) => {
       if (action.payload) {
-        state.products = action.payload ? action.payload.results : ([] as ProductProjection[]);
-      } else {
-        state.snackbarInfo = {
-          message: '',
-          errorMessage: 'Something went wrong!',
-        };
+        productSlice.caseReducers.deriveAttributes(state, {
+          payload: {
+            facets: action.payload?.facets,
+          },
+          type: 'products/filters',
+        });
+
+        state.digits = action.payload.results[0].masterVariant.prices
+          ? action.payload.results[0].masterVariant.prices[0].value.fractionDigits
+          : 0;
       }
-      productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
     });
     builder.addCase(getProductsByCat.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
