@@ -14,6 +14,7 @@ import { useState } from 'react';
 // import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import { Filters } from './filters/Filters';
 import { Toolbar } from './filters/Toolbar';
+import { BreadCrumbs } from './filters/BreadCrumb';
 
 const CatalogPage = (): JSX.Element => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
@@ -53,6 +54,7 @@ const CatalogPage = (): JSX.Element => {
     <MainWrapper>
       <section className='catalog'>
         <div className='container'>
+          <BreadCrumbs />
           <h1 className='catalog__title'>{!isLoading ? 'Choose the bouquet of your dreams!' : ''}</h1>
           <div className='catalog-toolbar'>
             <Toolbar />

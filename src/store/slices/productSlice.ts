@@ -186,6 +186,12 @@ const productSlice = createSlice({
     setCategory: (state, action: PayloadAction<{ categoryId: string }>) => {
       state.filters.catId = action.payload.categoryId;
     },
+    resetFilter: (state) => {
+      const newFilterState = { ...initialState.filters };
+      newFilterState.price = { ...initialState.filters.price };
+      newFilterState.price.upper = state.maxPrice;
+      state.filters = newFilterState;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getProducts.fulfilled, (state, action) => {
@@ -230,7 +236,7 @@ const productSlice = createSlice({
 
 //eslint-disable-next-line
 export const selectProduct = (state: RootState) => state.products;
-export const { setLoading, changeSnackbarInfo, setPrice, setSortingOptions, setCategory, setSearch } =
+export const { setLoading, changeSnackbarInfo, setPrice, setSortingOptions, setCategory, setSearch, resetFilter } =
   productSlice.actions;
 
 export default productSlice.reducer;

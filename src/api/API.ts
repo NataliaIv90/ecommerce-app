@@ -215,7 +215,7 @@ export class API {
       return { data: undefined, error: errorMsg };
     }
   }
-  
+
   //eslint-disable-next-line
   async getProductsBySearch(search: string) {
     let errorMsg = '';
@@ -235,52 +235,7 @@ export class API {
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
     }
-
-  // async getCategories(catId: string): Promise<Category | undefined> {
-  //   // let errorMsg = '';
-  //   try {
-  //     const { body } = await this.client.categories().withId({ ID: catId }).get().execute();
-  //     return body;
-  //     // const result = body.results;
-  //     // return { data: result, error: errorMsg };
-  //   } catch (error) {
-  //     console.log(error);
-  //     //   if (error instanceof Error) errorMsg = error.message;
-  //     //   return { data: undefined, error: errorMsg };
-  //     // }
-  //   }
-  // }
-
-  // async getProductsByCat(catId: string): Promise<
-  //   | {
-  //       data: ProductProjection[];
-  //       error: string;
-  //     }
-  //   | {
-  //       data: undefined;
-  //       error: string;
-  //     }
-  // > {
-  //   let errorMsg = '';
-  //   try {
-  //     const respsone = await this.client
-  //       .productProjections()
-  //       .search()
-  //       .get({
-  //         queryArgs: {
-  //           limit: 10,
-  //           facets: ['variants.attributes.color.en'],
-  //           filter: [`categories.id:subtree("${catId}")`],
-  //         },
-  //       })
-  //       .execute();
-  //     const result = respsone;
-  //     return { data: result.body.results, error: errorMsg };
-  //   } catch (error) {
-  //     if (error instanceof Error) errorMsg = error.message;
-  //     return { data: undefined, error: errorMsg };
-  //   }
-  // }
+  }
 
   async changePassword(changePassword: CustomerChangePassword): Promise<Customer | null> {
     let errorMsg = '';
