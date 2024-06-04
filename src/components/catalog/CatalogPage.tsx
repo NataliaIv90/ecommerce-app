@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { Filters } from './filters/Filters';
 import { Toolbar } from './filters/Toolbar';
 import { BreadCrumbs } from './filters/BreadCrumb';
+import CatalogSkeletonList from './CatalogSkeletonList';
 
 const CatalogPage = (): JSX.Element => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
@@ -71,13 +72,9 @@ const CatalogPage = (): JSX.Element => {
               )} */}
               <Filters />
             </div>
-            <div className='catalog-list'>
-              {isLoading ? (
-                Array.from(new Array(9)).map((_, index) => <CatalogSkeleton key={index} />)
-              ) : (
-                <ProductList />
-              )}
-            </div>
+
+            {/* catalog-list */}
+            {isLoading ? <CatalogSkeletonList /> : <ProductList />}
           </div>
         </div>
         <Message />
