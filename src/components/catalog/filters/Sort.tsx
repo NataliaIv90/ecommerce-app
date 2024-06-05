@@ -10,7 +10,7 @@ const options = Object.keys(SortOptions) as Array<keyof typeof SortOptions>;
 export const SortBar: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const [sort, setSort] = useState(SortOptions.color);
+  const [sort, setSort] = useState(SortOptions.price);
 
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
