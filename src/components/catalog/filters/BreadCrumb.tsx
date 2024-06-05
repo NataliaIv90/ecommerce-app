@@ -34,7 +34,6 @@ export const BreadCrumbs: React.FC = () => {
             dispatch(resetFilter());
             dispatch(setSearch(''));
             dispatch(setCategory({ categoryId: node?.id }));
-            console.log(node.id);
           },
         });
       });
