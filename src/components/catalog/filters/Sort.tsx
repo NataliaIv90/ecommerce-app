@@ -1,7 +1,7 @@
 import { Box, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../hooks/reduxHooks';
-import { setSortingOptions } from '../../../store/slices/productSlice';
+import { getProductsWithFilter, setSortingOptions } from '../../../store/slices/productSlice';
 import { SortOptions } from '../../../types/Enums';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
@@ -10,7 +10,7 @@ const options = Object.keys(SortOptions) as Array<keyof typeof SortOptions>;
 export const SortBar: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const [sort, setSort] = useState(SortOptions.price);
+  const [sort, setSort] = useState(SortOptions.color);
 
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
@@ -20,6 +20,7 @@ export const SortBar: React.FC = () => {
 
   useEffect(() => {
     void dispatch(setSortingOptions({ direction: sortDirection, prop: sort }));
+    void dispatch(getProductsWithFilter());
     //eslint-disable-next-line
   }, [sort, sortDirection]);
   return (
