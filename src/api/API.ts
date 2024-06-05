@@ -93,10 +93,11 @@ export class API {
     try {
       const { body } = await this.client
         .productProjections()
+        .search()
         .get({
           queryArgs: {
             limit: 10,
-            facet: ['variants.attributes.color.en', 'variants.attributes.size.en', 'variants.price.centAmount'],
+            facet: ['variants.attributes.color.en-US', 'variants.attributes.size.en-US', 'variants.price.centAmount'],
           },
         })
         .execute();

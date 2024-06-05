@@ -3,12 +3,7 @@ import { CatalogTree } from '../../../shared/ui/catalogTree/CatalogTree';
 import { Recycling as RecyclingIcon } from '@mui/icons-material';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
-import {
-  getCategories,
-  getProducts,
-  getProductsWithFilter,
-  getProductsByCat,
-} from '../../../store/slices/productSlice';
+import { getCategories, getProducts, getProductsWithFilter, resetFilter } from '../../../store/slices/productSlice';
 import { useEffect, useState } from 'react';
 
 export const Filters = (): JSX.Element => {
@@ -21,13 +16,13 @@ export const Filters = (): JSX.Element => {
   const [selected, setSelected] = useState(activeCat ? activeCat : '');
 
   const handleAllCategories = () => {
+    dispatch(resetFilter());
     setSelected('');
-    void dispatch(getProducts());
   };
 
   const handleCatClick = (catId: string) => {
-    dispatch(getProductsByCat(catId));
-    // dispatch(getProductsWithFilter());
+    // dispatch(getProductsByCat(catId));
+    dispatch(getProductsWithFilter());
   };
 
   const loadData = (): void => {

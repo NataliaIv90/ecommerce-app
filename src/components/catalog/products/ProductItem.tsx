@@ -9,6 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { Grid, Card, CardMedia } from '@mui/material';
 
 const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
   const language = 'en-US';
@@ -61,47 +62,58 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
         action={action}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       />
-      <RouterLink
-        to={id}
-        className='catalog-card'
+      <Grid
+        item
+        xs={12}
+        sm={12}
+        md={4}
+        sx={{
+          position: 'relative',
+        }}
       >
-        <div className='catalog-card__image-wrapp'>
-          <img
-            className='catalog-card__image'
-            src={
-              product.masterVariant.images?.length
-                ? `${product.masterVariant.images[imageOrPriceNumber].url}`
-                : 'https://media.istockphoto.com/id/1216251206/vector/no-image-available-icon.jpg?s=612x612&w=0&k=20&c=6C0wzKp_NZgexxoECc8HD4jRpXATfcu__peSYecAwt0='
-            }
-            alt={name}
-          />
-        </div>
+        <RouterLink to={id}>
+          <Card
+            className='catalog-card'
+            sx={{ transition: 'all 0.3s', '&:hover': { boxShadow: 10, transform: 'scale(1.05)' } }}
+          >
+            <CardMedia
+              component='img'
+              image={
+                product.masterVariant.images?.length
+                  ? `${product.masterVariant.images[imageOrPriceNumber].url}`
+                  : 'https://media.istockphoto.com/id/1216251206/vector/no-image-available-icon.jpg?s=612x612&w=0&k=20&c=6C0wzKp_NZgexxoECc8HD4jRpXATfcu__peSYecAwt0='
+              }
+              alt={product.name[language]}
+              sx={{ maxHeight: 250, minHeight: 250 }}
+            />
 
-        <div className='catalog-content'>
-          <div>
-            <h2 className='catalog-card__title'>{name}</h2>
-            <p className='catalog-card__description'>{product.description && product.description[language]}</p>
-          </div>
-          <div className='catalog-card__info'>
-            <span className='catalog-card__price'>
-              {product.masterVariant?.prices
-                ? setRightPrice(
-                    product.masterVariant.prices[imageOrPriceNumber].value.centAmount,
-                    product.masterVariant.prices[0].discounted?.value.centAmount
-                  )
-                : '0.00'}
-            </span>
-            <div>
-              <button
-                className='catalog-card__button'
-                onClick={addToCartFunc}
-              >
-                {isColorBasket ? <ShoppingCartIcon /> : <ShoppingCartOutlinedIcon />}
-              </button>
+            <div className='catalog-content'>
+              <div>
+                <h2 className='catalog-card__title'>{name}</h2>
+                <p className='catalog-card__description'>{product.description && product.description[language]}</p>
+              </div>
+              <div className='catalog-card__info'>
+                <span className='catalog-card__price'>
+                  {product.masterVariant?.prices
+                    ? setRightPrice(
+                        product.masterVariant.prices[imageOrPriceNumber].value.centAmount,
+                        product.masterVariant.prices[0].discounted?.value.centAmount
+                      )
+                    : '0.00'}
+                </span>
+                <div>
+                  <button
+                    className='catalog-card__button'
+                    onClick={addToCartFunc}
+                  >
+                    {isColorBasket ? <ShoppingCartIcon /> : <ShoppingCartOutlinedIcon />}
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </RouterLink>
+          </Card>
+        </RouterLink>
+      </Grid>
     </>
   );
 };
