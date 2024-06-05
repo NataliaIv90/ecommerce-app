@@ -16,10 +16,16 @@ import { Filters } from './filters/Filters';
 import { Toolbar } from './filters/Toolbar';
 import { BreadCrumbs } from './filters/BreadCrumb';
 import CatalogSkeletonList from './CatalogSkeletonList';
+import { FilterModalWindow } from './filters/FilterModalWindow';
+import { Box, Button, Container } from '@mui/material';
 
 const CatalogPage = (): JSX.Element => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
   const dispatch = useAppDispatch();
+
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
 
   // const categories = useAppSelector((state) => state.products.categories);
   // const filters = useAppSelector((state) => state.products.filters);
@@ -55,6 +61,17 @@ const CatalogPage = (): JSX.Element => {
     <MainWrapper>
       <section className='catalog'>
         <div className='container'>
+          <Button
+            sx={{ display: { xs: 'flex', md: 'none' } }}
+            onClick={handleOpen}
+            variant='contained'
+          >
+            Filters
+          </Button>
+          <FilterModalWindow
+            open={open}
+            setOpen={setOpen}
+          />
           <BreadCrumbs />
           <h1 className='catalog__title'>{!isLoading ? 'Choose the bouquet of your dreams!' : ''}</h1>
           <div className='catalog-toolbar'>
@@ -62,7 +79,9 @@ const CatalogPage = (): JSX.Element => {
           </div>
           <div className='catalog__inner'>
             <div className='catalog-category'>
-              <Filters />
+              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                <Filters />
+              </Box>
             </div>
             {isLoading ? <CatalogSkeletonList /> : <ProductList />}
           </div>

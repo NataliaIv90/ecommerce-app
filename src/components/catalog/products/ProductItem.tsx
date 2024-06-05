@@ -64,8 +64,8 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
       />
       <Grid
         item
-        xs={6}
-        sm={6}
+        xs={12}
+        sm={12}
         md={4}
         sx={{
           position: 'relative',
