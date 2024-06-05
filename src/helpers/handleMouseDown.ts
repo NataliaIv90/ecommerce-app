@@ -1,3 +1,3 @@
-export const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
+export const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>): void => {
   event.preventDefault();
 };
