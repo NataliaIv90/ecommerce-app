@@ -208,7 +208,7 @@ export class API {
         .get({
           queryArgs: {
             'text.en-US': search,
-            fuzzy: true,
+            fuzzy: false,
             sort,
             'filter.query': filter,
           },
