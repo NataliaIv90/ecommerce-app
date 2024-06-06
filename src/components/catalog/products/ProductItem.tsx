@@ -105,6 +105,7 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
                   <button
                     className='catalog-card__button'
                     onClick={addToCartFunc}
+                    // basket button
                   >
                     {isColorBasket ? <ShoppingCartIcon /> : <ShoppingCartOutlinedIcon />}
                   </button>
