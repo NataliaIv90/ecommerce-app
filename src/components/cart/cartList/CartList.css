@@ -1,0 +1,8 @@
+.cart-list {
+    position: relative;
+}
+
+.cart-list__title {
+    text-align: center;
+    margin: 2rem 0;
+}
