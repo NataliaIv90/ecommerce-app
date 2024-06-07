@@ -1,18 +1,18 @@
 .cart {
-    width: 90%;
-    margin: auto;
-    margin-bottom: 2rem;
+  width: 90%;
+  margin: auto;
+  margin-bottom: 2rem;
 }
 
 @media screen and (min-width: 769px) {
-    .cart {
-        display: grid;
-        grid-template-columns: 1.5fr 1fr;
-    }
+  .cart {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+  }
 }
 
 @media screen and (min-width: 1025px) {
-    .cart {
-        grid-template-columns: 2fr 1fr;
-    }
+  .cart {
+    grid-template-columns: 2fr 1fr;
+  }
 }
