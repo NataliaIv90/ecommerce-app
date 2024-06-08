@@ -66,6 +66,10 @@ interface IinitialState {
   id: string;
   customer: Customer | null;
   isLoading: boolean;
+  snackbarInfo: {
+    massage: string;
+    errorMassage: string;
+  };
 }
 
 const initialState: IinitialState = {
@@ -76,11 +80,16 @@ const initialState: IinitialState = {
   id: '',
   customer: null,
   isLoading: true,
+  snackbarInfo: {
+    massage: '',
+    errorMassage: '',
+  },
 };
 
 export const createNewCustomer = createAsyncThunk('customer/createNew', async (data: signUp, thunkAPI) => {
   const state: RootState = thunkAPI.getState() as RootState;
-  const { ...draft } = { ...data.requestData };
+  const anonymousId = state.carts.cart.anonymousId;
+  const { ...draft } = { ...data.requestData, anonymousId };
   const response = await state.customers.apiInstance.createCustomer(draft);
   if (response.data) {
     const passClient = new API(
@@ -89,23 +98,28 @@ export const createNewCustomer = createAsyncThunk('customer/createNew', async (d
         password: data.requestData.password as string,
       })
     );
-    await passClient.signIn({
-      email: data.requestData.email,
-      password: data.requestData.password as string,
-      setLoading: function (val: boolean): void {
-        throw new Error('Function not implemented.');
-      },
-    });
+    await passClient.signIn({ email: data.requestData.email, password: data.requestData.password as string });
   }
+
   data.setLoading(false);
   return { customer: response.data?.customer, errorMassage: response.error || '' };
 });
 
-export const SignIn = createAsyncThunk('customers/token', async (credentials: Credentials) => {
+// export const SignIn = createAsyncThunk('customers/token', async (credentials: Credentials) => {
+//   const { email, password } = credentials;
+//   const passClient = new API(getApiRoot('password', { email, password }));
+//   const response = await passClient.signIn(credentials);
+//   return response;
+// });
+
+export const SignIn = createAsyncThunk('customer/signIn', async (credentials: Credentials, thunkAPI) => {
+  const state: RootState = thunkAPI.getState() as RootState;
   const { email, password } = credentials;
-  const passClient = new API(getApiRoot('password', { email, password }));
+  await state.customers.apiInstance.signInWithCartMerge(credentials);
+  const passClient = new API(getApiRoot(ClientType.password, { email, password }));
   const response = await passClient.signIn(credentials);
-  return response;
+  credentials.setLoading(false);
+  return { customer: response.data?.customer, errorMassage: response.error || '' };
 });
 
 export const SignInByToken = createAsyncThunk('customer/signInByToken', async (token: string) => {
@@ -302,6 +316,9 @@ const customerSlice = createSlice({
     setCustomer: (state, action: PayloadAction<Customer | null>) => {
       state.customer = action.payload;
     },
+    isLoading: (state, action: PayloadAction<true | false>) => {
+      state.isLoading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
@@ -310,7 +327,11 @@ const customerSlice = createSlice({
       }
     });
     builder.addCase(SignIn.fulfilled, (state, action) => {
-      state.customer = action.payload.customer;
+      state.customer = action.payload.customer as Customer;
+      state.snackbarInfo = {
+        massage: `Successful authorization. Hello ${action.payload.customer?.firstName || ''}`,
+        errorMassage: action.payload.errorMassage,
+      };
     });
     builder.addCase(SignInByToken.fulfilled, (state, action) => {
       state.customer = action.payload;
@@ -330,6 +351,6 @@ const customerSlice = createSlice({
 // eslint-disable-next-line
 export const selectCustomer = (state: RootState) => state.customers;
 // eslint-disable-next-line
-export const { createCustomer, setAuthorization, setApi, setCustomer } = customerSlice.actions;
+export const { createCustomer, setAuthorization, setApi, setCustomer, isLoading } = customerSlice.actions;
 
 export default customerSlice.reducer;

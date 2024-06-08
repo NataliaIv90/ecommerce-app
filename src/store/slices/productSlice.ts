@@ -32,7 +32,6 @@ export const getProducts = createAsyncThunk('products/getProducts', async (_, th
   const state: RootState = thunkAPI.getState() as RootState;
   const passClient = state.customers.apiInstance;
   const response = await passClient.getProducts();
-  // await passClient.getProductsByCat();
   return response.data;
 });
 
@@ -55,7 +54,7 @@ export const getProductsWithFilter = createAsyncThunk('products/getProductsWithF
   thunkAPI.dispatch(setLoading(true));
   const state: RootState = thunkAPI.getState() as RootState;
   const passClient = state.customers.apiInstance;
-  const filter = buildQueryFilter(state.products?.filters);
+  const filter = buildQueryFilter(state.products.filters);
   const sort = `${state.products.sort.prop} ${state.products.sort.direction}`;
   const search = state.products.search;
   const response = await passClient.getProductsWithFilter(filter, sort, search);
@@ -221,6 +220,7 @@ const productSlice = createSlice({
     });
     builder.addCase(getProductsByCat.fulfilled, (state, action) => {
       state.products = action.payload ? action.payload : ([] as ProductProjection[]);
+      productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
     });
     builder.addCase(getCategories.fulfilled, (state, action) => {
       let categories = [] as CategoryInternal[];
@@ -233,11 +233,6 @@ const productSlice = createSlice({
       state.products = action.payload.data?.body.results
         ? action.payload.data?.body.results
         : ([] as ProductProjection[]);
-
-      // productSlice.caseReducers.setTotal(state, {
-      //   payload: { total: action.payload.data?.body.total as number },
-      //   type: 'products/total',
-      // });
       productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
     });
 

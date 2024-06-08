@@ -10,6 +10,8 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Grid, Card, CardMedia } from '@mui/material';
+import { useAppSelector, useAppDispatch } from '../../../hooks/reduxHooks';
+import { addProductToCart, setLoader } from '../../../store/slices/cartSlice';
 
 const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
   const language = 'en-US';
@@ -21,14 +23,25 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
   const [isColorBasket, setIsColorBasket] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const cart = useAppSelector((state) => state.carts.cart);
+  const dispatch = useAppDispatch();
+
+  // const addToCartFunc = (e: { preventDefault: () => void }) => {
+  //   e.preventDefault();
+  //   if (!isColorBasket) {
+  //     addToCart(id, name, amount);
+  //   } else {
+  //     setOpen(true);
+  //   }
+  //   setIsColorBasket((prevValue) => !prevValue);
+  // };
+
   const addToCartFunc = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (!isColorBasket) {
-      addToCart(id, name, amount);
-    } else {
-      setOpen(true);
+    dispatch(setLoader());
+    if (product.id) {
+      void dispatch(addProductToCart(id));
     }
-    setIsColorBasket((prevValue) => !prevValue);
   };
 
   const handleClose = () => {
@@ -107,7 +120,8 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
                     onClick={addToCartFunc}
                     // basket button
                   >
-                    {isColorBasket ? <ShoppingCartIcon /> : <ShoppingCartOutlinedIcon />}
+                    {/* {isColorBasket ? <ShoppingCartIcon /> : <ShoppingCartOutlinedIcon />} */}
+                    <ShoppingCartOutlinedIcon />
                   </button>
                 </div>
               </div>
