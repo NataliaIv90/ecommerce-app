@@ -1,4 +1,4 @@
-import { Image, Price } from '@commercetools/platform-sdk';
+import { Customer, Image, Price } from '@commercetools/platform-sdk';
 import { FC, useRef, useState } from 'react';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 import './ProductCard.css';
@@ -9,6 +9,9 @@ import SvgCircleIcon from '../../../shared/icons/circle/CircleIcon';
 import { setRightPrice } from '../../../utils/price-formatting-functions';
 import { addToCart } from '../../../utils/addToCart';
 import { ProductModal } from './productModal/ProductModal';
+import useCart from '../../../hooks/useGetProductToCart';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 
 export interface IProductCardProps {
   name: string | '';
@@ -25,6 +28,13 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
+  const { addProductToCart } = useCart();
+  const customer = useSelector((state: RootState) => state.customers.customer); // Adjust according to your customer slice
+
+  const handleAddToCart = async (productId: string, variantId: number, customer: Customer | null) => {
+    console.log(customer);
+    await addProductToCart(productId, variantId);
+  };
 
   const handleToggleDescription = () => {
     setIsExpanded(!isExpanded);
@@ -130,7 +140,7 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
         <div className='product-card__cart-button-container'>
           <OutlinedButton
             text='Add to cart'
-            onClick={() => addToCart(id, name, amount)}
+            onClick={() => handleAddToCart(id, amount, customer)}
           />
           <QuantityController
             amount={amount}

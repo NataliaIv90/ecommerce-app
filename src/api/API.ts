@@ -6,6 +6,9 @@ import {
   Product,
   CustomerUpdate,
   CustomerChangePassword,
+  Cart,
+  LineItemDraft,
+  CartDraft,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { Credentials } from '../store/slices/customerSlice';
@@ -89,6 +92,7 @@ export class API {
   //eslint-disable-next-line
   async getProducts() {
     // : Promise<{ data: ProductProjectionPagedQueryResponse | undefined; error: string }>
+    console.log(this.client);
     let errorMsg = '';
     try {
       const { body } = await this.client
@@ -256,6 +260,124 @@ export class API {
       }
     }
     return null;
+  }
+
+  async createAnonymousCart(): Promise<Cart | null> {
+    let errorMsg = '';
+    try {
+      const cartDraft: CartDraft = {
+        currency: 'USD',
+        // anonymousId: 'some-unique-anonymous-id', // Optionally set your anonymous ID here
+      };
+
+      const { body } = await this.client.carts().post({ body: cartDraft }).execute();
+      return body;
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        console.error(errorMsg);
+      }
+      return null;
+    }
+  }
+
+  async addProductToAnonymousCart(
+    cartId: string,
+    productId: string,
+    variantId: number,
+    version: number
+  ): Promise<Cart | null> {
+    let errorMsg = '';
+    try {
+      const lineItemDraft: LineItemDraft = {
+        productId,
+        variantId,
+        quantity: 1,
+      };
+
+      const { body } = await this.client
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version: version, // Ensure you use the correct version
+            actions: [
+              {
+                action: 'addLineItem',
+                ...lineItemDraft,
+              },
+            ],
+          },
+        })
+        .execute();
+
+      return body;
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        console.error(errorMsg);
+      }
+      return null;
+    }
+  }
+
+  async createUserCart(customerId: string): Promise<Cart | null> {
+    let errorMsg = '';
+    try {
+      const cartDraft: CartDraft = {
+        currency: 'USD',
+        customerId: customerId,
+      };
+
+      const { body } = await this.client.carts().post({ body: cartDraft }).execute();
+      return body;
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        console.error(errorMsg);
+      }
+      return null;
+    }
+  }
+
+  async addProductToUserCart(
+    cartId: string,
+    productId: string,
+    variantId: number,
+    version: number
+  ): Promise<Cart | null> {
+    let errorMsg = '';
+    try {
+      const lineItemDraft: LineItemDraft = {
+        productId,
+        variantId,
+        quantity: 1,
+      };
+
+      const { body } = await this.client
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version: version, // Ensure you use the correct version
+            actions: [
+              {
+                action: 'addLineItem',
+                ...lineItemDraft,
+              },
+            ],
+          },
+        })
+        .execute();
+
+      return body;
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        console.error(errorMsg);
+      }
+      return null;
+    }
   }
 }
 
