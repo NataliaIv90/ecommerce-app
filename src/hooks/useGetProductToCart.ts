@@ -1,54 +1,24 @@
 import { RootState } from './../store/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { APIInstance } from './../api/API';
-import { setCart, setLoading, setError } from '../store/slices/cartSlice'; // Adjust the path
+import { setCart, setLoading, setError, setCartIds } from '../store/slices/cartSlice'; // Adjust the path
+import { Customer } from '@commercetools/platform-sdk';
 
 interface IUseCartResult {
-  addProductToCart: (productId: string, variantId: number) => Promise<void>;
+  addProductToCart: (productId: string, variantId: number, customer: Customer | null) => Promise<void>;
   loading: boolean;
   error: string | null;
 }
 
-export async function handleAddProductToCart(productId: string, variantId: number): Promise<void> {
-  // Create an anonymous cart
-  const cart = await APIInstance.createAnonymousCart();
-  if (cart) {
-    console.log('Anonymous cart created:', cart);
-
-    // Add a product to the anonymous cart
-    const updatedCart = await APIInstance.addProductToAnonymousCart(cart.id, productId, variantId, cart.version);
-    if (updatedCart) {
-      console.log('Product added to cart:', updatedCart);
-    }
-  }
-}
-
-export async function handleAddProductToUserCart(
-  customerId: string,
-  productId: string,
-  variantId: number
-): Promise<void> {
-  // Create a user cart
-  const cart = await APIInstance.createUserCart(customerId);
-  if (cart) {
-    console.log('User cart created:', cart);
-
-    // Add a product to the user cart
-    const updatedCart = await APIInstance.addProductToUserCart(cart.id, productId, variantId, cart.version);
-    if (updatedCart) {
-      console.log('Product added to user cart:', updatedCart);
-    }
-  }
-}
-
 const useCart = (): IUseCartResult => {
   const dispatch = useDispatch();
-  const customer = useSelector((state: RootState) => state.customers.customer); // Adjust according to your customer slice
+  // const customer = useSelector((state: RootState) => state.customers.customer); // Adjust according to your customer slice
   const cart = useSelector((state: RootState) => state.cart.cart);
 
-  const addProductToCart = async (productId: string, variantId: number) => {
+  const addProductToCart = async (productId: string, variantId: number, customer: Customer | null) => {
     dispatch(setLoading(true));
     dispatch(setError(null));
+    let cartIdsArr: string[] = [];
 
     try {
       if (customer && customer.id) {
@@ -61,6 +31,8 @@ const useCart = (): IUseCartResult => {
           if (newCart) {
             cartId = newCart.id;
             cartVersion = newCart.version;
+            cartIdsArr = newCart.lineItems.map((el) => el.productId);
+            dispatch(setCartIds(cartIdsArr));
             dispatch(setCart(newCart));
           } else {
             throw new Error('Failed to create a new cart');
@@ -70,6 +42,8 @@ const useCart = (): IUseCartResult => {
         if (cartId && cartVersion !== undefined) {
           const updatedCart = await APIInstance.addProductToUserCart(cartId, productId, variantId, cartVersion);
           if (updatedCart) {
+            cartIdsArr = updatedCart.lineItems.map((el) => el.productId);
+            dispatch(setCartIds(cartIdsArr));
             dispatch(setCart(updatedCart));
           } else {
             throw new Error('Failed to add product to the cart');
@@ -82,6 +56,8 @@ const useCart = (): IUseCartResult => {
         if (!cartId) {
           const newCart = await APIInstance.createAnonymousCart();
           if (newCart) {
+            cartIdsArr = newCart.lineItems.map((el) => el.productId);
+            dispatch(setCartIds(cartIdsArr));
             cartId = newCart.id;
             dispatch(setCart(newCart));
           } else {
@@ -92,6 +68,8 @@ const useCart = (): IUseCartResult => {
         if (cartId) {
           const updatedCart = await APIInstance.addProductToAnonymousCart(cartId, productId, variantId, cart.version);
           if (updatedCart) {
+            cartIdsArr = updatedCart.lineItems.map((el) => el.productId);
+            dispatch(setCartIds(cartIdsArr));
             dispatch(setCart(updatedCart));
           } else {
             throw new Error('Failed to add product to the cart');

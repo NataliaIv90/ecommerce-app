@@ -30,6 +30,7 @@ const initialStateCart: Cart = {
 
 interface IInitialState {
   cart: Cart;
+  cartItemsId: string[] | null;
   loading: boolean;
   error: null | string;
 }
@@ -38,6 +39,7 @@ const initialState: IInitialState = {
   cart: initialStateCart,
   loading: false,
   error: null,
+  cartItemsId: [],
 };
 
 const cartSlice = createSlice({
@@ -46,6 +48,9 @@ const cartSlice = createSlice({
   reducers: {
     setCart(state, action: PayloadAction<Cart>) {
       state.cart = action.payload;
+    },
+    setCartIds(state, action: PayloadAction<string[]>) {
+      state.cartItemsId = action.payload;
     },
     clearCart(state) {
       state.cart = initialStateCart;
@@ -59,5 +64,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { setCart, clearCart, setLoading, setError } = cartSlice.actions;
+export const { setCart, clearCart, setLoading, setError, setCartIds } = cartSlice.actions;
 export default cartSlice.reducer;

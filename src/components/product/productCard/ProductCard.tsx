@@ -1,13 +1,11 @@
 import { Customer, Image, Price } from '@commercetools/platform-sdk';
-import { FC, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 import './ProductCard.css';
 import { ImageGallery } from './imageGallery/ImageGallery';
 import { RateStarIcon } from '../../../shared/icons/rateStarIcon/RateStarIcon';
-import { QuantityController } from '../../../shared/button/quantityController/QuantityController';
 import SvgCircleIcon from '../../../shared/icons/circle/CircleIcon';
 import { setRightPrice } from '../../../utils/price-formatting-functions';
-import { addToCart } from '../../../utils/addToCart';
 import { ProductModal } from './productModal/ProductModal';
 import useCart from '../../../hooks/useGetProductToCart';
 import { useSelector } from 'react-redux';
@@ -22,18 +20,31 @@ export interface IProductCardProps {
 }
 
 export const ProductCard: FC<IProductCardProps> = ({ name, description, images, id, prices }): JSX.Element => {
-  const [amount, setAmount] = useState<number>(1);
+  // const [amount, setAmount] = useState<number>(1);
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
   const { addProductToCart } = useCart();
-  const customer = useSelector((state: RootState) => state.customers.customer); // Adjust according to your customer slice
+  const customer = useSelector((state: RootState) => state.customers.customer);
+  const cartIds = useSelector((state: RootState) => state.cart.cartItemsId);
+  const [buttonType, setButtonType] = useState('add');
+
+  useEffect(() => {
+    if (cartIds?.includes(id)) {
+      setButtonType('remove');
+    }
+  }, [cartIds, id]);
 
   const handleAddToCart = async (productId: string, variantId: number, customer: Customer | null) => {
-    console.log(customer);
-    await addProductToCart(productId, variantId);
+    await addProductToCart(productId, variantId, customer).then(() => {
+      setButtonType('remove');
+    });
+  };
+
+  const handleRemoveFromCart = (id: string) => {
+    alert(id);
   };
 
   const handleToggleDescription = () => {
@@ -138,14 +149,23 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
           <div>In stock</div>
         </div>
         <div className='product-card__cart-button-container'>
-          <OutlinedButton
-            text='Add to cart'
-            onClick={() => handleAddToCart(id, amount, customer)}
-          />
-          <QuantityController
-            amount={amount}
-            setAmount={setAmount}
-          />
+          {buttonType === 'add' ? (
+            <>
+              <OutlinedButton
+                text='Add to cart'
+                onClick={() => handleAddToCart(id, /* amount*/ 1, customer)}
+              />
+              {/* <QuantityController
+                amount={amount}
+                setAmount={setAmount}
+              /> */}
+            </>
+          ) : (
+            <OutlinedButton
+              text='Remove from cart'
+              onClick={() => handleRemoveFromCart(id)}
+            />
+          )}
         </div>
 
         {description ? (

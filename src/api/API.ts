@@ -92,7 +92,6 @@ export class API {
   //eslint-disable-next-line
   async getProducts() {
     // : Promise<{ data: ProductProjectionPagedQueryResponse | undefined; error: string }>
-    console.log(this.client);
     let errorMsg = '';
     try {
       const { body } = await this.client
@@ -275,6 +274,7 @@ export class API {
     } catch (error) {
       if (error instanceof Error) {
         errorMsg = error.message;
+        //eslint-disable-next-line
         console.error(errorMsg);
       }
       return null;
@@ -315,6 +315,7 @@ export class API {
     } catch (error) {
       if (error instanceof Error) {
         errorMsg = error.message;
+        //eslint-disable-next-line
         console.error(errorMsg);
       }
       return null;
@@ -334,6 +335,7 @@ export class API {
     } catch (error) {
       if (error instanceof Error) {
         errorMsg = error.message;
+        //eslint-disable-next-line
         console.error(errorMsg);
       }
       return null;
@@ -374,6 +376,7 @@ export class API {
     } catch (error) {
       if (error instanceof Error) {
         errorMsg = error.message;
+        //eslint-disable-next-line
         console.error(errorMsg);
       }
       return null;
