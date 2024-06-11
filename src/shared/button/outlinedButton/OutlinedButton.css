@@ -16,6 +16,13 @@
   color: #ffffff;
 }
 
+.outlinedButton:disabled,
+outlinedButton:disabled:hover {
+  cursor: auto;
+  background-color: #9ea0a2;
+  color: #3d3d3d;
+}
+
 @media screen and (min-width: 700px) {
   .outlinedButton {
     padding: 12px 24px;

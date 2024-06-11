@@ -284,10 +284,11 @@ export class API {
   async addProductToAnonymousCart(
     cartId: string,
     productId: string,
-    variantId: number,
-    version: number
+    variantId: number
+    // version: number
   ): Promise<Cart | null> {
     let errorMsg = '';
+    const cart = await this.getCartById(cartId);
     try {
       const lineItemDraft: LineItemDraft = {
         productId,
@@ -300,7 +301,7 @@ export class API {
         .withId({ ID: cartId })
         .post({
           body: {
-            version: version, // Ensure you use the correct version
+            version: cart.version, // Ensure you use the correct version
             actions: [
               {
                 action: 'addLineItem',
@@ -345,8 +346,8 @@ export class API {
   async addProductToUserCart(
     cartId: string,
     productId: string,
-    variantId: number,
-    version: number
+    variantId: number
+    // version: number
   ): Promise<Cart | null> {
     let errorMsg = '';
     try {
@@ -355,13 +356,13 @@ export class API {
         variantId,
         quantity: 1,
       };
-
+      const cart = await this.getCartById(cartId);
       const { body } = await this.client
         .carts()
         .withId({ ID: cartId })
         .post({
           body: {
-            version: version, // Ensure you use the correct version
+            version: cart.version, // Ensure you use the correct version
             actions: [
               {
                 action: 'addLineItem',
@@ -381,6 +382,63 @@ export class API {
       }
       return null;
     }
+  }
+
+  async removeProductFromUserCart(cartId: string, lineItemId: string): Promise<Cart | null> {
+    try {
+      const cart = await this.getCartById(cartId); // Fetch the latest cart version
+      const { body } = await this.client
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version: cart.version,
+            actions: [
+              {
+                action: 'removeLineItem',
+                lineItemId: lineItemId,
+              },
+            ],
+          },
+        })
+        .execute();
+      return body;
+    } catch (error) {
+      //eslint-disable-next-line
+      console.error(error);
+      return null;
+    }
+  }
+
+  async removeProductFromAnonymousCart(cartId: string, lineItemId: string): Promise<Cart | null> {
+    try {
+      const cart = await this.getCartById(cartId); // Fetch the latest cart version
+      const { body } = await this.client
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version: cart.version,
+            actions: [
+              {
+                action: 'removeLineItem',
+                lineItemId: lineItemId,
+              },
+            ],
+          },
+        })
+        .execute();
+      return body;
+    } catch (error) {
+      //eslint-disable-next-line
+      console.error(error);
+      return null;
+    }
+  }
+
+  async getCartById(cartId: string): Promise<Cart> {
+    const { body } = await this.client.carts().withId({ ID: cartId }).get().execute();
+    return body;
   }
 }
 

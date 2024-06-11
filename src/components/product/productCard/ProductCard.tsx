@@ -1,5 +1,5 @@
 import { Customer, Image, Price } from '@commercetools/platform-sdk';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 import './ProductCard.css';
 import { ImageGallery } from './imageGallery/ImageGallery';
@@ -10,6 +10,7 @@ import { ProductModal } from './productModal/ProductModal';
 import useCart from '../../../hooks/useGetProductToCart';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import { Loader } from '../../../shared/ui/Loader/Loader';
 
 export interface IProductCardProps {
   name: string | '';
@@ -26,26 +27,33 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
-  const { addProductToCart } = useCart();
+  const { addProductToCart, removeProductFromCart, loading } = useCart();
   const customer = useSelector((state: RootState) => state.customers.customer);
   const cartIds = useSelector((state: RootState) => state.cart.cartItemsId);
+  const cart = useSelector((state: RootState) => state.cart.cart);
   const [buttonType, setButtonType] = useState('add');
 
-  useEffect(() => {
-    if (cartIds?.includes(id)) {
-      setButtonType('remove');
-    }
-  }, [cartIds, id]);
+  const handleAddToCart = useCallback(
+    async (productId: string, variantId: number, customer: Customer | null) => {
+      await addProductToCart(productId, variantId, customer);
+    },
+    [addProductToCart]
+  );
 
-  const handleAddToCart = async (productId: string, variantId: number, customer: Customer | null) => {
-    await addProductToCart(productId, variantId, customer).then(() => {
-      setButtonType('remove');
-    });
-  };
-
-  const handleRemoveFromCart = (id: string) => {
-    alert(id);
-  };
+  const handleRemoveFromCart = useCallback(
+    (id: string) => {
+      let lineItemId = '';
+      cart.lineItems.forEach((el) => {
+        if (el.productId === id) {
+          lineItemId = el.id;
+        }
+      });
+      if (lineItemId) {
+        removeProductFromCart(lineItemId);
+      }
+    },
+    [removeProductFromCart, cart.lineItems]
+  );
 
   const handleToggleDescription = () => {
     setIsExpanded(!isExpanded);
@@ -81,14 +89,21 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
     setIsModalVisible(!isModalVisible);
   };
 
+  useEffect(() => {
+    if (cart.lineItems.length && cartIds?.includes(id)) {
+      setButtonType('remove');
+    } else {
+      setButtonType('add');
+    }
+  }, [cartIds, id, cart.lineItems.length, handleAddToCart, handleRemoveFromCart]);
+
   return (
     <div className='product-card'>
+      <Loader isLoading={loading} />
       {isModalVisible ? (
         <ProductModal
           currentIndex={currentImageIndex}
           images={images}
-          // src={images[currentImageIndex].url}
-          // alt={images[currentImageIndex].label || ''}
           onClick={toggleOpenedModal}
         />
       ) : null}
@@ -153,7 +168,8 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
             <>
               <OutlinedButton
                 text='Add to cart'
-                onClick={() => handleAddToCart(id, /* amount*/ 1, customer)}
+                loading={loading}
+                onClick={() => handleAddToCart(id, 1, customer)}
               />
               {/* <QuantityController
                 amount={amount}
@@ -163,6 +179,7 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
           ) : (
             <OutlinedButton
               text='Remove from cart'
+              loading={loading}
               onClick={() => handleRemoveFromCart(id)}
             />
           )}
