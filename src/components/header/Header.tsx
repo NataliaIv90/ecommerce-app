@@ -8,6 +8,7 @@ import { signExit } from '../../store/slices/customerSlice';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import { useAuth } from '../../hooks/AuthHooks';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import './Header.css';
 
 export const Header = (): JSX.Element => {
@@ -37,6 +38,14 @@ export const Header = (): JSX.Element => {
           </li>
           <li className='header__link'>
             <Link to='/catalog'>Catalog</Link>
+          </li>
+          <li className='header__link'>
+            <Link to='/about-us'>About us</Link>
+          </li>
+          <li className='header__link'>
+            <Link to='/cart'>
+              <ShoppingCartIcon />
+            </Link>
           </li>
           <li className='header__link'>
             {customer ? (
