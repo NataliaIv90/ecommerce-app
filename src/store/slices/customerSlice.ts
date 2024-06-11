@@ -73,7 +73,7 @@ interface IinitialState {
 }
 
 const initialState: IinitialState = {
-  apiInstance: new API(getApiRoot('anonimous')),
+  apiInstance: new API(getApiRoot('anonymous')),
   authorized: false,
   email: '',
   password: '',
@@ -319,6 +319,12 @@ const customerSlice = createSlice({
     isLoading: (state, action: PayloadAction<true | false>) => {
       state.isLoading = action.payload;
     },
+    signExit: (state) => {
+      const anonClient = new API(getApiRoot('anonymous'));
+      state.apiInstance = anonClient;
+      state.authorized = false;
+      state.customer = {} as Customer;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createNewCustomer.fulfilled, (state, action) => {
@@ -351,6 +357,6 @@ const customerSlice = createSlice({
 // eslint-disable-next-line
 export const selectCustomer = (state: RootState) => state.customers;
 // eslint-disable-next-line
-export const { createCustomer, setAuthorization, setApi, setCustomer, isLoading } = customerSlice.actions;
+export const { createCustomer, setAuthorization, setApi, setCustomer, isLoading, signExit } = customerSlice.actions;
 
 export default customerSlice.reducer;

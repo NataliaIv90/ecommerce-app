@@ -27,6 +27,9 @@ export const useAuth = (): [(auths: boolean) => void] => {
       void dispatch(setApi(apiClient));
       void dispatch(SignInByToken(tokenLS.refreshToken!));
       void dispatch(setAuthorization(true));
+      // void dispatch(getActiveCart()).then((data) => {
+      //   !data.payload && void dispatch(createCart());
+      // });
 
       // setToken(tokenLS || ('' as string));
       // setApiClient(getApiRoot('token', { token: token }));
