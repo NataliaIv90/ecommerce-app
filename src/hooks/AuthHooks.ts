@@ -21,22 +21,14 @@ export const useAuth = (): [(auths: boolean) => void] => {
   useEffect(() => {
     if (localStorage.getItem('tokendata')) {
       dispatch(isLoading(true));
+      // eslint-disable-next-line
       const tokenLS = JSON.parse(localStorage.getItem('tokendata')!) as TokenStore;
       const apiClientType = getApiRoot(ClientType.token, { token: tokenLS.refreshToken });
       const apiClient = new API(apiClientType);
       void dispatch(setApi(apiClient));
-      void dispatch(SignInByToken(tokenLS.refreshToken!));
+      // eslint-disable-next-line
+      void dispatch(SignInByToken(tokenLS.refreshToken! || ''));
       void dispatch(setAuthorization(true));
-      // void dispatch(getActiveCart()).then((data) => {
-      //   !data.payload && void dispatch(createCart());
-      // });
-
-      // setToken(tokenLS || ('' as string));
-      // setApiClient(getApiRoot('token', { token: token }));
-      // setApiInstance(new API(apiClient));
-      // void dispatch(setAuthorization(true));
-      // void dispatch(setApi(apiInstance));
-      // void dispatch(SignInByToken(tokenLS));
     } else {
       dispatch(isLoading(false));
     }
@@ -47,3 +39,14 @@ export const useAuth = (): [(auths: boolean) => void] => {
   }, [auth]);
   return [changeAuth];
 };
+
+// void dispatch(getActiveCart()).then((data) => {
+//   !data.payload && void dispatch(createCart());
+// });
+
+// setToken(tokenLS || ('' as string));
+// setApiClient(getApiRoot('token', { token: token }));
+// setApiInstance(new API(apiClient));
+// void dispatch(setAuthorization(true));
+// void dispatch(setApi(apiInstance));
+// void dispatch(SignInByToken(tokenLS));

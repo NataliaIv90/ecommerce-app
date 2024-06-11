@@ -74,7 +74,6 @@ const cartSlice = createSlice({
   reducers: {
     setCart: (state, action: PayloadAction<{ cart: Cart }>) => {
       state.cart = action.payload.cart;
-      console.log(state.cart);
     },
     setLoader: (state) => {
       state.isLoading = true;
@@ -83,7 +82,7 @@ const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getActiveCart.fulfilled, (state, action) => {
       if (action.payload) {
-        state.cart = action.payload.data.body;
+        state.cart = action.payload?.data?.body;
       }
     });
     builder.addCase(createCart.fulfilled, (state, action) => {

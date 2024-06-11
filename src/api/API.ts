@@ -10,7 +10,6 @@ import {
   CartDraft,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-import { Credentials } from '../store/slices/customerSlice';
 import { apiRoot } from './lib/Client';
 
 export class API {
