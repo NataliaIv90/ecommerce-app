@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
-import { setApi, setAuthorization, setCustomer } from '../../store/slices/customerSlice';
-import { API } from '../../api/API';
-import { getApiRoot } from '../../api/lib/Client';
+import { signExit } from '../../store/slices/customerSlice';
+//  setApi, setAuthorization, setCustomer,
+// import { API } from '../../api/API';
+// import { getApiRoot } from '../../api/lib/Client';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
+import { useAuth } from '../../hooks/AuthHooks';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import './Header.css';
 
@@ -13,11 +15,16 @@ export const Header = (): JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const customer = useAppSelector((state) => state.customers.customer);
+  const [changeAuth] = useAuth();
+
+  const handleLogin = changeAuth as (val: boolean) => void;
   const signOut = () => {
+    dispatch(signExit());
     localStorage.removeItem('tokendata');
-    dispatch(setCustomer(null));
-    dispatch(setAuthorization(false));
-    dispatch(setApi(new API(getApiRoot('anonimous'))));
+    handleLogin(false);
+    // dispatch(setCustomer(null));
+    // dispatch(setAuthorization(false));
+    // dispatch(setApi(new API(getApiRoot('anonimous'))));
     navigate('/');
   };
   return (
