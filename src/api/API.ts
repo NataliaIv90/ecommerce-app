@@ -6,9 +6,10 @@ import {
   Product,
   CustomerUpdate,
   CustomerChangePassword,
+  CartUpdate,
+  CartDraft,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-import { Credentials } from '../store/slices/customerSlice';
 import { apiRoot } from './lib/Client';
 
 export class API {
@@ -55,20 +56,20 @@ export class API {
     }
   }
 
-  async signIn(credentials: Credentials): Promise<CustomerSignInResult> {
+  async signIn(credentials: {
+    email: string;
+    password: string;
+  }): Promise<{ data: CustomerSignInResult | undefined; error: string }> {
     let errorMsg = '';
-    const result: CustomerSignInResult = {} as CustomerSignInResult;
     try {
-      const result = await this.client.me().login().post({ body: credentials }).execute();
-      return result.body;
+      const { ...data } = { ...credentials };
+
+      const result = await this.client.me().login().post({ body: data }).execute();
+      return { data: result.body, error: errorMsg };
     } catch (error) {
-      if (error instanceof Error) {
-        errorMsg = error.message;
-        //eslint-disable-next-line
-        console.error(errorMsg);
-      }
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
     }
-    return result;
   }
 
   async signInByToken(): Promise<Customer> {
@@ -85,6 +86,21 @@ export class API {
       }
     }
     return result;
+  }
+
+  async signInWithCartMerge(credentials: {
+    email: string;
+    password: string;
+  }): Promise<{ data: CustomerSignInResult | undefined; error: string }> {
+    let errorMsg = '';
+    try {
+      const { ...data } = { ...credentials, activeCartSignInMode: 'MergeWithExistingCustomerCart' };
+      const result = await this.client.me().login().post({ body: data }).execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
   }
   //eslint-disable-next-line
   async getProducts() {
@@ -256,6 +272,46 @@ export class API {
       }
     }
     return null;
+  }
+  //eslint-disable-next-line
+  async getActiveCart() {
+    let errorMsg = '';
+    try {
+      const response = await this.client.me().activeCart().get().execute();
+      const result = response;
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  //eslint-disable-next-line
+  async createCart(cart: CartDraft) {
+    let errorMsg = '';
+    try {
+      const response = await this.client.me().carts().post({ body: cart }).execute();
+      const result = response;
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  //eslint-disable-next-line
+  async updateCart(ID: string, cartUpdate: CartUpdate) {
+    let errorMsg = '';
+    try {
+      const response = await this.client.carts().withId({ ID }).post({ body: cartUpdate }).execute();
+      const result = response;
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
   }
 }
 
