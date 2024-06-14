@@ -3,6 +3,7 @@
   width: 100%;
   margin: auto;
   margin-bottom: 2rem;
+  max-width: 1200px;
 }
 
 .cart__is-empty {

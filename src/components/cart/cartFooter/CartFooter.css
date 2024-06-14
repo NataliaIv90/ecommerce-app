@@ -3,7 +3,7 @@
   padding: 10px;
   position: relative;
   margin-top: 2rem;
-  font-size: smaller;
+  font-size: 0.9rem;
 }
 
 .cart-footer__list::after {
@@ -19,6 +19,8 @@
   box-sizing: border-box;
   margin-bottom: 2rem;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .cart-footer__details {
