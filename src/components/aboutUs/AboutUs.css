@@ -1,0 +1,117 @@
+.about-us_wrapper {
+  padding: 20px 100px;
+}
+
+.about-us {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 5px 10px;
+  font-family: 'Comic Sans MS', cursive;
+}
+
+.about-us_info{
+  padding: 20px;
+}
+.about-us.member0 .about-us_info {
+  border-top: 1px solid var(--primary-grey);
+  border-right: 1px solid var(--primary-grey);
+}
+.about-us.member1 .about-us_image {
+  order: 2;
+}
+.about-us.member1 .about-us_info {
+  order: 1;
+}
+
+.about-us.member1 .about-us_info {
+  border-bottom: 1px solid var(--primary-grey);
+  border-left: 1px solid var(--primary-grey);
+  
+}
+
+.about-us.member2 .about-us_info {
+  border-bottom: 1px solid var(--primary-grey);
+  border-right: 1px solid var(--primary-grey);
+}
+
+.about-us_image {
+  max-width: 30%;
+  width: 200px;
+  height: 200px;
+  border-radius: 30px;
+  border: 2px solid #ddd;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.about-us_name {
+  font-size: 2em;
+  color: var(--primary-color);
+  text-transform: capitalize;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.about-us_role {
+  font-family:Verdana, sans-serif;
+  font-size: 1.2em;
+  color: #4f5254;
+  font-weight: 550;
+  letter-spacing: 1px;
+  line-height: 2rem;
+  display: inline-block;
+  font-weight: normal;
+}
+.about-us_bio {
+  --basic-font: Verdana, sans-serif;
+  --accent-font: 'Comic Sans MS', cursive;
+  color: #3b3a3a;
+  font-size: 1em;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.about-us_link {
+  font-family: 'Arial, sans-serif';
+  font-size: 1em;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.about-us_link:hover {
+  color: #9ea0a2;
+}
+
+
+.about-us_contributions {
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  unicode-bidi: isolate;
+  font-family: 'Comic Sans MS', cursive;
+}
+
+.rss-logo_wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+@media  screen and (max-width: 480px) {
+  .about-us_wrapper {
+    padding: 20px;
+  }
+  .about-us{
+    flex-direction: column;
+  }
+  .about-us.member1 .about-us_image {
+    order: 1;
+  }
+  .about-us.member1 .about-us_info {
+    order: 2;
+  }
+}
