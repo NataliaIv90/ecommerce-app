@@ -117,6 +117,12 @@
   display: flex;
 }
 
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+}
+
 /* Responsive styles */
 
 @media (min-width: 1024px) {
