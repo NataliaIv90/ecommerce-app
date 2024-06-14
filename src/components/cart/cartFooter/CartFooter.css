@@ -3,6 +3,7 @@
   padding: 10px;
   position: relative;
   margin-top: 2rem;
+  font-size: smaller;
 }
 
 .cart-footer__list::after {
@@ -11,7 +12,6 @@
   right: 10%;
   height: 1px;
   width: 80%;
-  /* margin: 0 auto; */
   border-bottom: 1px solid var(--primary-grey);
 }
 
