@@ -5,6 +5,8 @@ import { LineItem } from '@commercetools/platform-sdk';
 import { QuantityController } from '../../../shared/button/quantityController/QuantityController';
 import { useAppDispatch } from '../../../hooks/reduxHooks';
 import { changeProductQuantityInCart } from '../../../store/slices/cartSlice';
+import { Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface CartListItemProps {
   lineItem: LineItem;
@@ -56,6 +58,17 @@ export const CartListItem: FC<CartListItemProps> = ({ lineItem }): JSX.Element =
         </div>
         <div>
           <p className='cart-item-price-container'>Total: ${formatPrice(totalPrice.centAmount)}</p>
+        </div>
+        <div className='cart__remove-btn'>
+          <Button
+            className='cart-delete-item-btn'
+            color='error'
+            title='Remove item from the cart'
+            disabled={isLoading}
+            onClick={() => setAmount(0)}
+          >
+            <DeleteIcon />
+          </Button>
         </div>
       </div>
     </div>
