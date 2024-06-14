@@ -8,6 +8,7 @@ import {
   CustomerChangePassword,
   CartUpdate,
   CartDraft,
+  Cart,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { apiRoot } from './lib/Client';
@@ -312,6 +313,11 @@ export class API {
       if (error instanceof Error) errorMsg = error.message;
       return { data: undefined, error: errorMsg };
     }
+  }
+
+  async getCartById(cartId: string): Promise<Cart> {
+    const { body } = await this.client.carts().withId({ ID: cartId }).get().execute();
+    return body;
   }
 }
 
