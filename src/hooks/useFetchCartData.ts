@@ -15,8 +15,8 @@ export const useFetchCartData = (): FetchCartDataResult => {
   const [cartData, setCartData] = useState<Cart | null>(null);
   const [error, setError] = useState('');
 
-  // Retrieve cart ID from Redux store
   const cartId = useSelector((state: RootState) => state.carts.cart.id);
+  const totalPrice = useSelector((state: RootState) => state.carts.cart.totalPrice);
 
   useEffect(() => {
     const fetchCartData = async () => {
@@ -39,7 +39,7 @@ export const useFetchCartData = (): FetchCartDataResult => {
     };
 
     fetchCartData();
-  }, [cartId]);
+  }, [cartId, totalPrice]);
 
   return { isLoading, cartData, error };
 };

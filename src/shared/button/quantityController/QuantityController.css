@@ -32,8 +32,13 @@
   border-radius: 50%;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
   .quantity-controller-wrapper {
     font-size: 16px;
   }
+}
+
+.quantity-controller__btn:disabled {
+  color: #d3d3d3 !important;
+  cursor: progress;
 }

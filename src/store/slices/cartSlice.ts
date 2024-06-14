@@ -78,6 +78,12 @@ const cartSlice = createSlice({
     setLoader: (state) => {
       state.isLoading = true;
     },
+    clearSnackbarInfo: (state) => {
+      state.snackbarInfo = {
+        message: '',
+        errorMessage: '',
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getActiveCart.fulfilled, (state, action) => {
@@ -110,7 +116,7 @@ const cartSlice = createSlice({
           message:
             action.payload.quantity > 0
               ? 'The number of items in the car has been successfully changed'
-              : 'Product removed to cart',
+              : 'Product removed from cart',
           errorMessage: '',
         };
       } else {
@@ -125,6 +131,6 @@ const cartSlice = createSlice({
 //eslint-disable-next-line
 export const selectCarts = (state: RootState) => state.carts;
 
-export const { setLoader } = cartSlice.actions;
+export const { setLoader, clearSnackbarInfo } = cartSlice.actions;
 
 export default cartSlice.reducer;
