@@ -5,6 +5,7 @@ import {
   type CartAddLineItemAction,
   type CartDraft,
   CartChangeLineItemQuantityAction,
+  CartUpdateAction,
 } from '@commercetools/platform-sdk';
 import { type RootState } from '../index';
 import type { PayloadAction } from '@reduxjs/toolkit';
@@ -68,6 +69,22 @@ export const changeProductQuantityInCart = createAsyncThunk(
   }
 );
 
+export const clearCart = createAsyncThunk('carts/clearCart', async (_, thunkAPI) => {
+  const state: RootState = thunkAPI.getState() as RootState;
+  const client = state.customers.apiInstance;
+  const { version, id } = state.carts.cart;
+
+  // Create an array of remove actions for each line item
+  const actions: CartUpdateAction[] = state.carts.cart.lineItems.map((item) => ({
+    action: 'removeLineItem',
+    lineItemId: item.id,
+  }));
+
+  const cartDraft: CartUpdate = { version, actions };
+  const result = await client.updateCart(id, cartDraft);
+  return result;
+});
+
 const cartSlice = createSlice({
   name: 'carts',
   initialState,
@@ -125,6 +142,21 @@ const cartSlice = createSlice({
           errorMessage: 'Unsuccessful attempt to change cart. Try again!',
         };
       }
+    });
+    builder.addCase(clearCart.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload.data) {
+        state.cart = action.payload.data.body;
+        state.snackbarInfo = { message: 'All items removed from cart', errorMessage: '' };
+      } else {
+        state.snackbarInfo = {
+          message: '',
+          errorMessage: 'Failed to clear cart. Try again!',
+        };
+      }
+    });
+    builder.addCase(clearCart.rejected, (state) => {
+      state.isLoading = false;
     });
   },
 });

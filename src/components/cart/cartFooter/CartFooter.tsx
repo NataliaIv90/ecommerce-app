@@ -3,12 +3,14 @@ import './CartFooter.css';
 import { formatPrice } from '../../../utils/price-formatting-functions';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 import { Cart } from '@commercetools/platform-sdk';
+import { Button } from '@mui/material';
 
 interface ICartFooterProps {
   data?: Cart;
+  clearCart: () => void;
 }
 
-export const CartFooter = ({ data }: ICartFooterProps): JSX.Element => {
+export const CartFooter = ({ data, clearCart }: ICartFooterProps): JSX.Element => {
   return (
     <div className='cart-footer'>
       <h2 className='cart-footer__title'>Total:</h2>
@@ -35,10 +37,6 @@ export const CartFooter = ({ data }: ICartFooterProps): JSX.Element => {
             <p>Delivery:</p>
             <p>Free</p>
           </div>
-          {/* <div className='cart-footer__details-item'>
-            <p>Sale:</p>
-            <p>0.00</p>
-          </div> */}
           <div className='cart-footer__details-item'>
             <p>Items in cart:</p>
             <p>{data?.totalLineItemQuantity}</p>
@@ -52,6 +50,14 @@ export const CartFooter = ({ data }: ICartFooterProps): JSX.Element => {
           text='CONFIRM ORDER'
           wideBtn={true}
         />
+        <Button
+          color='error'
+          className='clear-cart-btn'
+          variant='outlined'
+          onClick={clearCart}
+        >
+          Clear Cart
+        </Button>
       </div>
     </div>
   );
