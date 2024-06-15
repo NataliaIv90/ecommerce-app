@@ -9,10 +9,36 @@
   background: none;
   width: 30px;
   height: 30px;
-  font-size: 24px;
+  font-size: 18px;
   margin: 0 15px;
+  transition: all 0.5s;
 }
 
 .quantity-controller__btn:hover {
   cursor: pointer;
+  border-color: #b5b4b4;
+  box-shadow: 1px 1px 1px #b5b4b4;
+}
+
+.quantity-controller__btn--red {
+  color: #ff0000;
+  border: 0.5px solid #d3d3d3;
+  border-radius: 50%;
+}
+
+.quantity-controller__btn--green {
+  color: #01d001;
+  border: 0.5px solid #d3d3d3;
+  border-radius: 50%;
+}
+
+@media screen and (max-width: 768px) {
+  .quantity-controller-wrapper {
+    font-size: 16px;
+  }
+}
+
+.quantity-controller__btn:disabled {
+  color: #d3d3d3 !important;
+  cursor: progress;
 }

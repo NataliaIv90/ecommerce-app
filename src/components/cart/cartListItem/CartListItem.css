@@ -41,6 +41,22 @@
   font-size: 1.1rem;
 }
 
+.cart__remove-btn {
+  text-align: center;
+}
+
+.cart-delete-item-btn::after {
+  content: '';
+  width: 0;
+  height: 25px;
+  transition: all 0.5s;
+}
+
+.cart-delete-item-btn:hover::after {
+  content: 'Delete';
+  width: 60px;
+}
+
 @media screen and (min-width: 481px) {
   .cart-list-item {
     display: grid;
@@ -59,6 +75,11 @@
 
   .cart-list-item__img {
     height: 100%;
+  }
+
+  .cart__remove-btn {
+    text-align: right;
+    padding-right: 5%;
   }
 }
 

@@ -3,6 +3,7 @@
   width: 100%;
   margin: auto;
   margin-bottom: 2rem;
+  max-width: 1200px;
 }
 
 .cart__is-empty {
@@ -40,6 +41,17 @@
 
 .cart__error {
   color: red;
+}
+
+.clear-cart-btn {
+  width: 100%;
+  font-size: 12px !important;
+}
+
+@media screen and (min-width: 700px) {
+  .clear-cart-btn {
+    font-size: 18px !important;
+  }
 }
 
 @media screen and (min-width: 769px) {
