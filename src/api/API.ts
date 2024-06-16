@@ -15,7 +15,7 @@ import { apiRoot } from './lib/Client';
 
 export class API {
   private client: ByProjectKeyRequestBuilder;
-  static limit: number | undefined;
+  static limit = 100;
 
   constructor(client: ByProjectKeyRequestBuilder) {
     this.client = client;
@@ -113,7 +113,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
-            limit: 10,
+            limit: API.limit,
             facet: ['variants.attributes.color.en-US', 'variants.attributes.size.en-US', 'variants.price.centAmount'],
           },
         })
@@ -194,6 +194,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
+            limit: API.limit,
             facet: [`variants.attributes.color.en`, 'variants.price.centAmount'],
             filter: [`categories.id:subtree("${catId}")`],
           },
@@ -216,7 +217,7 @@ export class API {
     }
   }
   //eslint-disable-next-line
-  async getProductsWithFilter(filter: string[], sort: string, search: string = '') {
+  async getProductsWithFilter(filter: string[], sort: string, search: string, limit: number, offset: number) {
     let errorMsg = '';
     try {
       const respsone = await this.client
@@ -227,6 +228,8 @@ export class API {
             'text.en-US': search,
             fuzzy: true,
             sort,
+            limit,
+            offset,
             'filter.query': filter,
           },
         })
@@ -250,6 +253,7 @@ export class API {
         .get({
           queryArgs: {
             'text.en-US': search,
+            limit: API.limit,
           },
         })
         .execute();

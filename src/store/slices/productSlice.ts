@@ -25,6 +25,11 @@ const initialState = {
   },
   search: '',
   categoriesNotTransfromed: [] as CategoryInternal[],
+  total: 0,
+  limit: 6,
+  currentPage: 1,
+  count: 0,
+  offset: 0,
 };
 
 export const getProducts = createAsyncThunk('products/getProducts', async (_, thunkAPI) => {
@@ -57,7 +62,9 @@ export const getProductsWithFilter = createAsyncThunk('products/getProductsWithF
   const filter = buildQueryFilter(state.products.filters);
   const sort = `${state.products.sort.prop} ${state.products.sort.direction}`;
   const search = state.products.search;
-  const response = await passClient.getProductsWithFilter(filter, sort, search);
+  const limit = state.products.limit;
+  const offset = (state.products.currentPage - 1) * limit;
+  const response = await passClient.getProductsWithFilter(filter, sort, search, limit, offset);
   return response;
 });
 
@@ -190,6 +197,19 @@ const productSlice = createSlice({
       newFilterState.price = { ...initialState.filters.price };
       newFilterState.price.upper = state.maxPrice;
       state.filters = newFilterState;
+      state.currentPage = 1;
+    },
+    setTotal: (state, action: PayloadAction<{ total: number }>) => {
+      state.total = action.payload.total;
+    },
+    setCount: (state, action: PayloadAction<{ count: number }>) => {
+      state.count = action.payload.count;
+    },
+    setLimit: (state, action: PayloadAction<{ limit: number }>) => {
+      state.limit = action.payload.limit;
+    },
+    setCurrentPage: (state, action: PayloadAction<{ page: number }>) => {
+      state.currentPage = action.payload.page;
     },
   },
   extraReducers: (builder) => {
@@ -233,6 +253,10 @@ const productSlice = createSlice({
       state.products = action.payload.data?.body.results
         ? action.payload.data?.body.results
         : ([] as ProductProjection[]);
+      productSlice.caseReducers.setTotal(state, {
+        payload: { total: action.payload.data?.body.total as number },
+        type: 'products/total',
+      });
       productSlice.caseReducers.setLoading(state, { payload: false, type: 'products/isLoading' });
     });
 
@@ -245,7 +269,17 @@ const productSlice = createSlice({
 
 //eslint-disable-next-line
 export const selectProduct = (state: RootState) => state.products;
-export const { setLoading, changeSnackbarInfo, setPrice, setSortingOptions, setCategory, setSearch, resetFilter } =
-  productSlice.actions;
+export const {
+  setLoading,
+  changeSnackbarInfo,
+  setPrice,
+  setSortingOptions,
+  setCategory,
+  resetFilter,
+  setSearch,
+  setLimit,
+  setCurrentPage,
+  setTotal,
+} = productSlice.actions;
 
 export default productSlice.reducer;
