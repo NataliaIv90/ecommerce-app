@@ -49,7 +49,9 @@ export const Header = (): JSX.Element => {
             <Link to='/cart'>
               <ShoppingCartIcon />
             </Link>
-            <span className='header__cart-count'>{cart && cart.lineItems?.length ? cart.lineItems.length : null}</span>
+            <span className='header__cart-count'>
+              {cart && cart.totalLineItemQuantity ? cart.totalLineItemQuantity : null}
+            </span>
           </li>
           <li className='header__link'>
             {customer ? (
