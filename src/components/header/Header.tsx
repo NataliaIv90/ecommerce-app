@@ -17,8 +17,7 @@ export const Header = (): JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const customer = useAppSelector((state) => state.customers.customer);
-  const { cart, snackbarInfo } = useSelector((state: RootState) => state.carts);
-  console.log(cart);
+  const { cart } = useSelector((state: RootState) => state.carts);
   const [changeAuth] = useAuth();
 
   const handleLogin = changeAuth as (val: boolean) => void;
