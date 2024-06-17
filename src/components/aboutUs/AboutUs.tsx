@@ -12,20 +12,19 @@ const team = [
   {
     name: 'Natalia Ivantsova',
     role: 'Team Lead',
-    bio: `I'm Natalia Ivantsova, a Junior Front-End Developer, based in Ukraine.Here's a bit about me. I have experience working with HTML, CSS, JavaScript, TypeScript, Material-UI (MUI), Redux, RTK Query, REST API, Jest, React Hook Forms, Yup Validator, Commercetools, Git, and Azure DevOps.I have 2 cats and a dog.I have a lot of hobbies, like watercolor painting, photography, candle making, and plant care.Have a project in mind? Let's chat and make something awesome together!
+    bio: `I'm Natalia Ivantsova, a Junior Front-End Developer, based in Ukraine. Here's a bit about me. I have experience working with HTML, CSS, JavaScript, TypeScript, Material-UI (MUI), Redux, RTK Query, REST API, Jest, React Hook Forms, Yup Validator, Commercetools, Git, and Azure DevOps. I have 2 cats and a dog. I have a lot of hobbies, like watercolor painting, photography, candle making, and plant care.Have a project in mind? Let's chat and make something awesome together!
 `,
     photo: natalia,
     github: 'https://github.com/NataliaIv90',
-    contributions: `As a team lead, I specialize in setting up task boards and configuring development environments. 
-My expertise includes registration and input validation, integrating user profiles and addresses with commercetools, and implementing main page routing. 
-I excel at creating product pages, displaying product information, and managing product data in commercetools. 
-Additionally, I implement image modal sliders, basket pages, and modify product quantities to enhance user experience.
-`,
+    contributions: `As a team lead, I specialized in setting up task boards and configuring development environments.
+My responsibility included creating a registration form and its input validation, integrating user profiles and addresses with commercetools, and implementing routing.
+I implemented a product page (displaying detailed product information based on data, fetched from commercetools API, implemented an image slider, and created a custom skeleton for pending component state). Additionally, I managed all the necessary data in commercetools, related to product info, categories, sales promo, etc.
+I also implemented the basket page: displaying the data, fetched from commercetools API, functionality to modify cart data, and updating it in commercetools.`,
   },
   {
     name: 'Umida Abdugafurova',
     role: 'Software Engineer',
-    bio: `I'm Umida Abdugafurova, a Junior Front-End Developer, based in Uzbekistan.I have experience with HTML, CSS, SCSS, JavaScript, TypeScript,Vue Js, React, Redux, React Query, Redux Toolkit, REST API, React Hook Forms, Yup Validator, Git, and Next js.I have 1year experience in UIC company in Tashkent.I have a lot of hobbies, like swimming in pool, cooking and hand made decorations.
+    bio: `I'm Umida Abdugafurova, a Junior Front-End Developer, based in Uzbekistan. I have experience with HTML, CSS, SCSS, JavaScript, TypeScript,Vue Js, React, Redux, React Query, Redux Toolkit, REST API, React Hook Forms, Yup Validator, Git, and Next js. I have 1 year experience in UIC company in Tashkent. I have a lot of hobbies, like swimming in pool, cooking and hand made decorations.
 `,
     photo: umida,
     github: 'https://github.com/AbdugafurovaUmida',
@@ -38,7 +37,7 @@ I enhance catalog pages with shopping cart integration, interactive product card
   {
     name: 'Mariam Kochadze',
     role: 'Software Engineer',
-    bio: 'I am Mariam Kochadze,based in Georgia. I am a Junior Front-End Developer on a journey of continuous learning and growth. With a solid foundation in HTML, CSS, and JavaScript, I have expanded my skills to include React and TypeScript. I thrive on creating intuitive and visually appealing user interfaces that enhance the user experience. Committed to innovation and best practices, I am dedicated to mastering the art of front-end development and contributing to meaningful projects that make a difference.I have a lot of hobbies, walking, reading,capturing moments and creating visual stories,exploring new places and cultures which can provide new perspectives and experiences.',
+    bio: 'I am Mariam Kochadze,based in Georgia. I am a Junior Front-End Developer on a journey of continuous learning and growth. With a solid foundation in HTML, CSS, and JavaScript, I have expanded my skills to include React, TypeScript and Git. I thrive on creating intuitive and visually appealing user interfaces that enhance the user experience. Committed to innovation and best practices, I am dedicated to mastering the art of front-end development and contributing to meaningful projects that make a difference.I have a lot of hobbies, walking, reading,capturing moments and creating visual stories,exploring new places and cultures which can provide new perspectives and experiences.',
     photo: mariam,
     github: 'https://github.com/MariamKochadze',
     contributions: `As a software engineer I specialize in crafting comprehensive README documentation and developing centralized main page navigation systems.
@@ -52,6 +51,31 @@ export const AboutUs = (): JSX.Element => {
   return (
     <MainWrapper>
       <div className='about-us_wrapper'>
+        <h1>About us</h1>
+        <div className='about-us_title'>
+          <p className='about-us_intro'>
+            Welcome to Garden with Flowers! We are a team of developers from different countries and cultures, brought
+            together by our love for flowers. We created this website as part of our team pet project at
+            <Link
+              className='about-us_rss-text'
+              to='https://rs.school/'
+              target='_blank'
+            >
+              {` `}RSSchool
+            </Link>
+            . At Garden with Flowers, we believe that flowers can make any day special. Thank you for visiting our site.
+            We can't wait to share our love of flowers with you! Best, The Garden with Flowers Team.
+          </p>
+          <div className='rss-logo_wrapper'>
+            <Link
+              to='https://rs.school/'
+              target='_blank'
+            >
+              <RssLogo className='rss-logo' />
+            </Link>
+          </div>
+        </div>
+        <h2>Our team members</h2>
         {team.map((member, index) => {
           return (
             <div
@@ -79,14 +103,6 @@ export const AboutUs = (): JSX.Element => {
             </div>
           );
         })}
-        <div className='rss-logo_wrapper'>
-          <Link
-            to='https://rs.school/'
-            target='_blank'
-          >
-            <RssLogo className='rss-logo' />
-          </Link>
-        </div>
       </div>
     </MainWrapper>
   );
