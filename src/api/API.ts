@@ -9,6 +9,8 @@ import {
   CartUpdate,
   CartDraft,
   Cart,
+  CartDiscount,
+  DiscountCode,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { apiRoot } from './lib/Client';
@@ -322,6 +324,32 @@ export class API {
   async getCartById(cartId: string): Promise<Cart> {
     const { body } = await this.client.carts().withId({ ID: cartId }).get().execute();
     return body;
+  }
+
+  async getCartDiscounts(): Promise<{ data: CartDiscount[] | undefined; error: string }> {
+    let errorMsg = '';
+    try {
+      const response = await this.client.cartDiscounts().get().execute();
+      return { data: response.body.results, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async getDiscountCodeById(discountCodeId: string): Promise<{ data: DiscountCode | undefined; error: string }> {
+    let errorMsg = '';
+    try {
+      const response = await this.client.discountCodes().withId({ ID: discountCodeId }).get().execute();
+      return { data: response.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+      } else {
+        errorMsg = 'Unknown error occurred.';
+      }
+      return { data: undefined, error: errorMsg };
+    }
   }
 }
 

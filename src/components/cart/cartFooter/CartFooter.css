@@ -38,6 +38,11 @@
   margin-bottom: 2rem;
 }
 
+.cart__promo-inp-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 @media screen and (min-width: 481px) {
   .cart-footer__list-item {
     display: flex;
@@ -49,4 +54,12 @@
     border: 1px solid #ddd;
     padding: 2rem;
   }
+}
+
+.red-text {
+  color: #ff0000;
+}
+
+.price-line-through {
+  text-decoration: line-through;
 }

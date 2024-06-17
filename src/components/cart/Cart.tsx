@@ -1,35 +1,54 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import './Cart.css';
 import { CartList } from './cartList/CartList';
 import { CartFooter } from './cartFooter/CartFooter';
 import { EmptyCartMessage } from './emptyCartMessage/EmptyCartMessage';
 import { CartSkeleton } from './cartSkeleton/CartSceleton';
-import { getActiveCart, clearSnackbarInfo, clearCart as clearCartAction } from '../../store/slices/cartSlice';
+import {
+  getActiveCart,
+  clearSnackbarInfo,
+  clearCart as clearCartAction,
+  applyPromoCode,
+} from '../../store/slices/cartSlice';
 import { RootState } from '../../store';
 import { Alert, Snackbar } from '@mui/material';
 import { Loader } from '../../shared/ui/Loader/Loader';
 import { CartDialogModal } from './cartDialogModal/CartDialogModal';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 
 export const Cart = (): JSX.Element => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const { cart, snackbarInfo } = useSelector((state: RootState) => state.carts);
+  const cart = useAppSelector((state: RootState) => state.carts.cart);
   const [open, setOpen] = useState(false);
   const [loaderVisible, setLoaderVisible] = useState(false);
   const [dialogModalIsVisible, setDialogModalIsVisible] = useState(false);
+  const [promocode, setPromocode] = useState<string>('');
+  const snackbarInfo = useAppSelector((state) => state.carts.snackbarInfo);
 
   const handleClose = () => {
     setOpen(false);
-    dispatch(clearSnackbarInfo());
+  };
+
+  const handleApplyPromoCode = () => {
+    setIsLoading(true);
+    if (promocode.trim() !== '') {
+      //eslint-disable-next-line
+      dispatch(applyPromoCode(promocode.toLowerCase().trim()) as any);
+    } else {
+      setPromocode('');
+    }
+    setIsLoading(false);
   };
 
   const handleClearCart = async (): Promise<void> => {
+    setIsLoading(true);
     setDialogModalIsVisible(false);
     setLoaderVisible(true);
     //eslint-disable-next-line
     await dispatch(clearCartAction() as any);
     setLoaderVisible(false);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -37,7 +56,6 @@ export const Cart = (): JSX.Element => {
       setIsLoading(true);
       //eslint-disable-next-line
       await dispatch(getActiveCart() as any);
-      dispatch(clearSnackbarInfo());
       setIsLoading(false);
     };
 
@@ -47,20 +65,23 @@ export const Cart = (): JSX.Element => {
   useEffect(() => {
     if (snackbarInfo.message || snackbarInfo.errorMessage) {
       setOpen(true);
-      const timer = setTimeout(() => {
-        setOpen(false);
-        dispatch(clearSnackbarInfo());
-      }, 3000);
-      return () => clearTimeout(timer);
     }
-  }, [snackbarInfo, dispatch]);
+  }, [snackbarInfo.errorMessage, snackbarInfo.message]);
+
+  useEffect(() => {
+    let clearSnackbarTimeout: NodeJS.Timeout;
+    if (open) {
+      clearSnackbarTimeout = setTimeout(() => {
+        setOpen(false);
+      }, 2000);
+    } else {
+      dispatch(clearSnackbarInfo());
+    }
+    return () => clearTimeout(clearSnackbarTimeout);
+  }, [open, dispatch]);
 
   if (isLoading) {
     return <CartSkeleton />;
-  }
-
-  if (snackbarInfo.errorMessage) {
-    return <EmptyCartMessage message={snackbarInfo.errorMessage} />;
   }
 
   if (!cart || !cart.lineItems || cart.lineItems.length === 0) {
@@ -78,7 +99,7 @@ export const Cart = (): JSX.Element => {
       <Snackbar
         data-testid={'message'}
         open={open}
-        autoHideDuration={5000}
+        autoHideDuration={2000}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         onClose={handleClose}
       >
@@ -87,11 +108,14 @@ export const Cart = (): JSX.Element => {
           severity={snackbarInfo.errorMessage ? 'error' : 'success'}
           sx={{ width: '100%' }}
         >
-          {snackbarInfo.errorMessage ? snackbarInfo.errorMessage : `${snackbarInfo.message}`}
+          {snackbarInfo.errorMessage ? snackbarInfo.errorMessage : snackbarInfo.message}
         </Alert>
       </Snackbar>
       <CartList lineItems={cart.lineItems} />
       <CartFooter
+        promocode={promocode}
+        setPromocode={setPromocode}
+        handlePromoCode={handleApplyPromoCode}
         data={cart}
         clearCart={() => setDialogModalIsVisible(true)}
       />

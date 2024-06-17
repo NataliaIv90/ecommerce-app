@@ -7,7 +7,12 @@ import { useState, useEffect } from 'react';
 import { Snackbar, Alert } from '@mui/material';
 import { Grid, Card, CardMedia } from '@mui/material';
 import { useAppSelector, useAppDispatch } from '../../../hooks/reduxHooks';
-import { addProductToCart, changeProductQuantityInCart, setLoader } from '../../../store/slices/cartSlice';
+import {
+  addProductToCart,
+  changeProductQuantityInCart,
+  clearSnackbarInfo,
+  setLoader,
+} from '../../../store/slices/cartSlice';
 
 const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
   const language = 'en-US';
@@ -18,6 +23,29 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
 
   const cart = useAppSelector((state) => state.carts.cart);
   const dispatch = useAppDispatch();
+  const snackbarInfo = useAppSelector((state) => state.carts.snackbarInfo);
+
+  useEffect(() => {
+    if (snackbarInfo.message || snackbarInfo.errorMessage) {
+      setOpen(true);
+    }
+  }, [snackbarInfo.errorMessage, snackbarInfo.message]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (open) {
+      timer = setTimeout(() => {
+        setOpen(false);
+      }, 2000);
+    }
+    return () => clearTimeout(timer);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      dispatch(clearSnackbarInfo());
+    }
+  }, [open, dispatch]);
 
   // const addToCartFunc = (e: { preventDefault: () => void }) => {
   //   e.preventDefault();
@@ -28,15 +56,6 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
   //   }
   //   setIsColorBasket((prevValue) => !prevValue);
   // };
-
-  const snackbarInfo = useAppSelector((state) => state.carts.snackbarInfo);
-
-  useEffect(() => {
-    // eslint-disable-next-line
-    if (!!snackbarInfo.message || !!snackbarInfo.errorMessage) {
-      setOpen(true);
-    }
-  }, [snackbarInfo]);
 
   const removeFromCart = () => {
     dispatch(setLoader());
@@ -61,7 +80,7 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
       <Snackbar
         data-testid={'message'}
         open={open}
-        autoHideDuration={5000}
+        autoHideDuration={2000}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         onClose={handleClose}
       >
