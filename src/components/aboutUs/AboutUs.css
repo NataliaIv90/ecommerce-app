@@ -13,13 +13,16 @@
 .about-us_info {
   padding: 20px;
 }
+
 .about-us.member0 .about-us_info {
   border-top: 1px solid var(--primary-grey);
   border-right: 1px solid var(--primary-grey);
 }
+
 .about-us.member1 .about-us_image {
   order: 2;
 }
+
 .about-us.member1 .about-us_info {
   order: 1;
 }
@@ -47,6 +50,7 @@
   line-height: 1.6;
   margin: 0;
 }
+
 .about-us_rss-text {
   color: #000;
   text-decoration: none;
@@ -59,12 +63,13 @@
   color: #9ea0a2;
 }
 
-h2{
+h2 {
   margin-bottom: 2rem;
 }
 
 .about-us_image {
-  max-width: 30%;
+  object-fit: cover;
+  aspect-ratio: 1/1;
   width: 200px;
   height: 200px;
   border-radius: 30px;
@@ -91,6 +96,7 @@ h2{
   display: inline-block;
   font-weight: normal;
 }
+
 .about-us_bio {
   --basic-font: Verdana, sans-serif;
   --accent-font: 'Comic Sans MS', cursive;
@@ -109,6 +115,7 @@ h2{
   transition: all 0.3s ease;
   cursor: pointer;
 }
+
 .about-us_link:hover {
   color: #9ea0a2;
 }
@@ -128,16 +135,19 @@ h2{
   padding: 20px;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 769px) {
   .about-us_wrapper {
     padding: 20px;
   }
+
   .about-us {
     flex-direction: column;
   }
+
   .about-us.member1 .about-us_image {
     order: 1;
   }
+
   .about-us.member1 .about-us_info {
     order: 2;
   }

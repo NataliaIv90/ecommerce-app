@@ -53,19 +53,23 @@ export const AboutUs = (): JSX.Element => {
       <div className='about-us_wrapper'>
         <h1>About us</h1>
         <div className='about-us_title'>
-          <p className='about-us_intro'>
-            Welcome to Garden with Flowers! We are a team of developers from different countries and cultures, brought
-            together by our love for flowers. We created this website as part of our team pet project at
-            <Link
-              className='about-us_rss-text'
-              to='https://rs.school/'
-              target='_blank'
-            >
-              {` `}RSSchool
-            </Link>
-            . At Garden with Flowers, we believe that flowers can make any day special. Thank you for visiting our site.
-            We can't wait to share our love of flowers with you! Best, The Garden with Flowers Team.
-          </p>
+          <div className='about-us_intro'>
+            <p className='about-us_intro-item'>Welcome to Garden with Flowers!</p>
+            <p className='about-us_intro-item'>
+              We are a team of developers from different countries and cultures, brought together by our love for
+              flowers. We created this website as part of our team pet project at
+              <Link
+                className='about-us_rss-text'
+                to='https://rs.school/'
+                target='_blank'
+              >
+                {` `}RSSchool
+              </Link>
+              . At Garden with Flowers, we believe that flowers can make any day special. Thank you for visiting our
+              site. We can't wait to share our love of flowers with you! Best,
+            </p>
+            <p className='about-us_intro-item'>The Garden with Flowers Team.</p>
+          </div>
           <div className='rss-logo_wrapper'>
             <Link
               to='https://rs.school/'
