@@ -10,11 +10,14 @@ import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import { useAuth } from '../../hooks/AuthHooks';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import './Header.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 export const Header = (): JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const customer = useAppSelector((state) => state.customers.customer);
+  const { cart } = useSelector((state: RootState) => state.carts);
   const [changeAuth] = useAuth();
 
   const handleLogin = changeAuth as (val: boolean) => void;
@@ -42,10 +45,13 @@ export const Header = (): JSX.Element => {
           <li className='header__link'>
             <Link to='/about-us'>About us</Link>
           </li>
-          <li className='header__link'>
+          <li className='header__link header__cart'>
             <Link to='/cart'>
               <ShoppingCartIcon />
             </Link>
+            <span className='header__cart-count'>
+              {cart && cart.totalLineItemQuantity ? cart.totalLineItemQuantity : null}
+            </span>
           </li>
           <li className='header__link'>
             {customer ? (
