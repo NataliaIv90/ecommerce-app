@@ -15,6 +15,7 @@ import { Alert, Snackbar } from '@mui/material';
 import { Loader } from '../../shared/ui/Loader/Loader';
 import { CartDialogModal } from './cartDialogModal/CartDialogModal';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { PromoData } from '../../shared/mainPromoData/PromoData';
 
 export const Cart = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -89,7 +90,7 @@ export const Cart = (): JSX.Element => {
   }
 
   return (
-    <div className='cart'>
+    <div>
       <CartDialogModal
         handleApproveAction={handleClearCart}
         open={dialogModalIsVisible}
@@ -111,14 +112,18 @@ export const Cart = (): JSX.Element => {
           {snackbarInfo.errorMessage ? snackbarInfo.errorMessage : snackbarInfo.message}
         </Alert>
       </Snackbar>
-      <CartList lineItems={cart.lineItems} />
-      <CartFooter
-        promocode={promocode}
-        setPromocode={setPromocode}
-        handlePromoCode={handleApplyPromoCode}
-        data={cart}
-        clearCart={() => setDialogModalIsVisible(true)}
-      />
+
+      <PromoData />
+      <div className='cart'>
+        <CartList lineItems={cart.lineItems} />
+        <CartFooter
+          promocode={promocode}
+          setPromocode={setPromocode}
+          handlePromoCode={handleApplyPromoCode}
+          data={cart}
+          clearCart={() => setDialogModalIsVisible(true)}
+        />
+      </div>
     </div>
   );
 };

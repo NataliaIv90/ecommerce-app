@@ -4,11 +4,10 @@ import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedBu
 import './ProductCard.css';
 import { ImageGallery } from './imageGallery/ImageGallery';
 import { RateStarIcon } from '../../../shared/icons/rateStarIcon/RateStarIcon';
-import { QuantityController } from '../../../shared/button/quantityController/QuantityController';
 import SvgCircleIcon from '../../../shared/icons/circle/CircleIcon';
 import { setRightPrice } from '../../../utils/price-formatting-functions';
-import { addToCart } from '../../../utils/cartUtils';
 import { ProductModal } from './productModal/ProductModal';
+// import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 
 export interface IProductCardProps {
   name: string | '';
@@ -16,10 +15,23 @@ export interface IProductCardProps {
   images: Image[] | [];
   prices: Price[] | undefined;
   id: string;
+  lineItemId: string;
+  itemIsInCart: boolean;
+  addToCart: () => void;
+  removeFromCart: () => void;
 }
 
-export const ProductCard: FC<IProductCardProps> = ({ name, description, images, id, prices }): JSX.Element => {
-  const [amount, setAmount] = useState<number>(1);
+export const ProductCard: FC<IProductCardProps> = ({
+  name,
+  description,
+  images,
+  id,
+  lineItemId,
+  prices,
+  addToCart,
+  itemIsInCart,
+  removeFromCart,
+}): JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -66,8 +78,6 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
         <ProductModal
           currentIndex={currentImageIndex}
           images={images}
-          // src={images[currentImageIndex].url}
-          // alt={images[currentImageIndex].label || ''}
           onClick={toggleOpenedModal}
         />
       ) : null}
@@ -128,14 +138,17 @@ export const ProductCard: FC<IProductCardProps> = ({ name, description, images, 
           <div>In stock</div>
         </div>
         <div className='product-card__cart-button-container'>
-          <OutlinedButton
-            text='Add to cart'
-            onClick={() => addToCart(id, name, amount)}
-          />
-          <QuantityController
-            amount={amount}
-            setAmount={setAmount}
-          />
+          {!itemIsInCart ? (
+            <OutlinedButton
+              text='Add to cart'
+              onClick={() => addToCart()}
+            />
+          ) : (
+            <OutlinedButton
+              text='Remove from cart'
+              onClick={() => removeFromCart()}
+            />
+          )}
         </div>
 
         {description ? (

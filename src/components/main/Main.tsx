@@ -5,7 +5,7 @@ import './Main.css';
 import { OutlinedButton } from '../../shared/button/outlinedButton/OutlinedButton';
 import { Link } from 'react-router-dom';
 import { CarIcon, PhotoIcon, PaymentIcon, ChatIcon } from './mainCards/MainCards';
-import { PromoData } from './mainPromoData/PromoData';
+import { PromoData } from '../../shared/mainPromoData/PromoData';
 
 const cardsData = [
   {
