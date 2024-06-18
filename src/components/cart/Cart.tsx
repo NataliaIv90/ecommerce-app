@@ -16,7 +16,6 @@ import { Loader } from '../../shared/ui/Loader/Loader';
 import { CartDialogModal } from './cartDialogModal/CartDialogModal';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { PromoData } from '../../shared/mainPromoData/PromoData';
-import { scrollToTop } from '../../utils/scrollToTop';
 
 export const Cart = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -27,7 +26,6 @@ export const Cart = (): JSX.Element => {
   const [dialogModalIsVisible, setDialogModalIsVisible] = useState(false);
   const [promocode, setPromocode] = useState<string>('');
   const snackbarInfo = useAppSelector((state) => state.carts.snackbarInfo);
-  scrollToTop();
 
   const handleClose = () => {
     setOpen(false);
