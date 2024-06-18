@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
-import { RootState } from '../../../store';
-import { getPromotions } from '../../../store/slices/cartSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { RootState } from '../../store';
+import { getPromotions } from '../../store/slices/cartSlice';
 
 export const PromoData = (): JSX.Element => {
   const dispatch = useAppDispatch();
