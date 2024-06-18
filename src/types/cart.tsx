@@ -1,3 +1,5 @@
+import { LineItem as OriginalLineItem } from '@commercetools/platform-sdk';
+
 export interface IPriceValue {
   type: string;
   currencyCode: string;
@@ -139,4 +141,28 @@ export interface ICart {
   //eslint-disable-next-line
   itemShippingAddresses: any[];
   totalLineItemQuantity: number;
+}
+
+// Extend the LineItem type to include discountedPrice
+export interface LineItem extends OriginalLineItem {
+  discountedPrice?: {
+    value: {
+      type: string;
+      currencyCode: string;
+      centAmount: number;
+      fractionDigits: number;
+    };
+    includedDiscounts?: Array<{
+      discount: {
+        typeId: string;
+        id: string;
+      };
+      discountedAmount: {
+        type: string;
+        currencyCode: string;
+        centAmount: number;
+        fractionDigits: number;
+      };
+    }>;
+  };
 }

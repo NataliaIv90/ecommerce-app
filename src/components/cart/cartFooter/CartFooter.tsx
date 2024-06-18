@@ -3,14 +3,25 @@ import './CartFooter.css';
 import { formatPrice } from '../../../utils/price-formatting-functions';
 import { OutlinedButton } from '../../../shared/button/outlinedButton/OutlinedButton';
 import { Cart } from '@commercetools/platform-sdk';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
+import { calculateTotalPriceBeforeDiscounts, preparePriceDataForCartFooter } from '../../../utils/cartUtils';
 
 interface ICartFooterProps {
   data?: Cart;
   clearCart: () => void;
+  promocode: string;
+  setPromocode: (promocode: string) => void;
+  handlePromoCode: () => void;
 }
 
-export const CartFooter = ({ data, clearCart }: ICartFooterProps): JSX.Element => {
+export const CartFooter = ({
+  data,
+  clearCart,
+  promocode,
+  setPromocode,
+  handlePromoCode,
+}: ICartFooterProps): JSX.Element => {
+  const promoIsApplied = data?.discountCodes && data.discountCodes.length > 0;
   return (
     <div className='cart-footer'>
       <h2 className='cart-footer__title'>Total:</h2>
@@ -25,7 +36,16 @@ export const CartFooter = ({ data, clearCart }: ICartFooterProps): JSX.Element =
                 <p>
                   {index + 1}. {el.name['en-US']}
                 </p>
-                <p>${formatPrice(el.totalPrice.centAmount)}</p>
+                {/* <div> */}
+                {preparePriceDataForCartFooter(el.totalPrice.centAmount, el.price.value.centAmount * el.quantity)}
+                {/* <p>${formatPrice(el.price.value.centAmount * el.quantity)}</p>
+                  <p>
+                    $
+                    {formatPrice(el.price.value.centAmount * el.quantity) !== formatPrice(el.totalPrice.centAmount)
+                      ? formatPrice(el.totalPrice.centAmount)
+                      : null}
+                  </p> */}
+                {/* </div> */}
               </li>
             ))
           ) : (
@@ -33,6 +53,18 @@ export const CartFooter = ({ data, clearCart }: ICartFooterProps): JSX.Element =
           )}
         </ul>
         <div className='cart-footer__details'>
+          {promoIsApplied ? (
+            <div className='cart-footer__details-item'>
+              <p>Total value without discounts:</p>
+              <p>${formatPrice(calculateTotalPriceBeforeDiscounts(data))}</p>
+            </div>
+          ) : null}
+
+          <div className='cart-footer__details-item'>
+            <p>Discount on total price:</p>
+            <p>${formatPrice(data?.discountOnTotalPrice?.discountedAmount.centAmount || 0)}</p>
+          </div>
+
           <div className='cart-footer__details-item'>
             <p>Delivery:</p>
             <p>Free</p>
@@ -42,10 +74,30 @@ export const CartFooter = ({ data, clearCart }: ICartFooterProps): JSX.Element =
             <p>{data?.totalLineItemQuantity}</p>
           </div>
           <div className='cart-footer__details-item'>
-            <p>Total price:</p>
+            <p>Final price:</p>
             <p>${formatPrice(data?.totalPrice?.centAmount ? data?.totalPrice?.centAmount : 0)}</p>
           </div>
         </div>
+        <div className='cart__promo-inp-container'>
+          <TextField
+            id='promocode-input'
+            placeholder='Enter your promocode'
+            variant='standard'
+            color='success'
+            value={promocode}
+            onChange={(e) => setPromocode(e.target.value)}
+            disabled={promoIsApplied}
+          />
+          <Button
+            color='success'
+            variant='outlined'
+            onClick={handlePromoCode}
+            disabled={promoIsApplied}
+          >
+            Apply
+          </Button>
+        </div>
+        {promoIsApplied ? <p className='red-text'>*Promo code is applied</p> : null}
         <OutlinedButton
           text='CONFIRM ORDER'
           wideBtn={true}

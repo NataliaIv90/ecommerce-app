@@ -83,6 +83,11 @@
   }
 }
 
+.cart-item__price-container__discounted {
+  color: #157415;
+  font-size: 0.8rem;
+}
+
 @media screen and (min-width: 769px) {
   .cart-list-item {
     grid-template-columns: 1fr 2fr;

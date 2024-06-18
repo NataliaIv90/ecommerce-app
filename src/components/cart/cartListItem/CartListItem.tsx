@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState, useCallback } from 'react';
 import './CartListItem.css';
 import { formatPrice } from '../../../utils/price-formatting-functions';
-import { LineItem } from '@commercetools/platform-sdk';
+import { LineItem } from '../../../types/cart';
 import { QuantityController } from '../../../shared/button/quantityController/QuantityController';
 import { useAppDispatch } from '../../../hooks/reduxHooks';
 import { changeProductQuantityInCart } from '../../../store/slices/cartSlice';
@@ -13,7 +13,7 @@ interface CartListItemProps {
 }
 
 export const CartListItem: FC<CartListItemProps> = ({ lineItem }): JSX.Element => {
-  const { id, name, variant, price, quantity, totalPrice } = lineItem;
+  const { id, name, variant, price, quantity, totalPrice, discountedPrice } = lineItem;
   const dispatch = useAppDispatch();
   const [amount, setAmount] = useState(quantity || 0);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +56,20 @@ export const CartListItem: FC<CartListItemProps> = ({ lineItem }): JSX.Element =
             disabled={isLoading}
           />
         </div>
+        {price.discounted ? (
+          <div className='cart-item-price-container'>
+            <p className='cart-item__price-container__discounted'>
+              Price with discount: ${formatPrice(price.discounted?.value.centAmount)} / per item
+            </p>
+          </div>
+        ) : null}
+        {discountedPrice ? (
+          <div className='cart-item-price-container'>
+            <p className='cart-item__price-container__discounted'>
+              Price with promo code: ${formatPrice(discountedPrice?.value.centAmount)} / per item
+            </p>
+          </div>
+        ) : null}
         <div>
           <p className='cart-item-price-container'>Total: ${formatPrice(totalPrice.centAmount)}</p>
         </div>
