@@ -7,6 +7,7 @@ import { ErrorPage } from '../errorPage/ErrorPage';
 import { Alert, Snackbar } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { addProductToCart, changeProductQuantityInCart, setLoader } from '../../store/slices/cartSlice';
+import { scrollToTop } from '../../utils/scrollToTop';
 
 export const ProductCoponent = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
@@ -17,6 +18,7 @@ export const ProductCoponent = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const [lineItemId, setLineItemId] = useState('');
   const [itemIsInCart, setItemIsInCart] = useState(false);
+  scrollToTop();
 
   useEffect(() => {
     setLineItemId('');

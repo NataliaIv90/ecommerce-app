@@ -97,23 +97,6 @@ main {
   width: 150px;
 }
 
-.main__promo-data {
-  color: #456a32;
-  background-color: #d3d3d3;
-  padding: 1%;
-}
-
-.main__promo-data__title {
-  font-size: 18px;
-  padding-bottom: 1em;
-  text-align: center;
-}
-
-.main__promo-data__item {
-  line-height: 1.5;
-  padding-top: 0.5em;
-}
-
 @media screen and (min-width: 769px) {
   .hero {
     padding: 5% 0;
@@ -165,10 +148,6 @@ main {
     /* or 100px */
     border-bottom: 1px solid var(--primary-grey);
   }
-
-  .main__promo-data__title {
-    font-size: 24px;
-  }
 }
 
 @media screen and (min-width: 1025px) {
@@ -186,10 +165,6 @@ main {
     margin: 0;
     padding: 3%;
     background: transparent;
-  }
-
-  .main__promo-data__title {
-    font-size: 32px;
   }
 }
 

@@ -7,8 +7,9 @@ import mariam from './images/Mariam.webp';
 import umida from './images/Umida.webp';
 import { MainWrapper } from '../mainWrapper/MainWrapper';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import { scrollToTop } from '../../utils/scrollToTop';
 
-const team = [
+export const team = [
   {
     name: 'Natalia Ivantsova',
     role: 'Team Lead',
@@ -48,6 +49,8 @@ Additionally, I design and implement informative and engaging About Us pages, co
 ];
 
 export const AboutUs = (): JSX.Element => {
+  scrollToTop();
+
   return (
     <MainWrapper>
       <div className='about-us_wrapper'>

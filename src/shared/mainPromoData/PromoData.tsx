@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { RootState } from '../../store';
 import { getPromotions } from '../../store/slices/cartSlice';
+import './PromoData.css';
 
 export const PromoData = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -19,6 +20,10 @@ export const PromoData = (): JSX.Element => {
     }
     //eslint-disable-next-line
   }, [snackbarInfo.errorMessage, snackbarInfo.message]);
+
+  if (!cartDiscounts || !cartDiscounts.length) {
+    return <></>;
+  }
 
   return (
     <section className='main__promo-data'>
