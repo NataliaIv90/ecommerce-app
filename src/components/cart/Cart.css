@@ -1,0 +1,97 @@
+.cart {
+  width: 90%;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 2rem;
+  max-width: 1200px;
+}
+
+.cart__is-empty {
+  width: 100%;
+  height: 58vh;
+  background: #d3d3d3;
+}
+
+.empty-cart-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  padding: 5%;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.empty-cart-btn-container {
+  width: 300px;
+  margin: auto;
+}
+
+.cart__skeleton-wide-screen {
+  display: none;
+}
+
+.cart__skeleton {
+  width: 90%;
+  margin: auto;
+  overflow: hidden;
+  padding: 20px 0;
+}
+
+.cart__error {
+  color: red;
+}
+
+.clear-cart-btn {
+  width: 100%;
+  font-size: 12px !important;
+}
+
+@media screen and (min-width: 700px) {
+  .clear-cart-btn {
+    font-size: 18px !important;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .cart {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .cart__is-empty {
+    text-align: left;
+    background-image: url(../../assets/images/flowers-background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .empty-cart-content {
+    width: 60%;
+  }
+
+  .cart__skeleton {
+    padding: 50px 0;
+  }
+
+  .cart__skeleton-wide-screen {
+    display: block;
+  }
+
+  .cart__skeleton-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .cart {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .empty-cart-content {
+    width: 60%;
+  }
+}

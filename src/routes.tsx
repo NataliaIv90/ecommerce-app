@@ -10,6 +10,10 @@ import ProtectRoutes from './hooks/ProtectRoutes';
 import { Profile } from './components/profile/Profile';
 import { ProductCoponent } from './components/product/Product';
 import { ErrorPage } from './components/errorPage/ErrorPage';
+import { AboutUs } from './components/aboutUs/AboutUs';
+import { Contacts } from './components/contacts/Contacts';
+import { Delivery } from './components/delivery/Delivery';
+import { Cart } from './components/cart/Cart';
 
 export enum ERoutesPaths {
   Root = '/',
@@ -20,6 +24,10 @@ export enum ERoutesPaths {
   Catalog = 'catalog',
   Product = 'product',
   Error500 = '500',
+  AboutUs = 'about-us',
+  Contacts = 'contacts',
+  Delivery = 'delivery',
+  Cart = 'cart',
 }
 
 const router = createBrowserRouter([
@@ -60,6 +68,22 @@ const router = createBrowserRouter([
       {
         element: <ProductCoponent />,
         path: `${ERoutesPaths.Catalog}/:id`,
+      },
+      {
+        element: <Cart />,
+        path: ERoutesPaths.Cart,
+      },
+      {
+        element: <AboutUs />,
+        path: ERoutesPaths.AboutUs,
+      },
+      {
+        element: <Delivery />,
+        path: ERoutesPaths.Delivery,
+      },
+      {
+        element: <Contacts />,
+        path: ERoutesPaths.Contacts,
       },
       {
         element: <Navigate to={ERoutesPaths.Error404} />,

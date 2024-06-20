@@ -3,65 +3,95 @@ import { Link as RouterLink } from 'react-router-dom';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { setRightPrice } from '../../../utils/price-formatting-functions';
-import { useState } from 'react';
-import { addToCart } from '../../../utils/addToCart';
-import Snackbar from '@mui/material/Snackbar';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { useState, useEffect } from 'react';
+import { Snackbar, Alert } from '@mui/material';
 import { Grid, Card, CardMedia } from '@mui/material';
+import { useAppSelector, useAppDispatch } from '../../../hooks/reduxHooks';
+import {
+  addProductToCart,
+  changeProductQuantityInCart,
+  clearSnackbarInfo,
+  setLoader,
+} from '../../../store/slices/cartSlice';
 
 const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
   const language = 'en-US';
   const imageOrPriceNumber = 0;
-  const id = product.id;
+  const id = product?.id;
   const name = product.name[language];
-  // eslint-disable-next-line
-  const [amount, setAmount] = useState<number>(1);
-  const [isColorBasket, setIsColorBasket] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const addToCartFunc = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (!isColorBasket) {
-      addToCart(id, name, amount);
-    } else {
+  const cart = useAppSelector((state) => state.carts.cart);
+  const dispatch = useAppDispatch();
+  const snackbarInfo = useAppSelector((state) => state.carts.snackbarInfo);
+
+  useEffect(() => {
+    if (snackbarInfo.message || snackbarInfo.errorMessage) {
       setOpen(true);
     }
-    setIsColorBasket((prevValue) => !prevValue);
+  }, [snackbarInfo.errorMessage, snackbarInfo.message]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (open) {
+      timer = setTimeout(() => {
+        setOpen(false);
+      }, 2000);
+    }
+    return () => clearTimeout(timer);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      dispatch(clearSnackbarInfo());
+    }
+  }, [open, dispatch]);
+
+  // const addToCartFunc = (e: { preventDefault: () => void }) => {
+  //   e.preventDefault();
+  //   if (!isColorBasket) {
+  //     addToCart(id, name, amount);
+  //   } else {
+  //     setOpen(true);
+  //   }
+  //   setIsColorBasket((prevValue) => !prevValue);
+  // };
+
+  const removeFromCart = () => {
+    dispatch(setLoader());
+    idCartProduct && void dispatch(changeProductQuantityInCart({ productId: idCartProduct.id, quantity: 0 }));
   };
+
+  const addToCartFunc = () => {
+    dispatch(setLoader());
+    if (product?.id) {
+      void dispatch(addProductToCart(product.id));
+    }
+  };
+
+  const idCartProduct = cart.lineItems ? cart.lineItems.find((item) => item.productId === id) : false;
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const action = (
-    <>
-      <Button
-        color='secondary'
-        size='small'
-        onClick={handleClose}
-      />
-      <IconButton
-        size='small'
-        aria-label='close'
-        color='inherit'
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize='small' />
-      </IconButton>
-    </>
-  );
   return (
     <>
       <Snackbar
+        data-testid={'message'}
         open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message='Do you want to remove from cart?'
-        action={action}
+        autoHideDuration={2000}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      />
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={snackbarInfo.errorMessage ? 'error' : 'success'}
+          sx={{ width: '100%' }}
+        >
+          {snackbarInfo.errorMessage ? snackbarInfo.errorMessage : `${snackbarInfo.message}`}
+        </Alert>
+      </Snackbar>
       <Grid
         item
         xs={12}
@@ -102,12 +132,27 @@ const ProductItem: React.FC<{ product: ProductProjection }> = ({ product }) => {
                     : '0.00'}
                 </span>
                 <div>
-                  <button
-                    className='catalog-card__button'
-                    onClick={addToCartFunc}
-                  >
-                    {isColorBasket ? <ShoppingCartIcon /> : <ShoppingCartOutlinedIcon />}
-                  </button>
+                  {idCartProduct ? (
+                    <button
+                      className='catalog-card__button'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        removeFromCart();
+                      }}
+                    >
+                      <ShoppingCartIcon />
+                    </button>
+                  ) : (
+                    <button
+                      className='catalog-card__button'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        addToCartFunc();
+                      }}
+                    >
+                      <ShoppingCartOutlinedIcon />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

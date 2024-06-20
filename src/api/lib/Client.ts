@@ -45,7 +45,7 @@ export const getApiRoot = (
   params: { token?: string; email?: string; password?: string } = {}
 ): ByProjectKeyRequestBuilder => {
   switch (type) {
-    case 'anonimous': {
+    case 'anonymous': {
       const options: AnonymousAuthMiddlewareOptions = {
         host: AUTH_URL,
         projectKey: projectKey,

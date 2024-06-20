@@ -3,7 +3,13 @@ import { RangeSlider } from '../../../shared/ui/Slider';
 import { Recycling as RecyclingIcon, PriceChange as PriceChangeIcon } from '@mui/icons-material';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
-import { getCategories, getProducts, getProductsWithFilter, resetFilter } from '../../../store/slices/productSlice';
+import {
+  getCategories,
+  getProducts,
+  getProductsWithFilter,
+  resetFilter,
+  setCurrentPage,
+} from '../../../store/slices/productSlice';
 import { useEffect, useState } from 'react';
 
 export const Filters = (): JSX.Element => {
@@ -12,6 +18,7 @@ export const Filters = (): JSX.Element => {
   const filters = useAppSelector((state) => state.products.filters);
   const sort = useAppSelector((state) => state.products.sort);
   const search = useAppSelector((state) => state.products.search);
+  const page = useAppSelector((state) => state.products.currentPage);
 
   const dispatch = useAppDispatch();
 
@@ -37,7 +44,12 @@ export const Filters = (): JSX.Element => {
     else void dispatch(getProductsWithFilter());
 
     //eslint-disable-next-line
-  }, [JSON.stringify(filters), JSON.stringify(sort), search]);
+  }, [JSON.stringify(filters), JSON.stringify(sort), search, page]);
+
+  useEffect(() => {
+    void dispatch(setCurrentPage({ page: 1 }));
+    //eslint-disable-next-line
+  }, [JSON.stringify(filters)]);
 
   useEffect(() => {
     activeCat ? setSelected(activeCat) : setSelected('');

@@ -6,14 +6,18 @@ import {
   Product,
   CustomerUpdate,
   CustomerChangePassword,
+  CartUpdate,
+  CartDraft,
+  Cart,
+  CartDiscount,
+  DiscountCode,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-import { Credentials } from '../store/slices/customerSlice';
 import { apiRoot } from './lib/Client';
 
 export class API {
   private client: ByProjectKeyRequestBuilder;
-  static limit: number | undefined;
+  static limit = 100;
 
   constructor(client: ByProjectKeyRequestBuilder) {
     this.client = client;
@@ -55,20 +59,20 @@ export class API {
     }
   }
 
-  async signIn(credentials: Credentials): Promise<CustomerSignInResult> {
+  async signIn(credentials: {
+    email: string;
+    password: string;
+  }): Promise<{ data: CustomerSignInResult | undefined; error: string }> {
     let errorMsg = '';
-    const result: CustomerSignInResult = {} as CustomerSignInResult;
     try {
-      const result = await this.client.me().login().post({ body: credentials }).execute();
-      return result.body;
+      const { ...data } = { ...credentials };
+
+      const result = await this.client.me().login().post({ body: data }).execute();
+      return { data: result.body, error: errorMsg };
     } catch (error) {
-      if (error instanceof Error) {
-        errorMsg = error.message;
-        //eslint-disable-next-line
-        console.error(errorMsg);
-      }
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
     }
-    return result;
   }
 
   async signInByToken(): Promise<Customer> {
@@ -86,6 +90,21 @@ export class API {
     }
     return result;
   }
+
+  async signInWithCartMerge(credentials: {
+    email: string;
+    password: string;
+  }): Promise<{ data: CustomerSignInResult | undefined; error: string }> {
+    let errorMsg = '';
+    try {
+      const { ...data } = { ...credentials, activeCartSignInMode: 'MergeWithExistingCustomerCart' };
+      const result = await this.client.me().login().post({ body: data }).execute();
+      return { data: result.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
   //eslint-disable-next-line
   async getProducts() {
     // : Promise<{ data: ProductProjectionPagedQueryResponse | undefined; error: string }>
@@ -96,7 +115,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
-            limit: 10,
+            limit: API.limit,
             facet: ['variants.attributes.color.en-US', 'variants.attributes.size.en-US', 'variants.price.centAmount'],
           },
         })
@@ -177,6 +196,7 @@ export class API {
         .search()
         .get({
           queryArgs: {
+            limit: API.limit,
             facet: [`variants.attributes.color.en`, 'variants.price.centAmount'],
             filter: [`categories.id:subtree("${catId}")`],
           },
@@ -199,7 +219,7 @@ export class API {
     }
   }
   //eslint-disable-next-line
-  async getProductsWithFilter(filter: string[], sort: string, search: string = '') {
+  async getProductsWithFilter(filter: string[], sort: string, search: string, limit: number, offset: number) {
     let errorMsg = '';
     try {
       const respsone = await this.client
@@ -210,6 +230,8 @@ export class API {
             'text.en-US': search,
             fuzzy: false,
             sort,
+            limit,
+            offset,
             'filter.query': filter,
           },
         })
@@ -233,6 +255,7 @@ export class API {
         .get({
           queryArgs: {
             'text.en-US': search,
+            limit: API.limit,
           },
         })
         .execute();
@@ -256,6 +279,77 @@ export class API {
       }
     }
     return null;
+  }
+  //eslint-disable-next-line
+  async getActiveCart() {
+    let errorMsg = '';
+    try {
+      const response = await this.client.me().activeCart().get().execute();
+      const result = response;
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  //eslint-disable-next-line
+  async createCart(cart: CartDraft) {
+    let errorMsg = '';
+    try {
+      const response = await this.client.me().carts().post({ body: cart }).execute();
+      const result = response;
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  //eslint-disable-next-line
+  async updateCart(ID: string, cartUpdate: CartUpdate) {
+    let errorMsg = '';
+    try {
+      const response = await this.client.carts().withId({ ID }).post({ body: cartUpdate }).execute();
+      const result = response;
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async getCartById(cartId: string): Promise<Cart> {
+    const { body } = await this.client.carts().withId({ ID: cartId }).get().execute();
+    return body;
+  }
+
+  async getCartDiscounts(): Promise<{ data: CartDiscount[] | undefined; error: string }> {
+    let errorMsg = '';
+    try {
+      const response = await this.client.cartDiscounts().get().execute();
+      return { data: response.body.results, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async getDiscountCodeById(discountCodeId: string): Promise<{ data: DiscountCode | undefined; error: string }> {
+    let errorMsg = '';
+    try {
+      const response = await this.client.discountCodes().withId({ ID: discountCodeId }).get().execute();
+      return { data: response.body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+      } else {
+        errorMsg = 'Unknown error occurred.';
+      }
+      return { data: undefined, error: errorMsg };
+    }
   }
 }
 

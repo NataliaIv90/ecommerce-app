@@ -10,6 +10,7 @@ import { BreadCrumbs } from './filters/BreadCrumb';
 import CatalogSkeletonList from './CatalogSkeletonList';
 import { FilterModalWindow } from './filters/FilterModalWindow';
 import { Box, Button } from '@mui/material';
+import { scrollToTop } from '../../utils/scrollToTop';
 
 const CatalogPage = (): JSX.Element => {
   const isLoading = useAppSelector((state) => state.products.isLoading);
@@ -17,6 +18,8 @@ const CatalogPage = (): JSX.Element => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
+
+  scrollToTop();
 
   return (
     <MainWrapper>
