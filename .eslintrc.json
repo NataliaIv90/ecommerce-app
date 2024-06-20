@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "react-app",
+    "plugin:jsx-a11y/recommended", // Add JSX accessibility recommended configuration
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "prettier/prettier": "error", // Enforce Prettier formatting
+    "no-unused-vars": "warn", // Warn about unused variables
+    "no-console": "warn", // Warn about console.log and similar
+    "eqeqeq": ["error", "always"], // Enforce strict equality (=== and !==)
+    "no-implicit-coercion": "error", // Disallow implicit type coercion
+    "no-empty": "warn", // Warn about empty block statements
+    "react/jsx-uses-react": "error", // Ensure React is in scope when using JSX
+    "react/jsx-uses-vars": "error", // Ensure all variables used in JSX are declared
+    "jsx-a11y/alt-text": "error", // Ensure all img elements have an alt attribute
+    "jsx-a11y/label-has-associated-control": "error", // Ensure all form controls have associated labels
+    "@typescript-eslint/explicit-module-boundary-types": "error" // Require explicit return types on functions and methods
+  },
+  "plugins": ["prettier", "jsx-a11y", "@typescript-eslint"],
+  "ignorePatterns": ["jest.config.js", "babel.config.js"]
+}

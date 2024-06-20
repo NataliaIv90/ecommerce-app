@@ -1,0 +1,49 @@
+@import './normalize.css';
+
+/* Breakpoints */
+/* 
+ --mobile: 320px - 480px;
+ --tablets: 481px- 768px;
+ --laptops: 769px - 1024px;
+ --desktops: 1025px - 1200px;
+ --largeScreens: 1025px - 1200px;
+   */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #593825;
+  --primary-bg: #f5f1f1;
+  --primary-grey: #9ea0a2;
+  --basic-font: Verdana, sans-serif;
+  --accent-font: 'Comic Sans MS', cursive;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Comic Sans MS', cursive;
+  margin: 0;
+}
+
+::placeholder {
+  color: var(--primary-color);
+}
+
+.container {
+  max-width: 1190px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}

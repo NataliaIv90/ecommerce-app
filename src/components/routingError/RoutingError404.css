@@ -1,0 +1,79 @@
+.routingError {
+  height: 100vh;
+  background-image: url('../../assets/images/flowers-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 50px;
+  color: #593825;
+  font-size: 12px;
+}
+
+.routingError__title {
+  font-size: 36px;
+  color: rgb(112, 57, 137);
+}
+
+.routingError__subtitle {
+  font-size: 18px;
+}
+
+.routingError__btnContainer {
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+@media screen and (min-width: 700px) {
+  .routingError {
+    padding-left: 80px;
+    font-size: 16px;
+  }
+
+  .routingError_contentContainer {
+    width: 80%;
+  }
+
+  .routingError__title {
+    font-size: 48px;
+    margin-bottom: 3rem;
+  }
+
+  .routingError__subtitle {
+    font-size: 24px;
+  }
+
+  .routingError__btnContainer {
+    display: inline-block;
+    margin-top: 2rem;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .routingError {
+    padding-left: 100px;
+    text-align: center;
+  }
+
+  .routingError_contentContainer {
+    width: 60%;
+  }
+
+  .routingError__title {
+    font-size: 64px;
+  }
+
+  .routingError__subtitle {
+    font-size: 36px;
+  }
+
+  .routingError__btnContainer {
+    margin-top: 3rem;
+  }
+}
+
+.App {
+  width: 100%;
+}
