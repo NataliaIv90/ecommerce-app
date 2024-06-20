@@ -3,12 +3,17 @@ import {
   Customer,
   CustomerSignInResult,
   CustomerDraft,
+  Product,
+  CustomerUpdate,
+  CustomerChangePassword,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { Credentials } from '../store/slices/customerSlice';
+import { apiRoot } from './lib/Client';
 
 export class API {
   private client: ByProjectKeyRequestBuilder;
+  static limit: number | undefined;
 
   constructor(client: ByProjectKeyRequestBuilder) {
     this.client = client;
@@ -43,7 +48,8 @@ export class API {
     } catch (error) {
       if (error instanceof Error) {
         errorMsg = error.message;
-        alert(errorMsg);
+        //eslint-disable-next-line
+        console.error(errorMsg);
       }
       return { data: undefined, error: errorMsg };
     }
@@ -58,7 +64,8 @@ export class API {
     } catch (error) {
       if (error instanceof Error) {
         errorMsg = error.message;
-        alert(errorMsg);
+        //eslint-disable-next-line
+        console.error(errorMsg);
       }
     }
     return result;
@@ -73,9 +80,184 @@ export class API {
     } catch (error) {
       if (error instanceof Error) {
         errorMsg = error.message;
-        alert(errorMsg);
+        //eslint-disable-next-line
+        console.error(errorMsg);
       }
     }
     return result;
   }
+  //eslint-disable-next-line
+  async getProducts() {
+    // : Promise<{ data: ProductProjectionPagedQueryResponse | undefined; error: string }>
+    let errorMsg = '';
+    try {
+      const { body } = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            limit: 10,
+            facet: ['variants.attributes.color.en-US', 'variants.attributes.size.en-US', 'variants.price.centAmount'],
+          },
+        })
+        .execute();
+
+      return { data: body, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      //eslint-disable-next-line
+      console.error(errorMsg);
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  async getProductById(productId: string): Promise<Product | undefined> {
+    try {
+      const { body } = await this.client.products().withId({ ID: productId }).get().execute();
+      return body;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      //eslint-disable-next-line
+      console.error(errorMsg);
+      return undefined;
+    }
+  }
+
+  // ADD
+  async updateCustomer(customerId: string, updatedCustomerData: CustomerUpdate): Promise<Customer> {
+    let errorMsg = '';
+    const result: Customer = {} as Customer;
+    try {
+      const { body } = await this.client
+        .customers()
+        .withId({ ID: customerId })
+        .post({
+          body: {
+            version: updatedCustomerData.version,
+            actions: updatedCustomerData.actions,
+          },
+        })
+        .execute();
+      return body;
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        //eslint-disable-next-line
+        console.error(errorMsg);
+      }
+    }
+    return result;
+  }
+
+  // eslint-disable-next-line
+  async getCategories() {
+    let errorMsg = '';
+    try {
+      const { body } = await this.client
+        .categories()
+        .get({
+          queryArgs: {
+            sort: 'orderHint asc',
+          },
+        })
+        .execute();
+      const result = body.results;
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  //eslint-disable-next-line
+  async getProductsByCat(catId: string) {
+    const errorMsg = '';
+    try {
+      const response = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            facet: [`variants.attributes.color.en`, 'variants.price.centAmount'],
+            filter: [`categories.id:subtree("${catId}")`],
+          },
+        })
+        .execute();
+      // const response = await this.client
+      //   .productProjections()
+      //   .search()
+      //   .get({
+      //     queryArgs: {
+      //       'filter.query': 'categories.id:subtree("ffb8e5bc-dbad-4ae9-b530-e569f3022ac1")',
+      //     },
+      //   })
+      //   .execute();
+      const result = response;
+      return { data: result.body.results, error: errorMsg };
+    } catch (error) {
+      //eslint-disable-next-line
+      console.log('error', error);
+    }
+  }
+  //eslint-disable-next-line
+  async getProductsWithFilter(filter: string[], sort: string, search: string = '') {
+    let errorMsg = '';
+    try {
+      const respsone = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            'text.en-US': search,
+            fuzzy: false,
+            sort,
+            'filter.query': filter,
+          },
+        })
+        .execute();
+      const result = respsone;
+
+      return { data: result, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+
+  //eslint-disable-next-line
+  async getProductsBySearch(search: string) {
+    let errorMsg = '';
+    try {
+      const respsone = await this.client
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            'text.en-US': search,
+          },
+        })
+        .execute();
+      const result = respsone;
+      return { data: result.body.results, error: errorMsg };
+    } catch (error) {
+      if (error instanceof Error) errorMsg = error.message;
+      return { data: undefined, error: errorMsg };
+    }
+  }
+  //eslint-disable-next-line
+  async changePassword(changePassword: CustomerChangePassword): Promise<Customer | null> {
+    let errorMsg = '';
+    try {
+      const { body } = await this.client.customers().password().post({ body: changePassword }).execute();
+      return body;
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        alert(errorMsg);
+      }
+    }
+    return null;
+  }
 }
+
+// Export the API instance
+export const APIInstance = new API(apiRoot);

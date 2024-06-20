@@ -1,0 +1,171 @@
+.profile-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 80%;
+}
+
+.profile-form input,
+.profile-form select {
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  display: inline;
+}
+
+.profile-form input {
+  margin-top: 20px;
+}
+.profile-form div {
+  display: inline-block;
+}
+
+.profile-form label,
+.profile-form .country-label {
+  margin-right: 20px;
+  padding: 0.5rem;
+  position: relative;
+  bottom: 0;
+}
+
+.profile-form label {
+  display: flex;
+  align-items: center;
+}
+
+.profile-form .editting-btns-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  grid-column: span 2;
+  width: 100%;
+}
+
+.span-2 {
+  grid-column: span 2;
+}
+
+.profile-form .outlinedButton {
+  background-color: rgb(188, 188, 188);
+  transition: all 0.5s;
+  fill: #fff;
+  color: #fff;
+  border-radius: 30px;
+}
+
+.profile-form .outlinedButton:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+.profile-form .outlinedButton.editting-cancel {
+  background-color: #fff;
+  color: #000;
+}
+
+.profile-form .outlinedButton.editting-cancel:hover {
+  background-color: rgb(188, 188, 188);
+  color: #fff;
+}
+
+.profile-form:hover {
+  color: #000;
+}
+
+.outlinedButton.editting-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin: 0;
+}
+
+.profile-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.profile-form .address-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  padding: 3rem 0.8rem 0.8rem 0.8rem;
+  background: #f5f4f4;
+  width: 100%;
+}
+
+.address-container.default,
+.address-container.no-edit.default {
+  background: rgb(247, 240, 232);
+  padding: 0.8rem;
+}
+
+.address-container.no-edit {
+  background: #f5f4f4;
+  margin: 20px 0;
+  padding: 0.8rem;
+}
+
+.add-new-address {
+  margin: 1.2rem;
+  border: none;
+  outline: none;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.5s;
+  background-color: rgb(188, 188, 188);
+  color: #000;
+}
+
+.add-new-address:hover,
+.set-as-default:hover {
+  color: #fff;
+  background-color: rgb(188, 188, 188);
+}
+
+.delete-address,
+.set-as-default {
+  border: none;
+  outline: none;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.5s;
+  background-color: rgb(188, 188, 188);
+  fill: #fff;
+  position: absolute;
+  right: -50px;
+  top: 5px;
+}
+
+.set-as-default {
+  right: 5px;
+  top: 5px;
+}
+
+.delete-address:hover {
+  color: #fff;
+  background-color: #a9a5a5;
+}
+
+.profile-details {
+  width: 50%;
+}
+
+.address__label-value-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+.address__label-value-wrapper span,
+.profile-details span {
+  color: #000;
+}
+
+.profile-form__spacer {
+  display: block;
+  margin: 20px 0;
+}

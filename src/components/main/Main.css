@@ -6,6 +6,12 @@
  --desktops: 1025px - 1200px;
  --largeScreens: 1025px - 1200px;
    */
+
+main {
+  min-height: 90vh;
+  height: 100%;
+}
+
 .hero {
   background-image: url('../../assets/images/hero.jpg');
   background-size: cover;
